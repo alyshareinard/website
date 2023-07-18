@@ -4,6 +4,14 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  '@neoconfetti/svelte':
+    specifier: ^1.0.0
+    version: 1.0.0
+  svelte-confetti:
+    specifier: ^1.2.4
+    version: 1.2.4
+
 devDependencies:
   '@sveltejs/adapter-auto':
     specifier: ^2.0.0
@@ -32,6 +40,12 @@ devDependencies:
   svelte-check:
     specifier: ^3.4.3
     version: 3.4.6(postcss@8.4.26)(svelte@4.0.5)
+  svelte-grid:
+    specifier: ^5.1.1
+    version: 5.1.1
+  svelte-toolbox:
+    specifier: ^0.6.1
+    version: 0.6.1
   typescript:
     specifier: ^5.0.0
     version: 5.1.6
@@ -342,6 +356,114 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
+
+  /@material/animation@3.1.0:
+    resolution: {integrity: sha512-ZfP95awrPBLhpaCTPNx+xKYPp2D88fzf5p5YNVp6diUAGRpq3g12Aq7qJfIHDXAFo5CtrYhgOKRqIKxUVcFisQ==}
+    dependencies:
+      tslib: 1.14.1
+    dev: true
+
+  /@material/base@3.1.0:
+    resolution: {integrity: sha512-pWEBHyPrMV3rdnjqWWH96h5t3MxQI6V1J9jOor+UBG7bXQtr6InTabTqhz5CLY7r+qZU8YvNh2OKIy8heP0cyQ==}
+    dependencies:
+      tslib: 1.14.1
+    dev: true
+
+  /@material/dom@3.1.0:
+    resolution: {integrity: sha512-RtBLSkrBjMfHwknaGBifAIC8cBWF9pXjz2IYqfI2braB6SfQI4vhdJviwyiA5BmA/psn3cKpBUZbHI0ym0O0SQ==}
+    dependencies:
+      tslib: 1.14.1
+    dev: true
+
+  /@material/feature-targeting@3.1.0:
+    resolution: {integrity: sha512-aXAa1Pv6w32URacE9LfMsl9zI6hFwx1K0Lp3Xpyf4rAkmaAB6z0gOkhicOrVFc0f64YheJgHjE7hJFieVenQdw==}
+    dev: true
+
+  /@material/floating-label@3.2.0:
+    resolution: {integrity: sha512-szzsSou+xXj3E6InEuOCr8E28IE5EdcBfKRaHoR5EBkzgcRxLuZkFSqD19zsUgVErdTCcRSbeU9mYa6cP8+Nzw==}
+    dependencies:
+      '@material/animation': 3.1.0
+      '@material/base': 3.1.0
+      '@material/rtl': 3.2.0
+      '@material/theme': 3.1.0
+      '@material/typography': 3.1.0
+      tslib: 1.14.1
+    dev: true
+
+  /@material/line-ripple@3.1.0:
+    resolution: {integrity: sha512-o6E6wrDqoOK4esCnM1MQ9t7DC/JQrzSrwYsYdqtOpGnr3G5Jx7WWVt6GEVh2eNXy8OnVYkJdQbMjyPVEVJb/Dg==}
+    dependencies:
+      '@material/animation': 3.1.0
+      '@material/base': 3.1.0
+      '@material/theme': 3.1.0
+      tslib: 1.14.1
+    dev: true
+
+  /@material/notched-outline@3.2.0:
+    resolution: {integrity: sha512-IFuxVoQqlOy/WSSawI2Fglh/U1hS0QtVUiGsc8GUoVUd1pifn7RXidHP3vQrMDEo8M/RwA9p6uveQKjPwW41RA==}
+    dependencies:
+      '@material/animation': 3.1.0
+      '@material/base': 3.1.0
+      '@material/floating-label': 3.2.0
+      '@material/rtl': 3.2.0
+      '@material/shape': 3.1.0
+      '@material/theme': 3.1.0
+      tslib: 1.14.1
+    dev: true
+
+  /@material/ripple@3.2.0:
+    resolution: {integrity: sha512-GtwkfNakALmfGLs6TpdFIVeAWjRqbyT7WfEw9aU7elUokABfHES+O0KoSKQSMQiSQ8Vjl90MONzNsN1Evi/1YQ==}
+    dependencies:
+      '@material/animation': 3.1.0
+      '@material/base': 3.1.0
+      '@material/dom': 3.1.0
+      '@material/feature-targeting': 3.1.0
+      '@material/theme': 3.1.0
+      tslib: 1.14.1
+    dev: true
+
+  /@material/rtl@3.2.0:
+    resolution: {integrity: sha512-L/w9m9Yx1ceOw/VjEfeJoqD4rW9QP3IBb9MamXAg3qUi/zsztoXD/FUw179pxkLn4huFFNlVYZ4Y1y6BpM0PMA==}
+    dev: true
+
+  /@material/shape@3.1.0:
+    resolution: {integrity: sha512-Oyvs7YjHfByA0e9IVVp7ojAlPwgSu3Bl0cioiE0OdkidkAaNu0izM2ryRzMBDH5o8+lRD0kpZoT+9CVVCdaYIg==}
+    dependencies:
+      '@material/feature-targeting': 3.1.0
+    dev: true
+
+  /@material/textfield@3.1.0:
+    resolution: {integrity: sha512-yHCRU8POsOb03hGSoPwOpW2mm+lteqHOBJlFUidouNCdXshdrgR6w0J/tGQgbKPcQqEwd3vPlhia61bh40GR9Q==}
+    dependencies:
+      '@material/animation': 3.1.0
+      '@material/base': 3.1.0
+      '@material/dom': 3.1.0
+      '@material/floating-label': 3.2.0
+      '@material/line-ripple': 3.1.0
+      '@material/notched-outline': 3.2.0
+      '@material/ripple': 3.2.0
+      '@material/rtl': 3.2.0
+      '@material/shape': 3.1.0
+      '@material/theme': 3.1.0
+      '@material/typography': 3.1.0
+      tslib: 1.14.1
+    dev: true
+
+  /@material/theme@3.1.0:
+    resolution: {integrity: sha512-N4JX+akOwg1faAvFvIEhDcwW4cZfUpwEn8lct6Vs3WczjLF6/KdIoLVaYh+eVl1bzfsoIuWvx56j0B1PjXZw9g==}
+    dependencies:
+      '@material/feature-targeting': 3.1.0
+    dev: true
+
+  /@material/typography@3.1.0:
+    resolution: {integrity: sha512-aSNBQvVxIH1kORSYdLGuSTivx6oJ1MSOSTUAsUwhXPQLQlvbdFeZaqUp7xgn+EvRsHGRFhWk5YGuiBds9+7zQg==}
+    dependencies:
+      '@material/feature-targeting': 3.1.0
+    dev: true
+
+  /@neoconfetti/svelte@1.0.0:
+    resolution: {integrity: sha512-SmksyaJAdSlMa9cTidVSIqYo1qti+WTsviNDwgjNVm+KQ3DRP2Df9umDIzC4vCcpEYY+chQe0i2IKnLw03AT8Q==}
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1505,6 +1627,10 @@ packages:
       - sugarss
     dev: true
 
+  /svelte-confetti@1.2.4:
+    resolution: {integrity: sha512-2ut7fEjfHIQ5foXuBaVwalUdl7JlyhgEkFbepGYpOx2dOGC2vjj4kkepcYr/Fl3+CyqfnVmXre1owM+3rpfJEg==}
+    dev: false
+
   /svelte-eslint-parser@0.32.1(svelte@4.0.5):
     resolution: {integrity: sha512-GCSfeIzdgk53CaOzK+s/+l2igfTno3mWGkwoDYAwPes/rD9Al2fc7ksfopjx5UL87S7dw1eL73F6wNYiiuhzIA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -1520,6 +1646,10 @@ packages:
       postcss: 8.4.26
       postcss-scss: 4.0.6(postcss@8.4.26)
       svelte: 4.0.5
+    dev: true
+
+  /svelte-grid@5.1.1:
+    resolution: {integrity: sha512-PJTC4PUejb8RzcUjymWnf1HALqseUBwxl+p+i5uJlDIC1+zXKok1J16IDoHQxXhNj+INcF9KHE7hIm++NurSAQ==}
     dev: true
 
   /svelte-hmr@0.15.2(svelte@4.0.5):
@@ -1579,6 +1709,12 @@ packages:
       typescript: 5.1.6
     dev: true
 
+  /svelte-toolbox@0.6.1:
+    resolution: {integrity: sha512-Kh0D2mJN1eFlKdidXYWchagWTRbIq4e/mW1+oD5CiPxAVFbe7A9uh+Jyf4dYw9DfoctEcIO8eEfcIgiuoBHJ0A==}
+    dependencies:
+      '@material/textfield': 3.1.0
+    dev: true
+
   /svelte@4.0.5:
     resolution: {integrity: sha512-PHKPWP1wiWHBtsE57nCb8xiWB3Ht7/3Kvi3jac0XIxUM2rep8alO7YoAtgWeGD7++tFy46krilOrPW0mG3Dx+A==}
     engines: {node: '>=16'}
@@ -1612,6 +1748,10 @@ packages:
   /totalist@3.0.1:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
+    dev: true
+
+  /tslib@1.14.1:
+    resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
     dev: true
 
   /type-check@0.4.0:

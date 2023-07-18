@@ -5389,12 +5389,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "est",
-      "EngWO": "east",
-      "FR": "a est",
-      "gender": "?"
-    },
-    {
       "FrWO": "doigt",
       "EngWO": "finger",
       "FR": "un doigt",
@@ -5809,12 +5803,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "vacances",
-      "EngWO": "vacation",
-      "FR": "des vacances",
-      "gender": "?"
-    },
-    {
       "FrWO": "ouest",
       "EngWO": "west",
       "FR": "un ouest",
@@ -5837,12 +5825,6 @@ export const words =
       "EngWO": "arm",
       "FR": "un bras",
       "gender": "M"
-    },
-    {
-      "FrWO": "côté",
-      "EngWO": "aside",
-      "FR": "a côté",
-      "gender": "?"
     },
     {
       "FrWO": "associé",
@@ -6901,12 +6883,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "faire",
-      "EngWO": "make",
-      "FR": "a faire",
-      "gender": "?"
-    },
-    {
       "FrWO": "bon",
       "EngWO": "good",
       "FR": "un bon",
@@ -6943,18 +6919,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "pourrait",
-      "EngWO": "might",
-      "FR": "a pourrait",
-      "gender": "?"
-    },
-    {
-      "FrWO": "encore",
-      "EngWO": "still",
-      "FR": "a encore",
-      "gender": "?"
-    },
-    {
       "FrWO": "public",
       "EngWO": "public",
       "FR": "un public",
@@ -6977,12 +6941,6 @@ export const words =
       "EngWO": "start",
       "FR": "un début",
       "gender": "M"
-    },
-    {
-      "FrWO": "donner",
-      "EngWO": "give",
-      "FR": "a donner",
-      "gender": "?"
     },
     {
       "FrWO": "humain",
@@ -7039,18 +6997,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "ce soir",
-      "EngWO": "tonight",
-      "FR": "a ce soir",
-      "gender": "?"
-    },
-    {
-      "FrWO": "mis",
-      "EngWO": "put",
-      "FR": "a mis",
-      "gender": "?"
-    },
-    {
       "FrWO": "commun",
       "EngWO": "common",
       "FR": "un commun",
@@ -7097,12 +7043,6 @@ export const words =
       "EngWO": "particular",
       "FR": "un particulier",
       "gender": "M"
-    },
-    {
-      "FrWO": "aujourd'hui",
-      "EngWO": "today",
-      "FR": "a aujourd'hui",
-      "gender": "?"
     },
     {
       "FrWO": "grand",
@@ -7237,12 +7177,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "principal",
-      "EngWO": "main",
-      "FR": "a principal",
-      "gender": "?"
-    },
-    {
       "FrWO": "offre",
       "EngWO": "offer",
       "FR": "une offre",
@@ -7283,12 +7217,6 @@ export const words =
       "EngWO": "alternative",
       "FR": "une alternative",
       "gender": "F"
-    },
-    {
-      "FrWO": "suivant",
-      "EngWO": "following",
-      "FR": "a suivant",
-      "gender": "?"
     },
     {
       "FrWO": "spéciale",
@@ -7399,12 +7327,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "dépenser",
-      "EngWO": "spend",
-      "FR": "a dépenser",
-      "gender": "?"
-    },
-    {
       "FrWO": "discours",
       "EngWO": "talk",
       "FR": "un discours",
@@ -7415,12 +7337,6 @@ export const words =
       "EngWO": "creative",
       "FR": "une création",
       "gender": "F"
-    },
-    {
-      "FrWO": "dire",
-      "EngWO": "tell",
-      "FR": "a dire",
-      "gender": "?"
     },
     {
       "FrWO": "coût",
@@ -7475,12 +7391,6 @@ export const words =
       "EngWO": "complex",
       "FR": "un complexe",
       "gender": "M"
-    },
-    {
-      "FrWO": "dû",
-      "EngWO": "due",
-      "FR": "a dû",
-      "gender": "?"
     },
     {
       "FrWO": "effectif",
@@ -7559,12 +7469,6 @@ export const words =
       "EngWO": "charge",
       "FR": "une charge",
       "gender": "F"
-    },
-    {
-      "FrWO": "actif",
-      "EngWO": "active",
-      "FR": "a actif",
-      "gender": "?"
     },
     {
       "FrWO": "pause",
@@ -7757,12 +7661,6 @@ export const words =
       "EngWO": "gain",
       "FR": "un gain",
       "gender": "M"
-    },
-    {
-      "FrWO": "peut-être",
-      "EngWO": "maybe",
-      "FR": "a peut-être",
-      "gender": "?"
     },
     {
       "FrWO": "riche",
@@ -7963,12 +7861,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "annuler",
-      "EngWO": "cancel",
-      "FR": "a annuler",
-      "gender": "?"
-    },
-    {
       "FrWO": "produit chimique",
       "EngWO": "chemical",
       "FR": "un produit chimique",
@@ -8005,12 +7897,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "manger",
-      "EngWO": "eat",
-      "FR": "a manger",
-      "gender": "?"
-    },
-    {
       "FrWO": "remplissage",
       "EngWO": "fill",
       "FR": "un remplissage",
@@ -8033,12 +7919,6 @@ export const words =
       "EngWO": "kick",
       "FR": "un coup de pied",
       "gender": "M"
-    },
-    {
-      "FrWO": "opposé",
-      "EngWO": "opposite",
-      "FR": "a opposé",
-      "gender": "?"
     },
     {
       "FrWO": "passe",
@@ -8119,28 +7999,10 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "quelque part",
-      "EngWO": "somewhere",
-      "FR": "a quelque part",
-      "gender": "?"
-    },
-    {
       "FrWO": "avancée",
       "EngWO": "advance",
       "FR": "une avancée",
       "gender": "F"
-    },
-    {
-      "FrWO": "n'importe où",
-      "EngWO": "anywhere",
-      "FR": "a n'importe où",
-      "gender": "?"
-    },
-    {
-      "FrWO": "consisté",
-      "EngWO": "consist",
-      "FR": "a consisté",
-      "gender": "?"
     },
     {
       "FrWO": "noir",
@@ -8159,12 +8021,6 @@ export const words =
       "EngWO": "draw",
       "FR": "un tirage",
       "gender": "M"
-    },
-    {
-      "FrWO": "égal",
-      "EngWO": "equal",
-      "FR": "a égal",
-      "gender": "?"
     },
     {
       "FrWO": "fixation",
@@ -8299,12 +8155,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "annuel",
-      "EngWO": "annual",
-      "FR": "a annuel",
-      "gender": "?"
-    },
-    {
       "FrWO": "compte",
       "EngWO": "count",
       "FR": "un compte",
@@ -8377,12 +8227,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "alors que",
-      "EngWO": "whereas",
-      "FR": "a alors que",
-      "gender": "?"
-    },
-    {
       "FrWO": "souhait",
       "EngWO": "wish",
       "FR": "un souhait",
@@ -8429,12 +8273,6 @@ export const words =
       "EngWO": "hunt",
       "FR": "une chasse",
       "gender": "F"
-    },
-    {
-      "FrWO": "initial",
-      "EngWO": "initial",
-      "FR": "a initial",
-      "gender": "?"
     },
     {
       "FrWO": "marche",
@@ -8551,28 +8389,10 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "employer",
-      "EngWO": "employ",
-      "FR": "a employer",
-      "gender": "?"
-    },
-    {
-      "FrWO": "externe",
-      "EngWO": "external",
-      "FR": "a externe",
-      "gender": "?"
-    },
-    {
       "FrWO": "blessure",
       "EngWO": "hurt",
       "FR": "une blessure",
       "gender": "F"
-    },
-    {
-      "FrWO": "illégal",
-      "EngWO": "illegal",
-      "FR": "a illégal",
-      "gender": "?"
     },
     {
       "FrWO": "rire",
@@ -8597,18 +8417,6 @@ export const words =
       "EngWO": "nasty",
       "FR": "une méchante",
       "gender": "F"
-    },
-    {
-      "FrWO": "ordinaire",
-      "EngWO": "ordinary",
-      "FR": "a ordinaire",
-      "gender": "?"
-    },
-    {
-      "FrWO": "répondre",
-      "EngWO": "respond",
-      "FR": "a répondre",
-      "gender": "?"
     },
     {
       "FrWO": "royal",
@@ -8651,12 +8459,6 @@ export const words =
       "EngWO": "train",
       "FR": "un train",
       "gender": "M"
-    },
-    {
-      "FrWO": "supérieur",
-      "EngWO": "upper",
-      "FR": "a supérieur",
-      "gender": "?"
     },
     {
       "FrWO": "lavage",
@@ -8731,12 +8533,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "récupérer",
-      "EngWO": "recover",
-      "FR": "a récupérer",
-      "gender": "?"
-    },
-    {
       "FrWO": "résolution",
       "EngWO": "resolve",
       "FR": "une résolution",
@@ -8801,12 +8597,6 @@ export const words =
       "EngWO": "usual",
       "FR": "un habituel",
       "gender": "M"
-    },
-    {
-      "FrWO": "l'étranger",
-      "EngWO": "abroad",
-      "FR": "a l'étranger",
-      "gender": "?"
     },
     {
       "FrWO": "brave",
@@ -8923,12 +8713,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "personne",
-      "EngWO": "anybody",
-      "FR": "a personne",
-      "gender": "?"
-    },
-    {
       "FrWO": "ours",
       "EngWO": "bear",
       "FR": "un ours",
@@ -8975,12 +8759,6 @@ export const words =
       "EngWO": "hurry",
       "FR": "une hâte",
       "gender": "F"
-    },
-    {
-      "FrWO": "inévitable",
-      "EngWO": "inevitable",
-      "FR": "a inévitable",
-      "gender": "?"
     },
     {
       "FrWO": "invitation",

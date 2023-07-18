@@ -4,6 +4,8 @@
 		
 	}
 	.card-container {
+		width: 100px;
+		height: 50px;
 		position: relative;
 		margin:2%;
 	}
@@ -30,16 +32,16 @@
 	}
 	
 	.back {
-		background-color: lightgray;
-		border-color:violet;
+		background-color: whitesmoke;
+		border-color:#d6ccd8;
 		border-style: solid;
 		border-width: 5px;
 	}
 </style>
 
 <script>
+	let flipped = false;
 	export let background="lightgray";
-	let flipped = false
 	
 	function flip(node, {
 		delay = 0,
@@ -56,9 +58,10 @@
 	}
 
 	function handleClick() {
-		flipped = !flipped;
+		if ($$slots.backContent){
+			flipped = !flipped;
+		}
 	}
-
 </script>
 
 <div class="card-container" tabindex="0" role="cell" on:click={handleClick} on:keypress={handleClick}>

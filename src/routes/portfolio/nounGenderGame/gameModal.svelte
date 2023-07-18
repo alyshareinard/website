@@ -1,25 +1,75 @@
 <script>
+    import { confetti } from '@neoconfetti/svelte';
+    import { scale, fly } from 'svelte/transition';
+    import drag from "$lib/functions/drag.js";
 
-import { scale, fly } from 'svelte/transition';
-import drag from "$lib/functions/drag.js";
-import { Confetti } from "svelte-confetti"
-//import {correctWords} from "./stores.js"
-export let toggleGame;
-let mascBox, femBox;
-import { words} from '$lib/db/words';
-import {WordCard} from '$lib/components/WordCard';
 
-let correctWords = [];
-let confetti_blue = false;
-let confetti_pink = false;
+    //import {correctWords} from "./stores.js"
+    export let toggleGame;
+    let mascBox, femBox;
 
-let nextWord = randomWord();
-function randomWord() {
-    let random = Math.floor(Math.random() * words.length);
-    console.log(words[random])
-    return words[random];
+    import WordCard from './WordCard.svelte';
+
+    $: wordSize="wordSizeSmall"
+    $: confetti_blue = false;
+	$: confetti_pink = false;
+	let correctWords = [];
+	import { words} from '$lib/db/words';
+
+	let nextWord = randomWord();
+
+
+	function randomWord() {
+        let random = Math.floor(Math.random() * words.length);
+
+        let nextWord=words[random]
+        console.log(words[random])
+
+    return nextWord;
 }
 
+function handleDragStop(e) {
+    console.log(e.detail.x)
+    console.log(e.detail.y)
+    let mascBound = mascBox.getBoundingClientRect();
+    let femBound = femBox.getBoundingClientRect();
+    console.log(nextWord)
+    if(e.detail.x> femBound.left && e.detail.x<femBound.right && e.detail.y>femBound.top && e.detail.y<femBound.bottom){
+        if (nextWord.gender == "F") {
+            console.log("correct!")
+            confetti_pink=true
+            correctWords.push(nextWord) 
+            nextWord = randomWord();
+            
+        } else {
+            console.log("incorrect!")
+        }
+    }else if(e.detail.x> mascBound.left && e.detail.x<mascBound.right && e.detail.y>mascBound.top && e.detail.y<mascBound.bottom){
+        if (nextWord.gender == "M") {
+            console.log("correct!")
+            correctWords.push(nextWord)
+            confetti_blue=true
+            nextWord  = randomWord();
+            
+        } else {
+            console.log("incorrect!")
+        } 
+    } else {
+        console.log("go back to start");
+    }
+    console.log(confetti_blue, confetti_pink)
+    
+    correctWords = correctWords;
+}
+
+    function resetConfetti() {
+        confetti_blue = false;
+        confetti_pink = false;
+    }
+
+    function resetWordList() {
+        correctWords = [];
+    }
 </script>
 
 <div class="modal">
@@ -28,35 +78,54 @@ function randomWord() {
 		<div bind:this={mascBox} class="answerBoxMasc" />
 		<div bind:this={femBox} class="answerBoxFem" />
 
-		<div use:drag on:dragStop={handleDragStop} class="wordContainer">
-			<WordCard use:drag on:dragStop={handleDragStop} background="violet">
-				<div slot="frontContent">
-					{nextWord.FrWO}
-				</div>
-
-				<div slot="backContent">
-					{nextWord.EngWO}
-				</div>
-			</WordCard>
-		</div>
+        <div class="wordContainer" use:drag on:dragStop={handleDragStop}>
+        <WordCard allowFlip=false background="#d6ccd8">
+            <div class={wordSize} slot="frontContent">
+                {nextWord.FrWO}
+            </div>
+        </WordCard>
+        </div>
 
 		<div class="centered">
 			{#if confetti_blue}
-				<Confetti colorArray={["lightblue"]} />
+                <div on:animationend={resetConfetti} style="position: absolute; left: 50%; top: 30%"
+                use:confetti={{
+                    force: 0.5,
+                    stageWidth: window.innerWidth,
+                    stageHeight: window.innerHeight,
+                    colors: ['lightblue']
+                }}
+                />
 			{/if}
+
 			{#if confetti_pink}
-				<Confetti colorArray={["pink"]} />
+            <div on:animationend ={resetConfetti} style="position: absolute; left: 50%; top: 30%"
+                use:confetti={{
+                force: 0.5,
+                stageWidth: window.innerWidth,
+                stageHeight: window.innerHeight,
+                colors: ['pink'] 
+            }}
+            />
+            {/if}
+
+            {#if correctWords.length===15}
+                <div on:animationstart={resetWordList} style="position: absolute; left: 50%; top: 30%"
+                    use:confetti={{
+                    force: 0.9,
+                    stageWidth: window.innerWidth,
+                    stageHeight: window.innerHeight,
+                    colors: ['pink', 'lightblue']
+                }}
+                />
+
 			{/if}
-			<script>
-            confetti_blue=false;
-            confetti_pink=false;
-			</script>
 		</div>
 		<div class="correctContainer">
 			{#each correctWords as word}
 				{#if word.gender==="M"}
-					<WordCard background="lightblue">
-						<div slot="frontContent">
+					<WordCard background="lightblue" flipped=false>
+						<div class={wordSize} slot="frontContent">
 							{word.FR}
 						</div>
 
@@ -65,8 +134,8 @@ function randomWord() {
 						</div>
 					</WordCard>
 				{:else}
-					<WordCard background="pink">
-						<div slot="frontContent">
+					<WordCard background="pink" flipped=false>
+						<div class={wordSize} slot="frontContent">
 							{word.FR}
 						</div>
 
@@ -119,22 +188,12 @@ function randomWord() {
         justify-content: center;
     }
 
-    .wordBox {
-        background: violet;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-    }
-
     .wordContainer {
         width: 30%;
         height: 10%;
         position: absolute;
         top:10%;
-        left:36%
+        left:40%
     }
 
     .correctContainer {
@@ -163,8 +222,14 @@ function randomWord() {
         width: 100%;
         height: 100%;
         z-index: -1;
-        opacity: 0.8;
-        background: linear-gradient(142deg, pink 10%, blue 100%);
+        opacity: 0.9;
+        background: linear-gradient(142deg, pink 5%, lightblue 100%);
+    }
+    .wordsizeLarge{
+        font-size: 1em;
+    }
+    .wordsizeSmall{
+        font-size: 0.5em;
     }
 
 </style>

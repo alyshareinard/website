@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@neoconfetti/svelte": "^1.0.0",
 		"svelte-confetti": "^1.2.4"
 	}
 }
