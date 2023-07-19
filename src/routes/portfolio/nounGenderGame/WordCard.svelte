@@ -1,7 +1,12 @@
 <style>
 	.backText {
 		text-align: center;
+		color:black;
 		
+	}
+	.frontText{
+		text-align: center;
+		color:black;
 	}
 	.card-container {
 		width: 100px;
@@ -18,14 +23,14 @@
 	}
 	
 	.side {
+		color: black;
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		border-color: whitesmoke;
+		border-color: darkgrey;
 		border-style: solid;
 		border-width: 5px;
 		overflow: hidden;
-		color: black;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -34,6 +39,7 @@
 	.back {
 		background-color: whitesmoke;
 		border-color:#d6ccd8;
+		color:black;
 		border-style: solid;
 		border-width: 5px;
 	}
@@ -68,7 +74,7 @@
 	<div class="card">
 		{#if !flipped}
 		<div style:background-color={background} class="side" transition:flip>
-			<h2>
+			<h2 class="frontText">
 				<slot name="frontContent">
 					Unknown contents
 				</slot>

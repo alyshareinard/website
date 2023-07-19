@@ -13,6 +13,7 @@
     $: wordSize="wordSizeSmall"
     $: confetti_blue = false;
 	$: confetti_pink = false;
+    $: wrongAnswer = false;
 	let correctWords = [];
 	import { words} from '$lib/db/words';
 
@@ -42,7 +43,10 @@ function handleDragStop(e) {
             nextWord = randomWord();
             
         } else {
+            wrongWords.push(nextWord)
+            wrongAnswer=true
             console.log("incorrect!")
+//            nextWord = randomWord();
         }
     }else if(e.detail.x> mascBound.left && e.detail.x<mascBound.right && e.detail.y>mascBound.top && e.detail.y<mascBound.bottom){
         if (nextWord.gender == "M") {
@@ -52,7 +56,10 @@ function handleDragStop(e) {
             nextWord  = randomWord();
             
         } else {
+            wrongWords.push(nextWord)
+            wrongAnswer=true
             console.log("incorrect!")
+//            nextWord = randomWord();
         } 
     } else {
         console.log("go back to start");
@@ -79,7 +86,7 @@ function handleDragStop(e) {
 		<div bind:this={femBox} class="answerBoxFem" />
 
         <div class="wordContainer" use:drag on:dragStop={handleDragStop}>
-        <WordCard allowFlip=false background="#d6ccd8">
+        <WordCard background="#d6ccd8">
             <div class={wordSize} slot="frontContent">
                 {nextWord.FrWO}
             </div>
