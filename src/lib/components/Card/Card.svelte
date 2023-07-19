@@ -4,12 +4,11 @@
 		text-align: center;
 		
 	}
-	.card-container {
-		position: relative;
-		height: 200px;
-		width: 300px;
-		margin:20px;
+
+	.frontText {
+		text-align: center;	
 	}
+
 	
 	.card {
 		width: 100%;
@@ -42,6 +41,9 @@
 </style>
 
 <script>
+	export let cardHeight = 200;
+	export let cardWidth = 300;
+	console.log(cardHeight);
 	let flipped = false
 	
 	function flip(node, {
@@ -66,11 +68,11 @@
 	}
 </script>
 
-<div class="card-container" tabindex="0" role="cell" on:mouseover={handleMouseOver} on:focus={handleMouseOver} on:mouseout={handleMouseOut} on:blur={handleMouseOut}>
+<div class="card-container" style="position:relative; width: {cardWidth}px; height:{cardHeight}px" tabindex="0" role="cell" on:mouseover={handleMouseOver} on:focus={handleMouseOver} on:mouseout={handleMouseOut} on:blur={handleMouseOut}>
 	<div class="card">
 		{#if !flipped}
 		<div class="side" transition:flip>
-			<h2>
+			<h2 class="frontText">
 				<slot name="content">
 					Unknown content
 				</slot>

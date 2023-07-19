@@ -5,3 +5,5 @@ Here we will have a description of my work and a link to :
 and 
 
 <a href = "science/pubs">   publications</a>
+
+Maybe use slide to show presentations/publications?
