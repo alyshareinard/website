@@ -1,10 +1,10 @@
 <script>
-	import './global.css';
+	import ContactModal from './contactModal.svelte';
 	import { Card } from '$lib/components/Card';
     //background textured grey, blocks rotate through pride color borders
     const mainHeight = 200;
     const mainWidth = 300;
-
+	let showContact = false
     const portHeight = 150;
     const portWidth = 225;
 	let main_cards = [
@@ -21,7 +21,7 @@
 		{
 			front: 'Contact',
 			back: 'Contact me',
-			link: '/contact'
+//			link: '/contact'
 		}
 	];
 
@@ -34,12 +34,12 @@
 		{
 			front: 'Spotify Playlist Generator',
 			back: 'Mix and match your spotify playlists',
-			link: '/portfolio/spotifyPlaylistGenerator'
+			link: '/portfolio/spotifyPlaylistMix'
 		},
 		{
 			front: 'CSV formatter',
 			back: 'Upload a CSV file, and then download it in a different format',
-			link: '/portfolio/csvFormatter'
+			link: '/portfolio/csvUpdater'
 		},
 		{
 			front: 'Allowance tracker',
@@ -57,6 +57,9 @@
 			link: '/portfolio/inventoryTracker'
 		}
 	];
+	function toggleContact() {
+		showContact = !showContact;
+	}
 
 
 //	main {
@@ -69,7 +72,19 @@
 	<main>
 		<div class="mainNav">
 			{#each main_cards as card}
-				<a href={card['link']}>
+				{#if card['link']}
+					<a href={card['link']}>
+						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
+							<div slot="content">
+								{card['front']}
+							</div>
+							<div slot="backContent">
+								{card['back']}
+							</div>
+						</Card>
+					</a>
+				{:else}
+				<div class="divnopad" on:click={toggleContact} on:keypress={toggleContact}>
 					<Card cardHeight={mainHeight} cardWidth={mainWidth}>
 						<div slot="content">
 							{card['front']}
@@ -78,7 +93,8 @@
 							{card['back']}
 						</div>
 					</Card>
-				</a>
+					</div>
+				{/if}
 			{/each}
 		</div>
 
@@ -97,26 +113,46 @@
 				</a>
 			{/each}
 		</div>
+
+		{#if showContact}
+		<ContactModal { toggleContact } >
+			</ContactModal>
+		{/if}
 	</main>
 </body>
 
 <style>
+	main{
+		justify-content: center;
+	}
 	body {
 		background: transparent;
 	}
 	.mainNav {
 		display: grid;
-        grid-template-columns: repeat(auto-fill,minmax(325px, 1fr));
-        padding:5%;
-		width: 100%;
+		justify-content: center;
+		justify-items:center;
+        grid-template-columns: repeat(auto-fit,minmax(320px, 1fr));
+		grid-auto-rows: 225px;
+		padding:2%;
+		width: 96%;
 		height: 100%;
+	
+
 	}
 	.portfolioNav {
+		width:96%;
+        padding:2%;
 		display: grid;
-        grid-template-columns: repeat(auto-fill,minmax(250px, 1fr));
+		justify-content: center;
+		justify-items:center;
+        grid-template-columns: repeat(auto-fit,minmax(260px, 1fr));
         grid-auto-rows: 175px;
-        padding:5%;
-        gap:5%;
+
+	}
+	.divnopad {
+		padding: 0px;
+		margin:0;
 	}
 	</style>
 

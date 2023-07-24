@@ -1,35 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
+:root {
+    --mainTheme: darkcyan;
+    --mainThemeLight: #3CAAAA;
+    --mainThemeDark: #005757;
+    --accent: #FFA55A;
+    --accentLight: #fae0cb;
+	--sk-font: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	--sk-font-mono: 'Fira Mono', monospace;
+}
+
+html {
+    height: 100%;
+}
+
+
 body {
     background-color: rgb(13, 13, 13);
-    
-    color: #c2c0bf;
+    color: white;
     margin: 0.75em;
-    font-family: 'Overpass', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    accent-color: #ff3e00;
+    font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    accent-color: --accent;
 
 }
 h1 {
-    color: #c2c0bf;
+    color:var(--mainThemeLight);
     font-size: 2em;
-    font-weight: 700;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
     margin: 0.67em 0;
 }
 
 h2 {
-    color: #c2c0bf;
+    color: var(--mainThemeLight);
     font-size: 1.5em;
-    font-weight: 700;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
     margin: 0.83em 0;
 }
 
 p {
-    color: #c2c0bf;
+    color: white;
     font-size: 1em;
     font-weight: 400;
     margin: 1.33em 0;
 }
 a {
-    color: lightblue;
+    color: var(--accent);
 
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: var(--accent);
+    
 }
 
 

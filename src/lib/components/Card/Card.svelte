@@ -43,7 +43,7 @@
 <script>
 	export let cardHeight = 200;
 	export let cardWidth = 300;
-	console.log(cardHeight);
+
 	let flipped = false
 	
 	function flip(node, {

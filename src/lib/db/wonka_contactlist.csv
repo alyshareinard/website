@@ -1,0 +1,4 @@
+Last Name,First Name,Adult Student,Status,Email,Mobile Phone,Skype Username,Texting Allowed,Parents,Address,Birthday,Age,Date Started,Instrument,Level,School,Parent Contact 1 Last Name,Parent Contact 1 First Name,Parent Contact 1 Email,Parent Contact 1 Mobile Phone,Parent Contact 1 Mobile Texting Allowed
+Salt,Veruca,,Trial,,,,N,"Salt, Henry",,2/16/61,10,10/26/1968,Drums,,,,Salt,henry.salt@wonka.com,777-666-5555,Y
+Bucket,Charlie,,Active,,,,Y,"Bucket, Hellen",,11/4/60,10,9/28/1969,Guitar,,,,Bucket,hellen.bucket@wonka.com,777-666-5556,Y
+Slugworth,Arthur,Adult,Inactive,arthur.slugworth@wonka.com,777-666-5557,,N,,,12/17/38,,9/5/65,Drums,,,,,,,
