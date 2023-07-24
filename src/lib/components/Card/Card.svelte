@@ -21,8 +21,8 @@
 		position: absolute;
 		height: 100%;
 		width: 100%;
-		background-color: darkcyan;
-		border-color: #aaa;
+		background-color: var(--mainTheme);
+		border-color: #fff;
 		border-style: solid;
 		border-width: 5px;
 		overflow: hidden;
@@ -33,8 +33,8 @@
 	}
 	
 	.back {
-		background-color: lightgray;
-		border-color: darkcyan;
+		background-color: #fff;
+		border-color: var(--mainTheme);
 		border-style: solid;
 		border-width: 5px;
 	}
