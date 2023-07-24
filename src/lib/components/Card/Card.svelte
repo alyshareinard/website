@@ -38,6 +38,9 @@
 		border-style: solid;
 		border-width: 5px;
 	}
+	h2 {
+		color:#fff;
+	}
 </style>
 
 <script>
