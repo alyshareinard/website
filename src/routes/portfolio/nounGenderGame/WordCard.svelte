@@ -5,7 +5,16 @@
 	export let background = 'lightgray';
 
 
-
+	function flip(node, { delay = 0, duration = 1000 }) {
+		return {
+			delay,
+			duration,
+			css: (t, u) => `
+				transform: rotateY(${1 - u * 180}deg);
+				opacity: ${1 - u};
+			`
+		};
+	}
 	function handleClick() {
 		if ($$slots.backContent) {
 			flipped = !flipped;
