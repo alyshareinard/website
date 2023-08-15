@@ -63,7 +63,7 @@ function uploadFile(event) {
 </body>
 
 <style>
-        body{
+    body{
         background:transparent
     }
 </style>

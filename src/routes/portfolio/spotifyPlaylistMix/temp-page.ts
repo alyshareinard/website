@@ -1,8 +1,12 @@
 import { redirectToAuthCodeFlow, getAccessToken } from "./authCodeWithPkce";
+import { onMount } from 'svelte';
 
 const clientId = "89fa540e534b473c90664d7e1a60378e";
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+onMount(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+
 
 if (!code) {
     redirectToAuthCodeFlow(clientId);
@@ -11,6 +15,7 @@ if (!code) {
     const profile = await fetchProfile(accessToken);
     populateUI(profile);
 }
+});
 
 async function fetchProfile(code: string): Promise<UserProfile> {
     const result = await fetch("https://api.spotify.com/v1/me", {

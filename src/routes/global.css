@@ -14,7 +14,6 @@ html {
     height: 100%;
 }
 
-
 body {
     background-color: rgb(13, 13, 13);
     color: white;
@@ -41,7 +40,7 @@ h2 {
 
 p {
     color: white;
-    font-size: 1em;
+    font-size: 1.2em;
     font-weight: 400;
     margin: 1.33em 0;
 }

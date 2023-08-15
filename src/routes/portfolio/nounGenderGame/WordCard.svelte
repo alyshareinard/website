@@ -1,23 +1,19 @@
 <script>
-	let flipped = false;
+	import { fit, parent_style} from '@leveluptuts/svelte-fit';
+	import {slide} from 'svelte/transition';
+	export let flipped = false;
 	export let background = 'lightgray';
 
-	function flip(node, { delay = 0, duration = 1000 }) {
-		return {
-			delay,
-			duration,
-			css: (t, u) => `
-				transform: rotateY(${1 - u * 180}deg);
-				opacity: ${1 - u};
-			`
-		};
-	}
+
 
 	function handleClick() {
 		if ($$slots.backContent) {
 			flipped = !flipped;
 		}
 	}
+
+	
+
 
 </script>
 
@@ -27,19 +23,24 @@
 	role="cell"
 	on:click={handleClick}
 	on:keypress={handleClick}
+	
 >
 	<div class="card">
 		{#if !flipped}
 			<div style:background-color={background} class="side" transition:flip>
-				<h2 class="frontText">
-					<slot name="frontContent">Unknown contents</slot>
+				<div style={parent_style}>
+				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:40 }} class="frontText">
+					<slot  name="frontContent"/>
 				</h2>
+				</div>
 			</div>
 		{:else}
 			<div class="side back" transition:flip>
-				<h2 class="backText">
-					<slot name="backContent">Unknown back content</slot>
+				<div style={parent_style}>
+				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:32 }} class="backText">
+					<slot name="backContent"/>
 				</h2>
+				</div>
 			</div>
 		{/if}
 	</div>
@@ -48,38 +49,39 @@
 <style>
 	.backText {
 		text-align: center;
+		text-justify: center;
 		color: black;
 	}
 	.frontText {
-		text-align: center;
 		color: black;
+		margin:5%;
 	}
 	.card-container {
 		width: 100px;
 		height: 50px;
-		position: relative;
-		margin: 2%;
+		position: absolute;
+
 	}
 
 	.card {
 		width: 100%;
 		height: 100%;
 		position: absolute;
-		perspective: 600;
+
+		
 	}
 
 	.side {
 		color: black;
-		position: absolute;
+
 		height: 100%;
 		width: 100%;
 		border-color: darkgrey;
 		border-style: solid;
 		border-width: 5px;
-		overflow: hidden;
-		display: flex;
-		justify-content: center;
-		align-items: center;
+
+
+
 	}
 
 	.back {

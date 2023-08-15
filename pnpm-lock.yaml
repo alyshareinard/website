@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@leveluptuts/svelte-fit':
+    specifier: ^1.0.3
+    version: 1.0.3
   '@neoconfetti/svelte':
     specifier: ^1.0.0
     version: 1.0.0
@@ -362,6 +365,10 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
+
+  /@leveluptuts/svelte-fit@1.0.3:
+    resolution: {integrity: sha512-Hg8Xz06Mf1pwI92cY60LdFKDjXUkix0KcNP5orgGjtV7ecfK4zZ8gwPHOSDioZt73/7Muj1O43QzvtK2oPwEfA==}
+    dev: false
 
   /@material/animation@3.1.0:
     resolution: {integrity: sha512-ZfP95awrPBLhpaCTPNx+xKYPp2D88fzf5p5YNVp6diUAGRpq3g12Aq7qJfIHDXAFo5CtrYhgOKRqIKxUVcFisQ==}
