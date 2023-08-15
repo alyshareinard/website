@@ -183,7 +183,7 @@
             <h3>
             Score: {score}
             <br>
-            {percCorrect}% correct
+            {percCorrect}%
             </h3>
         </div>
 
