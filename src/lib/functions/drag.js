@@ -24,7 +24,7 @@ export default function drag(node, params) {
     x = event.clientX
     y = event.clientY
     window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("touchmove", handleMouseMove)
+    window.addEventListener("touchstart", handleMouseMove)
     window.addEventListener("mouseup", handleMouseUp)
     window.addEventListener("touchend", handleMouseUp)
   }
@@ -65,6 +65,8 @@ export default function drag(node, params) {
     // Remove event listers
     window.removeEventListener("mousemove", handleMouseMove)
     window.removeEventListener("mouseup", handleMouseUp)
+    window.removeEventListener("touchstart", handleMouseUp)
+    window.removeEventListener("touchend", handleMouseUp)
   }
 
   return {
