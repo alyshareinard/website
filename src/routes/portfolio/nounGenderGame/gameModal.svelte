@@ -106,6 +106,9 @@
 				setTimeout(()=> {flippedCardMasc=false; confetti_blue = true;}, 600)
 			} else {
 				wrongWords.push(currentWord);
+				if (wrongWords.length>3) {
+					wrongWords.shift()
+				}
 				wrongAnswer = true;
 				console.log('incorrect!');
 				nextWord = randomWord();
@@ -221,6 +224,9 @@
             {/if}
         {/each}
         </div>
+
+
+
         {#key unique}
 		<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
 			<WordCard background="#d6ccd8">
@@ -308,11 +314,15 @@
 	}
 	.answerCardFem {
 		position:absolute;
+		width:40%;
+		height:20%;
 		bottom:60px;
 		left:40px;
 	}
 	.answerCardMasc {
 		position:absolute;
+		width:40%;
+		height:20%;
 		bottom:40px;
 		left:40px;
 	}
