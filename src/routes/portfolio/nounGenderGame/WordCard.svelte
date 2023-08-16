@@ -1,6 +1,5 @@
 <script>
 	import { fit, parent_style} from '@leveluptuts/svelte-fit';
-	import {slide} from 'svelte/transition';
 	export let flipped = false;
 	export let background = 'lightgray';
 
@@ -36,15 +35,15 @@
 >
 	<div class="card">
 		{#if !flipped}
-			<div style:background-color={background} class="side" transition:flip>
+			<div style:background-color={background} class="front" transition:flip>
 				<div style={parent_style}>
-				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:40 }} class="frontText">
+				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:32 }} class="frontText">
 					<slot  name="frontContent"/>
 				</h2>
 				</div>
 			</div>
 		{:else}
-			<div class="side back" transition:flip>
+			<div class="back" transition:flip>
 				<div style={parent_style}>
 				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:32 }} class="backText">
 					<slot name="backContent"/>
@@ -68,29 +67,29 @@
 	.card-container {
 		width: 100px;
 		height: 50px;
-		position: absolute;
+		position:fixed;
 
 	}
 
 	.card {
 		width: 100%;
 		height: 100%;
-		position: absolute;
-
-		
 	}
 
-	.side {
-		color: black;
 
-		height: 100%;
+	.front, .back {
+		position: absolute;
 		width: 100%;
+		height: 100%;
+		-webkit-backface-visibility: hidden; /* Safari */
+		backface-visibility: hidden;
+		box-shadow: -1px 1px 3px black;
+	}
+	.front{
+		color: black;
 		border-color: darkgrey;
 		border-style: solid;
 		border-width: 5px;
-
-
-
 	}
 
 	.back {
