@@ -65,9 +65,8 @@
 		margin:5%;
 	}
 	.card-container {
-		width: 100px;
-		height: 50px;
-		position:fixed;
+		width: 100%;
+		height: 100%;
 
 	}
 

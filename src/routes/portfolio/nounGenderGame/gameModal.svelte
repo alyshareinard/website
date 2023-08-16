@@ -77,6 +77,9 @@
 				setTimeout(()=> {flippedCardFem=false; confetti_blue = true;}, 600)
 			} else {
 				wrongWords.push(currentWord);
+				if (wrongWords.length>3) {
+					wrongWords.shift()
+				}
 				wrongAnswer = true;
 				console.log('incorrect!');
 				nextWord = randomWord();
@@ -192,6 +195,7 @@
 
         {#each wrongWords as word}
             {#if word.gender === 'M'}
+			<div class="flexWordContainer">
                 <WordCard background="lightblue">
                     <div slot="frontContent">
                         {word.FR}
@@ -201,7 +205,9 @@
                         {word.EngWO}
                     </div>
                 </WordCard>
+			</div>
             {:else}
+			<div class="flexWordContainer">
                 <WordCard background="pink">
                     <div slot="frontContent">
                         {word.FR}
@@ -211,6 +217,7 @@
                         {word.EngWO}
                     </div>
                 </WordCard>
+			</div>
             {/if}
         {/each}
         </div>
@@ -266,31 +273,7 @@
 				/>
 			{/if}
 		</div>
-		<div class="correctContainer">
-			{#each correctWords as word}
-				{#if word.gender === 'M'}
-					<WordCard background="lightblue">
-						<div slot="frontContent">
-							{word.FR}
-						</div>
 
-						<div slot="backContent">
-							{word.EngWO}
-						</div>
-					</WordCard>
-				{:else}
-					<WordCard background="pink">
-						<div slot="frontContent">
-							{word.FR}
-						</div>
-
-						<div slot="backContent">
-							{word.EngWO}
-						</div>
-					</WordCard>
-				{/if}
-			{/each}
-		</div>
 	</div>
 	<div on:click={toggleGame} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
 </div>
@@ -305,7 +288,7 @@
 	}
 	.answerBoxMasc {
 		width: 30%;
-		height: 30%;
+		height: 50%;
 		margin-left: 10px;
 		margin-right: 10px;
 		background: lightblue;
@@ -315,7 +298,7 @@
 
 	.answerBoxFem {
 		width: 30%;
-		height: 30%;
+		height: 50%;
 		margin-left: 10px;
 		margin-right: 10px;
 		background: pink;
@@ -335,14 +318,14 @@
 	}
 
     .wrongWords {
-		width: 47%;
-		height: 11%;
-		margin-left: 10px;
-		margin-right: 10px;
+		width: 60%;
+		height: 20%;
+		margin-left: 1%;
+		margin-right: 1%;
 		background: grey;
 		position: absolute;
-		right: 26%;
-		top: 45%;
+		left: 20%;
+		bottom: 10%;
         display:flex;
         flex-direction: row;
 		flex-wrap: wrap;
@@ -361,24 +344,19 @@
 	}
 
 	.wordContainer {
-        width: 110px;
-		height: 60px;
+        width: 20%;
+		height: 10%;
 		position: absolute;
-		top: 10%;
+		top: 15%;
 		left: 42%;
 	}
-
-	.correctContainer {
-		display: flex;
-		background: grey;
-		width: 96%;
-		height: 40%;
-		position: absolute;
-		flex-direction: row;
-		flex-wrap: wrap;
-		align-items: left;
-		top: 58%;
-		left: 2%;
+	.flexWordContainer {
+        width: 29%;
+		height: 80%;
+		margin-right:3%;
+		margin-left:1%;
+		margin-top:1%;
+		position:relative;
 	}
 
 	.modalEnvelope {
@@ -386,7 +364,7 @@
 		text-align: center;
 		background: #fff;
 		border-radius: 10px;
-		height: 80%;
+		height: 60%;
 		width: 60%;
 	}
 	.background {
@@ -399,20 +377,20 @@
 	}
     .helpWordsMasc { 
         color:rgb(12, 150, 196);
-        font-size: 32px;
+        font-size: 2rem;
         position:relative;
     }
     .helpWordsFem { 
         color:rgb(249, 90, 117);
-        font-size: 32px;
+        font-size: 2em;
         position:relative;
     }
     .scoreBox {
         position:absolute;
-        top: 25%;
+        top: 40%;
 		left: 40%;
-        width: 25%;
-        height: 15%;
+        width: 20%;
+        height: 20%;
         background: violet;
         
     }
