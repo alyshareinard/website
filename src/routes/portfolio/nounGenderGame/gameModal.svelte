@@ -233,6 +233,9 @@
 				<div slot="frontContent">
 						{nextWord.FrWO}
 				</div>
+				<div slot="backContent">
+					{nextWord.EngWO}
+			</div>
 			</WordCard>
 		</div>
         {/key}
