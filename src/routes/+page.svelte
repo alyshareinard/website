@@ -97,6 +97,7 @@
 				{/if}
 			{/each}
 		</div>
+		<p>Do you have tasks you have to repeat over and over?  You've looked for a simple app, but none exist?  Here are some examples of apps I've created. </p>
 
 		<h2 style="text-align: center;">Portfolio</h2>
 		<div class="portfolioNav">
