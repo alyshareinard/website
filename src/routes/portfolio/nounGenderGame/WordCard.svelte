@@ -1,10 +1,14 @@
 <script>
-	import { fit, parent_style} from '@leveluptuts/svelte-fit';
+	import { fit, parent_style } from '@leveluptuts/svelte-fit';
 	export let flipped = false;
 	export let background = 'lightgray';
-
+	export let reveal = false;
+	export let newBackgroundColor;
+	console.log("new background " + newBackgroundColor);
+	console.log(reveal)
 
 	function flip(node, { delay = 0, duration = 1000 }) {
+		console.log('in flip');
 		return {
 			delay,
 			duration,
@@ -14,15 +18,29 @@
 			`
 		};
 	}
+
+	function revealColor(node, { delay = 0, duration = 1000, newBackgroundColor = 'violet' }) {
+		console.log('in reveal color');
+		console.log(newBackgroundColor);
+		console.log(reveal);
+		if (reveal) {
+			return {
+				delay,
+				duration,
+				newBackgroundColor,
+				css: (t, u, c) => `
+				background-color: ${c};
+				transition: background-color ${u} ${t};
+				opacity: ${u};
+			`
+			};
+		}
+	}
 	function handleClick() {
 		if ($$slots.backContent) {
 			flipped = !flipped;
 		}
 	}
-
-	
-
-
 </script>
 
 <div
@@ -31,23 +49,31 @@
 	role="cell"
 	on:click={handleClick}
 	on:keypress={handleClick}
-	
+	on:touchstart={handleClick}
 >
 	<div class="card">
 		{#if !flipped}
 			<div style:background-color={background} class="front" transition:flip>
 				<div style={parent_style}>
-				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:32 }} class="frontText">
-					<slot  name="frontContent"/>
-				</h2>
+					<h2
+						style="line-height:100%; vertical-align:middle"
+						use:fit={{ min_size: 12, max_size: 32 }}
+						class="frontText"
+					>
+						<slot name="frontContent" />
+					</h2>
 				</div>
 			</div>
 		{:else}
 			<div class="back" transition:flip>
 				<div style={parent_style}>
-				<h2 style = "line-height:100%; vertical-align:middle" use:fit={{min_size: 12, max_size:32 }} class="backText">
-					<slot name="backContent"/>
-				</h2>
+					<h2
+						style="line-height:100%; vertical-align:middle"
+						use:fit={{ min_size: 12, max_size: 32 }}
+						class="backText"
+					>
+						<slot name="backContent" />
+					</h2>
 				</div>
 			</div>
 		{/if}
@@ -62,12 +88,11 @@
 	}
 	.frontText {
 		color: black;
-		margin:5%;
+		margin: 5%;
 	}
 	.card-container {
 		width: 100%;
 		height: 100%;
-
 	}
 
 	.card {
@@ -75,8 +100,8 @@
 		height: 100%;
 	}
 
-
-	.front, .back {
+	.front,
+	.back {
 		position: absolute;
 		width: 100%;
 		height: 100%;
@@ -84,11 +109,12 @@
 		backface-visibility: hidden;
 		box-shadow: -1px 1px 3px black;
 	}
-	.front{
+	.front {
 		color: black;
 		border-color: darkgrey;
 		border-style: solid;
 		border-width: 5px;
+		background-color:grey;
 	}
 
 	.back {
