@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
+	import type { PageData } from './$types';
+	let showContact=false;
+	export let data: PageData;
 	import ContactModal from './contactModal.svelte';
 	import { Card } from '$lib/components/Card';
+	import { contactFormSchema } from '$lib/schemas';
     //background textured grey, blocks rotate through pride color borders
     const mainHeight = 200;
     const mainWidth = 300;
-	let showContact = false
     const portHeight = 150;
     const portWidth = 225;
 	let main_cards = [
@@ -116,8 +119,9 @@
 		</div>
 
 		{#if showContact}
-		<ContactModal { toggleContact } >
-			</ContactModal>
+
+		<ContactModal showContact data={data.contactModal} />
+
 		{/if}
 	</main>
 </body>

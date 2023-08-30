@@ -1,14 +1,16 @@
 <script lang="ts">
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import { superForm } from 'sveltekit-superforms/client';
+	import type { contactFormSchema } from '$lib/schemas';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { z } from 'zod';
-    import type { PageData } from './$types';
+
 	import { scale, fly } from 'svelte/transition';
-	export let toggleContact;
+	export let showContact:boolean;
 
 //	import { enhance } from '$app/forms';
 
-	export let data: PageData;
+	export let data: SuperValidated<contactFormSchema>;
 
 	let submission_status = '';
 
@@ -37,9 +39,9 @@
 <div class="modal">
     
 	<div class="contactCard" transition:fly={{ y: 40 }}>
-        <button style="float: right;" on:click={toggleContact}>X</button>
+        <button style="float: right;" on:click={()=>{showContact=false}}>X</button>
 		<h1>Contact Me</h1>
-		<p>Please fill out the form below to contact me.</p>
+		<p>How can I help?</p>
 
 		<div class="mx-auto max-w-xl">
             {#if $message}
@@ -53,7 +55,6 @@
                 console.log(response)
 			{:else if submission_status === 'success'}
 				<p>Submission success.</p>
-                console.log(response)
 
 				<button
 					data-sveltekit-reload
@@ -79,11 +80,6 @@
 						autocomplete="off"
 						class="input input-bordered w-full"
 					/>
-					<label for="name" class="label">
-						<span class="label-text-alt {$errors.name ? 'text-error' : 'text-base-100'}">
-							{$errors.name}
-						</span>
-					</label>
 
 					<label for="email" class="label">
 						<span class="label-text">Email</span>
@@ -98,11 +94,7 @@
 						autocomplete="off"
 						class="input input-bordered w-full"
 					/>
-					<label for="email" class="label">
-						<span class="label-text-alt {$errors.email ? 'text-error' : 'text-base-100'}">
-							{$errors.email}
-						</span>
-					</label>
+
 
 					<label for="message" class="label">
 						<span class="label-text">Message</span>
@@ -117,23 +109,19 @@
 						autocomplete="off"
 						class="textarea input-bordered w-full"
 					/>
-					<label for="message" class="label">
-						<span class="label-text-alt {$errors.message ? 'text-error' : 'text-base-100'}">
-							{$errors.message}
-						</span>
-					</label>
+
 
 					<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
 				</form>
 			{/if}
 
 
-			<h3>Superforms SuperDebug component</h3>
+			<h2>Superforms SuperDebug component</h2>
 
 			<SuperDebug data={$form} />
 		</div>
 	</div>
-    <div on:click={toggleContact} transition:scale={{start:1.2, duration:1000}} class=background />
+    <div on:click={()=>{showContact=false}} transition:scale={{start:1.2, duration:1000}} class=background />
 </div>
 
 
@@ -171,6 +159,7 @@
     }
     label {
         display:block;
+		color:darkcyan; 
     }
 
     p {

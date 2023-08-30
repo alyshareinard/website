@@ -4,15 +4,15 @@ import { message, superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod'
 
 const new_contact = z.object({
-	name: z.string(),
+	name: z.string().default('Hello world!'),
 	email: z.string().email(),
-	contactMessage: z.string(),
-})
+    contactMessage: z.string(),
+});
 
 export const load = async ({event}) => {
 	const form = await superValidate(event, new_contact)
 	return {
-		form,
+		form
 	}
 }
 
