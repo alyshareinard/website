@@ -105,7 +105,7 @@
 			/>
             <br>
 
-			<input type="submit" value="Submit to Airtable" class="btn btn-primary w-full mt-10" />
+			<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
         </div>
         </form>
 	{/if}
