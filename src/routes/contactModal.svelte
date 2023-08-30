@@ -49,10 +49,8 @@
             {/if}
 			{#if submission_status === 'submitting'}
 				<p>Submitting...</p>
-                console.log(response)
 			{:else if submission_status === 'failed'}
 				<p>Submission failed.</p>
-                console.log(response)
 			{:else if submission_status === 'success'}
 				<p>Submission success.</p>
 

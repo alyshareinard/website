@@ -1,31 +1,54 @@
+import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
-import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
+import { z } from 'zod';
 
-const schema = z.object({
-	name: z.string().default('Hello world!'),
-	email: z.string().email()
+const new_contact = z.object({
+	fname: z.string(),
+    lname: z.string(),
+	email: z.string().email(),
+	message: z.string()
 });
 
-export const load = async () => {
-	// Server API:
-	const form = await superValidate(schema);
-    console.log(form)
-	// Always return { form } in load and form actions.
-	return { form };
+export const load = async (event) => {
+	const form = await superValidate(event, new_contact);
+	return {
+		form
+	};
 };
 
 export const actions = {
-	default: async ({ request }) => {
-		const form = await superValidate(request, schema);
-		console.log('POST', form);
+	default: async (event) => {
+		const form = await superValidate(event, new_contact);
+		if (!form.valid) fail(400, { form });
 
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-        console.log("here we do something")
-		// TODO: Do something with the validated data
+		const { fname, lname, email, message } = form.data;
 
-		return { form };
+		const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
+
+		let data = {
+			records: [
+				{
+					fields: {
+						fname,
+                        lname,
+						email,
+						message
+					}
+				}
+			]
+		};
+		await fetch(AIRTABLE_URL, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${contactForm_api}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		});
+
+		return {
+			form
+		};
 	}
 };

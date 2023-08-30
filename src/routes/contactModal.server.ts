@@ -10,7 +10,10 @@ const new_contact = z.object({
 });
 
 export const load = async ({event}) => {
+	console.log("loading contact form")
+	console.log(event)
 	const form = await superValidate(event, new_contact)
+	console.log(form)
 	return {
 		form
 	}
