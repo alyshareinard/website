@@ -2,6 +2,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { z } from 'zod';
+    //adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let data;
 
@@ -31,7 +32,7 @@
 </script>
 
 <div>
-	<h2>Contact me</h2>
+	<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 
 	{#if submission_status === 'submitting'}
 		<p>Submitting...</p>
@@ -115,7 +116,7 @@
         display:grid;
         justify-content: start;
         gap: 2%;
-        margin: 10%;
+        margin: 4% 10% 10% 10%;
         grid-template-columns: auto auto auto;
         
     }

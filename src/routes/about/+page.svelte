@@ -8,10 +8,10 @@
 
 From solar physics to tech guru to app building, my career has spanned many areas, 
 but I've always gravitated towards solving puzzles and finding or creating better 
-ways to do things.  Being just older than the first "digital natives" I learned 
+ways to do things. Growing up in the years before smart phones and apps for everything, I learned 
 technology as it appeared, which often required writing code to make things work.  
 Because of that I'm very comfortable with how computers "think" and I'm able to 
-quickly work through and around typical problems and build the best tool to solve the issue.
+quickly work through and around typical issues and build the best tool to solve the problem at hand.
 
 <Accordion open={startOpen}>
     <span slot="head">

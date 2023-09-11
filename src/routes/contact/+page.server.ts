@@ -2,6 +2,7 @@ import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
+//watch https://levelup.video/tutorials/sveltekit/custom-form-handlers to improve in future
 
 const new_contact = z.object({
 	fname: z.string(),
