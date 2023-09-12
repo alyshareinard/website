@@ -6,7 +6,7 @@
 	import { Card } from '$lib/components/Card';
 	import { contactFormSchema } from '$lib/schemas';
 	import { LOGNAME } from '$env/static/private';
-    //background textured grey, blocks rotate through pride color borders
+    
     const mainHeight = 200;
     const mainWidth = 300;
     const portHeight = 150;
