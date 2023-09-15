@@ -66,6 +66,7 @@ export async function load(url) {
 /** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ cookies, request }) => {
+        console.log("IN LOAD ACTIONS")
 		const data = await request.formData();
 		const chosen_playlists = data.get('chosen_playlists');
 		const avoid_playlists = data.get('avoid_playlists');

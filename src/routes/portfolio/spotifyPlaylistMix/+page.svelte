@@ -110,9 +110,9 @@
 	<h4>Your new mix will be created in: <span style="color:var(--accent)">{todays_playlist_label}</span> </h4>
 
 
-	<button> Create Today's Mix! </button>
+	
     {/if}
-
+    <button> Create Today's Mix! </button>
 </form>
 
 {#if form?.message}
