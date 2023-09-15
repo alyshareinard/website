@@ -1,7 +1,4 @@
-<script>
-export let data;
-console.log(data.url)
-</script>
+
 <div class="flex justify-center items-center w-full h-screen">
     <div class="space-y-8">
         <div class="space-y-4">

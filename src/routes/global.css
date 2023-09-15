@@ -45,6 +45,18 @@ h2 {
     margin: 0.83em 0;
 }
 
+h3 {
+    color: var(--mainThemeLight);
+    font-size: 1.17em;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    margin: 1em 0;}
+h4 {
+    color: var(--mainThemeLight);
+}
+h5 {
+    color: var(--mainThemeLight);
+}
 p {
     color: white;
     font-size: 1.2em;
