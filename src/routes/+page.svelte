@@ -1,16 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	let showContact=false;
-	export let data: PageData;
-	import ContactModal from './contactModal.svelte';
 	import { Card } from '$lib/components/Card';
-	import { contactFormSchema } from '$lib/schemas';
-	import { LOGNAME } from '$env/static/private';
-    
-    const mainHeight = 200;
-    const mainWidth = 300;
-    const portHeight = 150;
-    const portWidth = 225;
+	import Carousel from 'svelte-carousel';
+	let showTestimonials=false
+	const mainHeight = 200;
+	const mainWidth = 300;
+	const portHeight = 150;
+	const portWidth = 225;
 	let main_cards = [
 		{
 			front: 'About',
@@ -61,16 +56,24 @@
 			link: '/portfolio/inventoryTracker'
 		}
 	];
-	function toggleContact() {
-		console.log("toggling contact modal")
-		showContact = !showContact;
-	}
 
+	const testimonials = [
+		{
+			text: "Alysha was able to use her initiative from day one to develop a plan to solve my client's process issue. On my Airtable project, Alysha delivered exceptional work in a short period of time. Her communication skills were excellent and she was very responsive throughout the project. When I went to Alysha with my workflow issue, she was able to suggest multiple ways to help me achieve my goal. As the project developed she was happy to take on additional changes and complete them in a timely fashion. Alysha was pleasant to work with and I would gladly hire her for future automation jobs. She would be an excellent choice for any automation projects you may have.",
+			author: 'Shane Price, Freelance Web Designer/Developer'
+		},
+		{
+			text: 'I have worked with Alysha on three different projects and each time she has met and exceeded expectations. Each project required ingenuity from Alysha and she provided different options and pros/cons for each in order to achieve our desired outcome. Alysha is both easy and enjoyable to work with and I will continue to hire her for future projects.',
+			author: 'Allison Pescatore, Marketing Manager, InvestEd'
+		},
+		{
+			text: '"Alysha helped us to improve the Airtable process. Recommend!" "Alysha was amazing to work with! Very knowledgable and professional." "Great Hubspot technician for a workflow. Knows the info, gets the job done. Highly recommend and will work with again."'
+		}
+	];
 
-//	main {
-//        background: linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.40)), url($lib/images/background-wall.jpg)
-//	}
-
+	//	main {
+	//        background: linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.40)), url($lib/images/background-wall.jpg)
+	//	}
 </script>
 
 <body>
@@ -88,21 +91,29 @@
 							</div>
 						</Card>
 					</a>
-				{:else}
-				<div class="divnopad" on:click={toggleContact} on:keypress={toggleContact}>
-					<Card cardHeight={mainHeight} cardWidth={mainWidth}>
-						<div slot="content">
-							{card['front']}
-						</div>
-						<div slot="backContent">
-							{card['back']}
-						</div>
-					</Card>
-					</div>
 				{/if}
+					
 			{/each}
 		</div>
-		<p>Do you have tasks you have to repeat over and over?  You've looked for a simple app, but none exist?  Here are some examples of apps I've created. </p>
+
+		<div>
+			{#if showTestimonials}
+		<Carousel autoplay autoplayDuration={2000}>
+			{#each testimonials as testimonial}
+				<div>
+					<h3>"{testimonial.text}"</h3>
+					{#if testimonial.author}
+						<h4>{testimonial.author}</h4>
+					{/if}
+				</div>
+			{/each}
+		</Carousel>
+		{/if}
+	</div>
+		<p>
+			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
+			exist? Here are some examples of apps I've created.
+		</p>
 
 		<h2 style="text-align: center;">Portfolio</h2>
 		<div class="portfolioNav">
@@ -120,16 +131,11 @@
 			{/each}
 		</div>
 
-		{#if showContact}
-
-		<ContactModal showContact data={data.contactModal} />
-
-		{/if}
 	</main>
 </body>
 
 <style>
-	main{
+	main {
 		justify-content: center;
 	}
 	body {
@@ -138,28 +144,24 @@
 	.mainNav {
 		display: grid;
 		justify-content: center;
-		justify-items:center;
-        grid-template-columns: repeat(auto-fit,minmax(320px, 1fr));
+		justify-items: center;
+		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 		grid-auto-rows: 225px;
-		padding:2%;
+		padding: 2%;
 		width: 96%;
 		height: 100%;
-	
-
 	}
 	.portfolioNav {
-		width:96%;
-        padding:2%;
+		width: 96%;
+		padding: 2%;
 		display: grid;
 		justify-content: center;
-		justify-items:center;
-        grid-template-columns: repeat(auto-fit,minmax(260px, 1fr));
-        grid-auto-rows: 175px;
-
+		justify-items: center;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		grid-auto-rows: 175px;
 	}
 	.divnopad {
 		padding: 0px;
-		margin:0;
+		margin: 0;
 	}
-	</style>
-
+</style>
