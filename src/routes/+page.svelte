@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Card } from '$lib/components/Card';
 	import Carousel from 'svelte-carousel';
-	let showTestimonials=false
+	let showTestimonials=true
 	const mainHeight = 200;
 	const mainWidth = 300;
 	const portHeight = 150;
@@ -39,7 +39,7 @@
 			front: 'CSV formatter',
 			back: 'Upload a CSV file, and then download it in a different format',
 			link: '/portfolio/csvUpdater'
-		},
+		}/*,
 		{
 			front: 'Allowance tracker',
 			back: 'An app that lets you and your child keep track of allowance, current balance and chores',
@@ -54,20 +54,20 @@
 			front: 'Inventory tracker',
 			back: 'Keep track of your inventory',
 			link: '/portfolio/inventoryTracker'
-		}
+		}*/
 	];
 
 	const testimonials = [
 		{
-			text: "Alysha was able to use her initiative from day one to develop a plan to solve my client's process issue. On my Airtable project, Alysha delivered exceptional work in a short period of time. Her communication skills were excellent and she was very responsive throughout the project. When I went to Alysha with my workflow issue, she was able to suggest multiple ways to help me achieve my goal. As the project developed she was happy to take on additional changes and complete them in a timely fashion. Alysha was pleasant to work with and I would gladly hire her for future automation jobs. She would be an excellent choice for any automation projects you may have.",
+			text: [" Alysha delivered exceptional work in a short period of time. Her communication skills were excellent and she was very responsive throughout the project. When I went to Alysha with my workflow issue, she was able to suggest multiple ways to help me achieve my goal. Alysha was pleasant to work with and I would gladly hire her for future automation jobs. She would be an excellent choice for any automation projects you may have."],
 			author: 'Shane Price, Freelance Web Designer/Developer'
 		},
 		{
-			text: 'I have worked with Alysha on three different projects and each time she has met and exceeded expectations. Each project required ingenuity from Alysha and she provided different options and pros/cons for each in order to achieve our desired outcome. Alysha is both easy and enjoyable to work with and I will continue to hire her for future projects.',
+			text: ['I have worked with Alysha on three different projects and each time she has met and exceeded expectations. Each project required ingenuity from Alysha and she provided different options and pros/cons for each in order to achieve our desired outcome. Alysha is both easy and enjoyable to work with and I will continue to hire her for future projects.'],
 			author: 'Allison Pescatore, Marketing Manager, InvestEd'
 		},
 		{
-			text: '"Alysha helped us to improve the Airtable process. Recommend!" "Alysha was amazing to work with! Very knowledgable and professional." "Great Hubspot technician for a workflow. Knows the info, gets the job done. Highly recommend and will work with again."'
+			text: ['Alysha helped us to improve the Airtable process. Recommend!', 'Alysha was amazing to work with! Very knowledgable and professional.','Great Hubspot technician for a workflow. Knows the info, gets the job done. Highly recommend and will work with again.']
 		}
 	];
 
@@ -95,13 +95,15 @@
 					
 			{/each}
 		</div>
-
 		<div>
+		<div class="testimonials">
 			{#if showTestimonials}
-		<Carousel autoplay autoplayDuration={2000}>
+		<Carousel autoplay autoplayDuration={4000}>
 			{#each testimonials as testimonial}
 				<div>
-					<h3>"{testimonial.text}"</h3>
+					{#each testimonial.text as t}
+					<h3>"{t}"</h3>
+					{/each}
 					{#if testimonial.author}
 						<h4>{testimonial.author}</h4>
 					{/if}
@@ -110,6 +112,7 @@
 		</Carousel>
 		{/if}
 	</div>
+</div>
 		<p>
 			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
 			exist? Here are some examples of apps I've created.
@@ -163,5 +166,19 @@
 	.divnopad {
 		padding: 0px;
 		margin: 0;
+	}
+	.testimonials {
+		display:block;
+		width:80%;
+		margin-left:10%;
+		justify-self:center;
+		align-self:center;
+		justify-content: center;
+		align-content: center; 
+		border-style:solid;
+		border-width:1px;
+		border-color:var(--accent);
+
+
 	}
 </style>
