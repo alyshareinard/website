@@ -67,7 +67,7 @@
 			author: 'Allison Pescatore, Marketing Manager, InvestEd'
 		},
 		{
-			text: ['Alysha helped us to improve the Airtable process. Recommend!', 'Alysha was amazing to work with! Very knowledgable and professional.','Great Hubspot technician for a workflow. Knows the info, gets the job done. Highly recommend and will work with again.']
+			text: ['Alysha helped us to improve the Airtable process. Recommend!', 'Alysha was amazing to work with! Very knowledgable and professional.','Knows the info, gets the job done. Highly recommend and will work with again.']
 		}
 	];
 
@@ -98,7 +98,7 @@
 		<div>
 		<div class="testimonials">
 			{#if showTestimonials}
-		<Carousel autoplay autoplayDuration={4000}>
+		<Carousel autoplay pauseOnFocus autoplayDuration={4000}>
 			{#each testimonials as testimonial}
 				<div>
 					{#each testimonial.text as t}
@@ -115,7 +115,7 @@
 </div>
 		<p>
 			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
-			exist? Here are some examples of apps I've created.
+			exist? Here are some examples of apps I've created. Tell me about your app idea and lets turn it into reality. 
 		</p>
 
 		<h2 style="text-align: center;">Portfolio</h2>
@@ -171,14 +171,9 @@
 		display:block;
 		width:80%;
 		margin-left:10%;
-		justify-self:center;
-		align-self:center;
-		justify-content: center;
-		align-content: center; 
 		border-style:solid;
-		border-width:1px;
+		border-width:2px;
 		border-color:var(--accent);
-
 
 	}
 </style>
