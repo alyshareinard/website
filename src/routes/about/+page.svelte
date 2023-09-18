@@ -27,8 +27,8 @@ quickly work through and around typical issues and build the best tool to solve 
 </h4>
 <h4>Techstack: Backendless, React, Javascript</h4>
 
-    <h3> Shipping info from API to retool</h3>
-    <h4>created middleware to update SKU.io (an inventory/purchase order tracker) with expected delivery 
+    <h3> Shipping info from tracking API to Purchase Order record</h3>
+    <h4>Created middleware to update SKU.io (an inventory/purchase order tracker) with expected delivery 
         date from the AfterShip API (a shipping tracker).  Using Retool, I created a webhook from SKU.io 
         to receive new purchase orders, add the associated tracking numbers to the AfterShip tracker.  Retool was also used to 
         catch the webhooks from AfterShip indicating a change in order status and update the SKU.io record.  Previously this client 
@@ -36,18 +36,34 @@ quickly work through and around typical issues and build the best tool to solve 
     </h4>
     <h4>Techstack: Retool, Javascript</h4>
     <h3>
-    Simple app to pull the email addresses of all hubspot contacts who work for companies associated with a given keyword -- I've created a toy version of this in my portfolio
+    Simple app to pull the email addresses of all Hubspot contacts who work for companies associated with a given keyword.
     </h3>
+    <h4>A client was providing direct marketing incentives to certain subgroups of clients.  
+        They used Hubspot to track target companies and their associated interests using keywords associated with the companies.  
+    However, to send out their marketing email they had to find all companies associated with a given keyword, and then, by hand 
+        go through each of the company employees and pull their email addresses.  I built a simple app that worked with the Hubspot 
+        API to complete this process automatically.  Using my app the client now just types in a keyword and is provided a list of all relevant contacts.  
+</h4>
     <h4>Techstack: Python, Streamlit</h4>
     <h3>
-    App to assign pages to reviewers
+        I worked with a company that relied on external reviews to evaluate products and provide feedback and ratings.  
+        The manual process involved manually tracking the list of products, how many reviews had been requested for each, 
+        as well as tracking the list of reviewers and which products they had already reviewed. Different products required a 
+        different number of reviews and the reviewers finished their work at different speeds.  This process became 
+        unworkable as the company grew.  I created an app using Airtable to track products, reviewers, and reviews. I build a front-end using 
+        Streamlit that allowed the reviewers to log in, see reviews they had done and request additional products to review.  
 </h3>
 <h4>Techstack: Airtable, Python, Streamlit</h4>
 <h3>
-    transition all data from pipedrive to hubspot, including meetings and notes -- working with Hubspot API
-    
+
+    Transition all data, including meetings and notes from various CRMs to Hubspot
 </h3>
-<h4>Techstack: Python, Streamlit</h4>
+<h4>
+    I've worked with several companies to transfer their data between different CRMs (Customer relations managers).  
+    Tools exist that allow contacts and companies to be transfered easily, but this doesn't include meetings, notes, and other data.  
+    I have several python scripts that allow me to pull all this data and import it into Hubspot.
+</h4>
+<h4>Techstack: Python, Hubspot API</h4>
 
 </div>
 </Accordion>
