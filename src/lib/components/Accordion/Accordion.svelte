@@ -1,6 +1,10 @@
 <script>
 	export let open = false;
-    let opener = "+";
+	let opener = "+";
+	if (open) {
+		opener = "-"
+	}
+    
 	import { slide } from 'svelte/transition';
 	function handleClick(){
         open = !open

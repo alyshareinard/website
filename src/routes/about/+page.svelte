@@ -19,15 +19,35 @@ quickly work through and around typical issues and build the best tool to solve 
 </span>
 <div slot="details">
 
-    Inventory and payroll system
-<br>
-    Shipping info from API to retool
-    <br>
+<h3>Inventory and payroll system</h3>
+<h4>Created a full inventory and payroll system for a door-to-door sales business that worked with their existing sales app.  
+    The new app allowed the company to easily record shipments from the supplier, products checked out to sales representatives, and items sold to customers.  
+    Items sold would then be added to the payroll system where base salary, commission and monthly bonuses would be calculated.  
+    Once approved the system would email the employee a PDF summarizing their payroll record.
+</h4>
+<h4>Techstack: Backendless, React, Javascript</h4>
+
+    <h3> Shipping info from API to retool</h3>
+    <h4>created middleware to update SKU.io (an inventory/purchase order tracker) with expected delivery 
+        date from the AfterShip API (a shipping tracker).  Using Retool, I created a webhook from SKU.io 
+        to receive new purchase orders, add the associated tracking numbers to the AfterShip tracker.  Retool was also used to 
+        catch the webhooks from AfterShip indicating a change in order status and update the SKU.io record.  Previously this client 
+        had been looking up each tracking number daily and updating the SKU.io record manually, so the new system saved a significant amount of time.
+    </h4>
+    <h4>Techstack: Retool, Javascript</h4>
+    <h3>
     Simple app to pull the email addresses of all hubspot contacts who work for companies associated with a given keyword -- I've created a toy version of this in my portfolio
-    <br>
+    </h3>
+    <h4>Techstack: Python, Streamlit</h4>
+    <h3>
     App to assign pages to reviewers
-    <br>
+</h3>
+<h4>Techstack: Airtable, Python, Streamlit</h4>
+<h3>
     transition all data from pipedrive to hubspot, including meetings and notes -- working with Hubspot API
+    
+</h3>
+<h4>Techstack: Python, Streamlit</h4>
 
 </div>
 </Accordion>
@@ -72,3 +92,13 @@ Hubspot
 </div>
 </Accordion>
 
+<style>
+    h3{
+        color:var(--mainTheme)
+    }
+    h4 {
+        color:var(--mainThemeDark)
+    }
+
+
+</style>
