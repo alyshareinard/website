@@ -46,13 +46,16 @@ quickly work through and around typical issues and build the best tool to solve 
 </h4>
     <h4>Techstack: Python, Streamlit</h4>
     <h3>
+        Automated system to manage product reviewers
+        </h3>
+    <h4>
         I worked with a company that relied on external reviews to evaluate products and provide feedback and ratings.  
         The manual process involved manually tracking the list of products, how many reviews had been requested for each, 
         as well as tracking the list of reviewers and which products they had already reviewed. Different products required a 
         different number of reviews and the reviewers finished their work at different speeds.  This process became 
         unworkable as the company grew.  I created an app using Airtable to track products, reviewers, and reviews. I build a front-end using 
         Streamlit that allowed the reviewers to log in, see reviews they had done and request additional products to review.  
-</h3>
+</h4>
 <h4>Techstack: Airtable, Python, Streamlit</h4>
 <h3>
 
