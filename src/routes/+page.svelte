@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { Card } from '$lib/components/Card';
 	import Carousel from 'svelte-carousel';
-	let showTestimonials=true
+	import { onMount } from 'svelte';
+	let showTestimonials=false
 	const mainHeight = 200;
 	const mainWidth = 300;
 	const portHeight = 150;
 	const portWidth = 225;
+	onMount(() => {
+		showTestimonials=true
+	})
 	let main_cards = [
 		{
 			front: 'About',
