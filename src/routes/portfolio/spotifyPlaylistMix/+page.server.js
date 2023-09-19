@@ -49,7 +49,9 @@ export async function load(url) {
             user_name = await get_profile(url.cookies, user_name)
             playlists = await get_playlists(url.cookies, playlists);
 		} catch (error) {
+            console.log("Error causing redirect: ", error);
 			throw redirect(303, url.url.href + '/login');
+            
 		}
 	} else {
 		console.log('no code, sending to login page');
