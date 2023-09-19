@@ -28,25 +28,19 @@ async function get_songs(url, token) {
 
 }
 
-export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
-	console.log('in create_playlist');
-
-	let tracks = [];
-	chosen = eval(chosen);
-	avoid = eval(avoid);
-	todays_playlist = eval(todays_playlist);
-	console.log('TODAYS_PLAYLIST ***************** : ', todays_playlist);
-
-	const access_token = cookies.get('access_token');
-	for (let i = 0; i < chosen.length; i++) {
-		const chosen_id = chosen[i].value;
+async function get_all_songs(playlist, access_token) {
+    console.log("Get all songs")
+    console.log(playlist)
+    let songs = []
+    for (let i = 0; i < playlist.length; i++) {
+		const playlist_id = playlist[i].value;
 		let more = true;
-		let url = `https://api.spotify.com/v1/playlists/${chosen_id}/tracks?limit=50&fields=items(track(uri))`;
+		let url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?limit=50&fields=items(track(uri))`;
 		while (more) {
 			let items = await get_songs(url, access_token);
-            console.log("recieved these items from get_songs: ", items)
+            console.log("received these items from get_songs: ", items)
 			for (let i = 0; i < items.length; i++) {
-				tracks.push(items[i].track.uri);
+				songs.push(items[i].track.uri);
 			}
 			if (items.next) {
 				url = items.next;
@@ -55,9 +49,34 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 			}
 		}
 	}
+    return(songs)
+}
+
+export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
+	console.log('in create_playlist');
+
+	let tracks = [];
+	chosen = eval(chosen);
+	avoid = eval(avoid);
+    console.log("CHOSEN ", chosen)
+    console.log("AVOID ", avoid)
+	todays_playlist = eval(todays_playlist);
+	console.log('TODAYS_PLAYLIST ***************** : ', todays_playlist);
+
+	const access_token = cookies.get('access_token');
+    let chosen_songs = await get_all_songs(chosen, access_token)
+    console.log("chosen_songs: ", chosen_songs)
+    let avoid_songs = await get_all_songs(avoid, access_token)
+    console.log("chosen_songs: ", chosen_songs)
+    console.log("before: ", chosen_songs)
+    tracks= chosen_songs.filter((item) => !avoid_songs.includes(item))
+    console.log("after: ", tracks)
 	//    console.log("These are the track URIS: ", tracks)
     console.log(todays_playlist)
 	const todays_id = todays_playlist[0].value;
+    console.log('number of tracks to select from: ', tracks.length);
+    console.log(tracks.length)
+    tracks = [...new Set(tracks)];
     console.log('number of tracks to select from: ', tracks.length);
 	tracks = shuffle(tracks);
 	tracks = tracks.slice(0, 100);
@@ -72,7 +91,7 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 	});
 	console.log("Response from add today's list ", response);
 
-	return tracks;
+	return("All done!  Go check out your playlist in Spotify.");
 }
 
 export async function get_playlists(cookies, playlists) {

@@ -8,7 +8,7 @@ const new_contact = z.object({
 	fname: z.string(),
     lname: z.string(),
 	email: z.string().email(),
-	message: z.string()
+	memo: z.string()
 });
 
 export const load = async (event) => {
@@ -23,7 +23,7 @@ export const actions = {
 		const form = await superValidate(event, new_contact);
 		if (!form.valid) fail(400, { form });
 
-		const { fname, lname, email, message } = form.data;
+		const { fname, lname, email, memo } = form.data;
 
 		const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
 
@@ -34,7 +34,7 @@ export const actions = {
 						fname,
                         lname,
 						email,
-						message
+						memo
 					}
 				}
 			]

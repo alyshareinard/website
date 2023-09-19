@@ -12,12 +12,12 @@
 		fname: z.string().min(2),
         lname: z.string().min(2),
 		email: z.string().email(),
-		message: z.string().min(10)
+		memo: z.string().min(10)
 	});
 
-	const { form, errors, enhance } = superForm(data.form, {
+	const { form, message, errors, enhance } = superForm(data.form, {
 		validators: new_contact,
-		resetForm: true,
+		resetForm: false,
 		onSubmit: (event) => {
 			submission_status = 'submitting';
 		},
@@ -38,7 +38,8 @@
 		<p>Submitting...</p>
 	{:else if submission_status === 'failed'}
 		<p>Submission failed.</p>
-	{:else if submission_status === 'success'}
+	{:else if message}
+	<div class="message">{$message}</div>
 		<p>Thanks.  I'll get back to you soon!</p>
 	{:else}
 
@@ -91,18 +92,18 @@
 			/>
 
 
-			<label for="message" class="label">
+			<label for="memo" class="label">
 				<span class="label-text">Message</span>
 			</label>
 			<textarea
-				bind:value={$form.message}
+				bind:value={$form.memo}
 				name="message"
 				aria-label="message"
 				placeholder="Message"
 				required
 				rows="3"
 				autocomplete="off"
-				class="textarea input-bordered w-full {$errors.message ? 'input-error' : ''}"
+				class="textarea input-bordered w-full {$errors.memo ? 'input-error' : ''}"
 			/>
             <br>
 
@@ -110,6 +111,8 @@
         </div>
         </form>
 	{/if}
+
+
 </div>
 <style>
     .myform{
