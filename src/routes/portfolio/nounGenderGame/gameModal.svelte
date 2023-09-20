@@ -399,7 +399,7 @@
 		height: 10%;
 		position: absolute;
 		top: 15%;
-		left: 42%;
+		left: 40%;
 	}
 	.flexWordContainer {
 		width: 29%;

@@ -39,7 +39,8 @@ export const actions = {
 				}
 			]
 		};
-		await fetch(AIRTABLE_URL, {
+		console.log("sending", data.records[0].fields)
+		const response = await fetch(AIRTABLE_URL, {
 			method: 'POST',
 			headers: {
 				Authorization: `Bearer ${contactForm_api}`,
@@ -47,6 +48,7 @@ export const actions = {
 			},
 			body: JSON.stringify(data)
 		});
+		console.log("response", response)
 
 		return {
 			form

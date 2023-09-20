@@ -1,13 +1,16 @@
+
 <footer>
+
     <a href="/contact">Contact</a>
-    <p>© 2023 Tech-Aly</p>
+    <p class=darkBackground>© 2023 Tech-Aly</p>
 </footer>
+ 
 
 <style>
 
     footer {
-        margin: 10px;
-        padding-bottom:20px;
+        margin-top: 10px;
+		padding: 0px 20px 0px 20px;
     }
     p {
         font-size: smaller;
@@ -15,5 +18,7 @@
         margin-right:10%;
         margin-top:-10px;
     }
+
+
 
 </style>

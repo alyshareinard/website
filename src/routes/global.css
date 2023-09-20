@@ -8,6 +8,7 @@
 	--sk-font: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	--sk-font-mono: 'Fira Mono', monospace;
+    --mainThemeOpacity:rgba(60,170,170,0.6)
 }
 
 html {
@@ -74,4 +75,15 @@ hr {
     
 }
 
+.divbox {
+    background-color: var(--accentLight);
+    padding: 1rem;
+    border-radius:10px;
+    color: var(--mainThemeDark);
+}
 
+.darkBackground {
+    color:var(--accentLight);
+    padding-left:2%;
+    padding-right:2%;
+}

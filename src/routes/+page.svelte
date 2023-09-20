@@ -117,7 +117,7 @@
 		{/if}
 	</div>
 </div>
-		<p>
+		<p class="darkBackground">
 			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
 			exist? Here are some simple examples of apps I've created. See <a href ="/about">About me</a> for descriptions of more complex apps I've developed for customers. Tell me about your app idea and lets turn it into reality. 
 		</p>

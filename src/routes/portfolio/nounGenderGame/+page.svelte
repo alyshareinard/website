@@ -12,7 +12,7 @@
 
 <h2>Nouns have gender?!</h2>
 <div class=container>
-<p style="width:75%">
+<p class=darkBackground style="width:75%">
     As a native English speaker, learning French as an adult has not been easy -- One thing I find particularly difficult is noun gender.  
     A table has a gender? Un chat (a cat) is masculine, but une horloge (a clock) is feminine?  What madness is this?  
     A good way to remember the genders of nouns is to hyper-exaggerate the gender -- imagine a french cat with a mustache every time you think of a cat and think of every clock as a pink princess clock.  
@@ -25,7 +25,7 @@
 
     <img class=pinkborder width=100% src={pinkClock} alt="pink clock"/>
 
-    <p style="width:80%">What I needed was a game to help me drill noun genders, but I couldn't find one. 
+    <p class=darkBackground style="width:80%">What I needed was a game to help me drill noun genders, but I couldn't find one. 
 <br>
 <br>
         So I created this game with pink and blue boxes for the "boy" nouns and the "girl" nouns.  

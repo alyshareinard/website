@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { LOGNAME } from '$env/static/private';
 	import { superForm } from 'sveltekit-superforms/client';
 	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
 	import { z } from 'zod';
@@ -24,26 +25,28 @@
 		onUpdated: ({ form }) => {
 			if (form.valid) {
 				submission_status = 'success';
+			} else {
+				submission_status = form.message;
+
 			}
-			submission_status = '';
+
+			
 		},
 		delayMs: 500
 	});
 </script>
 
-<div>
+<div class="contactbox divbox">
 	<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 
 	{#if submission_status === 'submitting'}
-		<p>Submitting...</p>
+		<h3>Submitting...</h3>
 	{:else if submission_status === 'failed'}
-		<p>Submission failed.</p>
-	{:else if message}
-	<div class="message">{$message}</div>
-		<p>Thanks.  I'll get back to you soon!</p>
+		<h3>Submission failed.</h3>
+	{:else if submission_status === 'success'}
+		<h3>Thanks for your message. I'll get back to you soon!</h3>
 	{:else}
-
-    
+	
 		<form method="POST" use:enhance>
             <div class="myform">
 			<label for="fname" class="label-short">
@@ -93,21 +96,22 @@
 
 
 			<label for="memo" class="label">
-				<span class="label-text">Message</span>
+				<span class="label-text">How can I help?</span>
 			</label>
 			<textarea
 				bind:value={$form.memo}
-				name="message"
-				aria-label="message"
+				name="memo"
+				aria-label="How can I help?"
 				placeholder="Message"
 				required
 				rows="3"
 				autocomplete="off"
 				class="textarea input-bordered w-full {$errors.memo ? 'input-error' : ''}"
 			/>
-            <br>
-
+            
+			<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
 			<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
+		</div>
         </div>
         </form>
 	{/if}
@@ -118,9 +122,9 @@
     .myform{
         display:grid;
         justify-content: start;
-        gap: 2%;
+        gap: 5%;
         margin: 4% 10% 10% 10%;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: 1fr 3fr;
         
     }
 
@@ -133,4 +137,10 @@
     .label-text {
         color: var(--mainThemeLight)
     }
+	.contactbox {
+		width:fit-content;
+        height:fit-content;
+		resize:unset;
+	}
+
 </style>
