@@ -36,6 +36,7 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@rollup/plugin-terser": "^0.4.3",
 		"cookie": "^0.5.0",
+		"d3-interpolate": "^3.0.1",
 		"dotenv": "^16.3.1",
 		"papaparse": "^5.4.1",
 		"svelte-carousel": "^1.0.25",

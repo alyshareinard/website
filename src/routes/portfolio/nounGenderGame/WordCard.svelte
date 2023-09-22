@@ -1,12 +1,48 @@
 <script>
 	import { fit, parent_style } from '@leveluptuts/svelte-fit';
-	export let flipped = false;
-	export let background = 'lightgray';
-	export let reveal = false;
-	export let newBackgroundColor;
-	console.log("new background " + newBackgroundColor);
-	console.log(reveal)
+	import {interpolateRgb} from "d3-interpolate";
+	import { tweened } from 'svelte/motion';
 
+	
+	export let backgroundColor;
+	export let flipped = false;
+	/*
+	export let showGender = 'show';
+	let neutralColor = 'lightgray';
+	let genderedColor = '';
+$:	if (gender == 'F') {
+		genderedColor = 'pink'	
+	} else {
+		genderedColor = 'lightBlue'
+	}
+	let newColor='lightgray'
+	// we either hide the gender/color (in the question box), reveal it (in the fem/masc boxes) or show it (in the wrong answers box)
+	console.log("showGender is: ", showGender);
+	let startColor=''
+	if (showGender == 'yes') {
+		console.log("I should be showing the gender");
+		startColor=genderedColor
+		newColor=genderedColor
+
+	} else if (showGender == 'no') {
+		console.log("I should be hiding the gender");
+		startColor=neutralColor
+		newColor=neutralColor
+
+	} else {
+		console.log("I should be revealing the gender");
+		startColor=neutralColor
+		newColor=genderedColor
+	}
+	background=tweened(startColor,{delay: 0, duration: 100, interpolate: interpolateRgb});
+	$: background.set(
+		newColor,
+		{ duration: 500, delay: 0 },
+		);
+	console.log("background", background)
+	console.log("background length", background.length)
+	console.log("d3 ", interpolateRgb("lightgrey", "pink")(0.5))
+*/
 	function flip(node, { delay = 0, duration = 1000 }) {
 		console.log('in flip');
 		return {
@@ -19,28 +55,12 @@
 		};
 	}
 
-	function revealColor(node, { delay = 0, duration = 1000, newBackgroundColor = 'violet' }) {
-		console.log('in reveal color');
-		console.log(newBackgroundColor);
-		console.log(reveal);
-		if (reveal) {
-			return {
-				delay,
-				duration,
-				newBackgroundColor,
-				css: (t, u, c) => `
-				background-color: ${c};
-				transition: background-color ${u} ${t};
-				opacity: ${u};
-			`
-			};
-		}
-	}
 	function handleClick() {
 		if ($$slots.backContent) {
 			flipped = !flipped;
 		}
 	}
+
 </script>
 
 <div
@@ -53,17 +73,19 @@
 >
 	<div class="card">
 		{#if !flipped}
-			<div style:background-color={background} class="front" transition:flip>
-				<div style={parent_style}>
-					<h2
-						style="line-height:100%; vertical-align:middle"
-						use:fit={{ min_size: 12, max_size: 32 }}
-						class="frontText"
-					>
-						<slot name="frontContent" />
-					</h2>
+
+				<div style:background-color={backgroundColor} class="front">
+					<div style={parent_style}>
+						<h2
+							style="line-height:100%; vertical-align:middle"
+							use:fit={{ min_size: 12, max_size: 32 }}
+							class="frontText"
+						>
+							<slot name="frontContent" />
+						</h2>
+					</div>
 				</div>
-			</div>
+
 		{:else}
 			<div class="back" transition:flip>
 				<div style={parent_style}>

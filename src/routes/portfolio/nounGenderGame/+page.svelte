@@ -1,11 +1,26 @@
 <script>
     import GameModal from './gameModal.svelte';
     import pinkClock from './poppy-princess-clock.jpeg'
+    import Hints from './hints.svelte';
+    import HowtoPlay from './howtoPlay.svelte';
 
     let isGameOpen=false;
+    let showHints=false;
+    let showHowtoPlay=false;
 
     function toggleGame() {
         isGameOpen = !isGameOpen;
+    }
+    function toggleHints() {
+        console.log("toggling hints!!")
+        showHints = !showHints;
+    }
+    function toggleHowtoPlay() {
+        showHowtoPlay = !showHowtoPlay;
+    }
+    if (!isGameOpen) {
+        showHints=false;
+        showHowtoPlay=false;
     }
     
 </script>
@@ -38,9 +53,18 @@
 </div>
 
 {#if isGameOpen}
-    <GameModal { toggleGame } >
+    <GameModal { toggleGame } { toggleHints } { toggleHowtoPlay } >
         </GameModal>
 {/if}
+
+    {#if showHints}
+    <Hints { toggleHints }/>
+    {/if}
+
+    {#if showHowtoPlay}
+    <HowtoPlay { toggleHowtoPlay }/>
+    {/if}
+
 
 <style>
     button {

@@ -1,50 +1,54 @@
 <script>
 	import { confetti } from '@neoconfetti/svelte';
-	import { scale, fly, fade } from 'svelte/transition';
+	import { scale, fly, fade, blur, crossfade, slide } from 'svelte/transition';
 	import drag from '$lib/functions/drag.js';
 	import { tick } from 'svelte';
-	import { fit, parent_style } from '@leveluptuts/svelte-fit';
-	let unique = {};
-	//import {correctWords} from "./stores.js"
-	export let toggleGame;
-	let mascBox, femBox;
-	let percCorrect = 0;
-	let score = 0;
-
-	$: ansMasVis = false;
-	$: ansFemVis = false;
-	$: ansFemVisReveal = false;
-	let nextCardVis = true;
-	$: flippedCardFem = true;
-	$: flippedCardMasc = true;
-	$: femBackgroundColor = 'pink';
-	$: mascBackgroundColor = 'lightblue';
-	let answerCard;
-
+	import { writable } from 'svelte/store';
+	import {interpolateRgb} from "d3-interpolate";
+	import {flip} from 'svelte/animate';
 	import WordCard from './WordCard.svelte';
-
-	$: confetti_blue = false;
-	$: confetti_pink = false;
-	$: wrongAnswer = false;
-	let correctWords = [];
-	let wrongWords = [];
 	import { words } from '$lib/db/words';
 
-	$: if (correctWords.length > 0) {
-		score = correctWords.length;
-		percCorrect = Math.round(
-			(100 * correctWords.length) / (correctWords.length + wrongWords.length)
-		);
-	} else {
-		score = 0;
-		percCorrect = 0;
-	}
+	let hints = [
+		'Usually nouns ending "-e" or "-ion" are feminine, nouns ending in anything else are masculine.',
+		'Except that the endings "-age", "-ège" and "-isme" are usually masculine.', 
+		'And, of course, there are other exceptions.',
+	]
+
+	let unique = {};
+	export let toggleGame;
+	export let toggleHints;
+	export let toggleHowtoPlay;
+	let mascBox, femBox;
+	let correctWords = [];
+	let wrongWords = [];
+	let wrongWordsDisplay = [];
+	let scoreStore = writable(0);
+	let percCorrectStore = writable(0);
+	let nextCardVis = true;
+	$: backgroundColor = 'purple';
+	let wrongAnswer = false;
+
+	let ansMasVis = false;
+	let ansFemVis = false;
+	let makeConfetti = false;
+	let confettiColor = 'purple';
+
+
+	$: mybackground='lightgray';
+
+
+
+
 	let nextWord = randomWord();
 	let currentWord = nextWord;
 
 	function refresh() {
 		unique = {};
+		mybackground='lightgray'
 	}
+
+
 	function randomWord() {
 		let random = Math.floor(Math.random() * words.length);
 
@@ -54,14 +58,71 @@
 		return nextWord;
 	}
 
+	async function handleCorrect(backgroundColor) {
+		confettiColor = backgroundColor;
+		console.log('correct!');
+		wrongAnswer=false;
+
+		correctWords.push(currentWord);
+
+		
+		setTimeout(() => {
+			revealColor("lightgray", backgroundColor)
+		}, 100);
+		await tick()
+		setTimeout(() => {
+			makeConfetti = true;
+		}, 600);
+		nextWord = randomWord();
+	}
+
+	async function handleIncorrect(backgroundColor) {
+		console.log("handling incorrect")
+
+
+		setTimeout(() => {
+			revealColor("lightgray", backgroundColor)
+		}, 100);
+		await tick()
+		console.log('incorrect!');
+
+
+		console.log("wrong words", wrongWords);
+
+		await tick()
+		currentWord.id = wrongWords.length+1
+		wrongWords.push(currentWord);
+		wrongAnswer = true;
+
+		nextWord = randomWord();
+	}
+
+	async function revealColor(color1, color2){
+		console.log("revealing the color!")
+		mybackground = color1
+		let fraction = 0.0
+		for (let i=0; i<20; i++) {
+			setTimeout(() => {
+				fraction = i/20.
+
+				mybackground = interpolateRgb(color1, color2)(fraction);
+
+				
+			}, 300)
+			await tick()
+			
+		}
+		
+		
+	}
+
 	async function handleDragStop(e) {
 		console.log(e.detail.x);
 		console.log(e.detail.y);
 		let mascBound = mascBox.getBoundingClientRect();
 		let femBound = femBox.getBoundingClientRect();
-		flippedCardFem = true;
-		flippedCardMasc = true;
-		console.log(nextWord);
+
+		console.log("next word is ", nextWord);
 		if (
 			e.detail.x > femBound.left &&
 			e.detail.x < femBound.right &&
@@ -69,38 +130,22 @@
 			e.detail.y < femBound.bottom
 		) {
 			nextCardVis = false;
+			ansMasVis = false;
 			ansFemVis = true;
 			await tick();
-			setTimeout(() => {
-				ansFemVis = false;
-				ansFemVisReveal = true;
-			});
+
 			currentWord = nextWord;
 			if (currentWord.gender == 'F') {
-				console.log('correct!');
-
-				correctWords.push(currentWord);
-				nextWord = randomWord();
-				femBackgroundColor = 'pink';
-
-				setTimeout(() => {
-					flippedCardFem = false;
-					confetti_pink = true;
-				}, 600);
+				backgroundColor = 'pink';
+				await handleCorrect(backgroundColor);
 			} else {
-				wrongWords.push(currentWord);
-				if (wrongWords.length > 3) {
-					wrongWords.shift();
-				}
-				wrongAnswer = true;
-				console.log('incorrect!');
-				nextWord = randomWord();
-				femBackgroundColor = 'lightblue';
-
-				setTimeout(() => {
-					flippedCardFem = false;
-				}, 600);
+				backgroundColor = 'lightblue';
+				await handleIncorrect(backgroundColor);
 			}
+			setTimeout(() => {
+				ansFemVis = false;
+				wrongWordsDisplay=wrongWords.slice(-3,)
+			}, 500);
 		} else if (
 			e.detail.x > mascBound.left &&
 			e.detail.x < mascBound.right &&
@@ -108,74 +153,94 @@
 			e.detail.y < mascBound.bottom
 		) {
 			nextCardVis = false;
+			ansFemVis = false;
 			ansMasVis = true;
 			currentWord = nextWord;
 			if (currentWord.gender == 'M') {
-				console.log('correct!');
-				correctWords.push(currentWord);
-
-				nextWord = randomWord();
-				mascBackgroundColor = 'lightblue';
-				setTimeout(() => {
-					flippedCardMasc = false;
-					confetti_blue = true;
-				}, 600);
+				backgroundColor = 'lightblue';
+				await handleCorrect(backgroundColor);
 			} else {
-				wrongWords.push(currentWord);
-				if (wrongWords.length > 3) {
-					wrongWords.shift();
-				}
-				wrongAnswer = true;
-				console.log('incorrect!');
-				nextWord = randomWord();
-				mascBackgroundColor = 'pink';
-				setTimeout(() => {
-					flippedCardMasc = false;
-				}, 600);
+				backgroundColor = 'pink';
+				await handleIncorrect(backgroundColor);
 			}
+			setTimeout(() => {
+				ansMasVis = false;
+				wrongWordsDisplay=wrongWords.slice(-3,)
+			}, 500);
 		}
-		nextCardVis = true;
+		await tick()
+		
 		setTimeout(() => {
-			ansMasVis = false;
-			ansFemVis = false;
-			flippedCardMasc = true;
-			flippedCardFem = true;
+			nextCardVis = true;
 		}, 1200);
+		await tick()
 
-		refresh();
 
-		correctWords = correctWords;
-		wrongWords = wrongWords;
+		scoreStore.set(correctWords.length);
+		percCorrectStore.set(
+			Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
+		);
 		console.log(wrongWords);
+		refresh();
 	}
 
 	function resetConfetti() {
-		confetti_blue = false;
-		confetti_pink = false;
+		makeConfetti = false;
 	}
 
 	function resetWordList() {
 		correctWords = [];
 	}
+
+	function wrongInAnimation() {
+		const degrees=360
+		return {
+				duration: 200,
+				delay: 100,
+				
+				css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`
+			};
+	}
+	function outAnimation() {
+		if (wrongAnswer) {
+			console.log("it's wrong")
+			const degrees=360
+			return {
+				duration: 200,
+				delay: 100,
+				
+				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`
+			};
+		} else {
+			console.log("it's right")
+			return {
+				duration: 200,
+				delay:100,
+
+				css: (t) => `transform: fade(${t});`
+			};
+		}
+	}
+
 </script>
 
 <div class="modal">
 	<div class="modalEnvelope" transition:fly={{ y: 40 }}>
 		<nav>
 			<ul>
-				<li><button on:click={toggleGame}> How to play </button></li>
-				<li><button on:click={toggleGame}> Hints </button></li>
+				<li><button on:click={toggleHowtoPlay}> How to play </button></li>
+				<li><button on:click={toggleHints}> Hints </button></li>
 				<li><button on:click={toggleGame}> Close </button></li>
 			</ul>
 		</nav>
-		<div bind:this={mascBox} class="answerBoxMasc">
+		<div bind:this={mascBox} class="answerBoxMasc" >
 			<div class="helpWordsMasc" style="top:10px; transform:rotate(13deg)">Un</div>
 			<div class="helpWordsMasc" style="top:15px; left:-50px; transform:rotate(-26deg)">Le</div>
 			<div class="helpWordsMasc" style="bottom: 10px; left:45px; transform:rotate(41deg)">au</div>
 			<div class="helpWordsMasc" style="bottom:8px; left:-5px; transform:rotate(-40deg)">du</div>
 			{#if ansMasVis}
-				<div class="answerCardMasc" out:fade={{ delay: 2500, duration: 3000 }}>
-					<WordCard flipped={flippedCardMasc} background={mascBackgroundColor}>
+				<div class="answerCardMasc" out:outAnimation>
+					<WordCard backgroundColor={mybackground}>
 						<div slot="frontContent">
 							{currentWord.FR}
 						</div>
@@ -191,30 +256,10 @@
 			<div class="helpWordsFem" style="bottom: 14px; left:45px; transform:rotate(21deg)">à la</div>
 			<div class="helpWordsFem" style="bottom:8px; left:-5px; transform:rotate(-20deg)">de la</div>
 			{#if ansFemVis}
-				<div class="answerCardFem" out:blur={{ delay: 300 }}>
-					<WordCard background="grey">
+				<div class="answerCardFem" out:outAnimation>
+					<WordCard backgroundColor={mybackground}>
 						<div slot="frontContent">
 							{currentWord.FR}
-						</div>
-
-						<div slot="backContent">
-							{currentWord.EngWO}
-						</div>
-					</WordCard>
-				</div>
-			{:else if ansFemVisReveal}
-				<div
-					class="answerCardFem2"
-					in:blur={{ delay: 300 }}
-					out:fade={{ delay: 2500, duration: 3000 }}
-				>
-					<WordCard background={femBackgroundColor}>
-						<div slot="frontContent">
-							{currentWord.FR}
-						</div>
-
-						<div slot="backContent">
-							{currentWord.EngWO}
 						</div>
 					</WordCard>
 				</div>
@@ -223,17 +268,17 @@
 
 		<div class="scoreBox">
 			<h3>
-				Score: {score}
-				<br />
-				{percCorrect}% correct
+				Score: {$scoreStore}
+				</h3>
+				<h3>
+				{$percCorrectStore}% correct
 			</h3>
 		</div>
 
-		<div class="wrongWords">
-			{#each wrongWords as word}
-				{#if word.gender === 'M'}
-					<div class="flexWordContainer">
-						<WordCard background="lightblue">
+		<div class="wrongWordsBox">
+			{#each wrongWordsDisplay as word (word.id)}
+					<div class="flexWordContainer" animate:flip in:wrongInAnimation out:slide={{duration:200, axis:'-x'}}>
+						<WordCard backgroundColor = {(word.gender == 'M') ? 'lightblue' : 'pink'}>
 							<div slot="frontContent">
 								{word.FR}
 							</div>
@@ -243,37 +288,25 @@
 							</div>
 						</WordCard>
 					</div>
-				{:else}
-					<div class="flexWordContainer">
-						<WordCard background="pink">
-							<div slot="frontContent">
-								{word.FR}
-							</div>
-
-							<div slot="backContent">
-								{word.EngWO}
-							</div>
-						</WordCard>
-					</div>
-				{/if}
 			{/each}
 		</div>
-
-		{#key unique}
-			<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
-				<WordCard background="#d6ccd8">
-					<div slot="frontContent">
-						{nextWord.FrWO}
-					</div>
-					<div slot="backContent">
-						{nextWord.EngWO}
-					</div>
-				</WordCard>
-			</div>
-		{/key}
+		{#if nextCardVis}
+			{#key unique}
+				<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
+					<WordCard  backgroundColor='lightgray'>
+						<div slot="frontContent">
+							{nextWord.FrWO}
+						</div>
+						<div slot="backContent">
+							{nextWord.EngWO}
+						</div>
+					</WordCard>
+				</div>
+			{/key}
+		{/if}
 
 		<div class="centered">
-			{#if confetti_blue}
+			{#if makeConfetti}
 				<div
 					on:animationend={resetConfetti}
 					style="position: absolute; left: 50%; top: 30%"
@@ -281,20 +314,7 @@
 						force: 0.5,
 						stageWidth: window.innerWidth,
 						stageHeight: window.innerHeight,
-						colors: ['lightblue']
-					}}
-				/>
-			{/if}
-
-			{#if confetti_pink}
-				<div
-					on:animationend={resetConfetti}
-					style="position: absolute; left: 50%; top: 30%"
-					use:confetti={{
-						force: 0.5,
-						stageWidth: window.innerWidth,
-						stageHeight: window.innerHeight,
-						colors: ['pink']
+						colors: [confettiColor]
 					}}
 				/>
 			{/if}
@@ -353,13 +373,6 @@
 		left: 40px;
 	}
 
-	.answerCardFem2 {
-		position: absolute;
-		width: 40%;
-		height: 20%;
-		bottom: 60px;
-		left: 50px;
-	}
 	.answerCardMasc {
 		position: absolute;
 		width: 40%;
@@ -368,7 +381,7 @@
 		left: 40px;
 	}
 
-	.wrongWords {
+	.wrongWordsBox {
 		width: 60%;
 		height: 20%;
 		margin-left: 1%;
@@ -439,10 +452,14 @@
 	.scoreBox {
 		position: absolute;
 		top: 40%;
-		left: 40%;
-		width: 20%;
-		height: 20%;
-		background: violet;
+		left: 38%;
+		width: 24%;
+		height: fit-content;
+		background: rgb(180, 180, 180);
+	}
+	h3 {
+		margin:5%;
+		color:aliceblue;
 	}
 	nav {
 		display: flex;
