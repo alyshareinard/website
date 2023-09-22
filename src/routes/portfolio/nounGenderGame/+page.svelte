@@ -2,7 +2,7 @@
     import GameModal from './gameModal.svelte';
     import pinkClock from './poppy-princess-clock.jpeg'
     import Hints from './hints.svelte';
-    import HowtoPlay from './howtoPlay.svelte';
+    import HowtoPlay from './howToPlay.svelte';
 
     let isGameOpen=false;
     let showHints=false;
@@ -44,8 +44,7 @@
 <br>
 <br>
         So I created this game with pink and blue boxes for the "boy" nouns and the "girl" nouns.  
-    Drag the words to the correct box, and if you get it right, the word will appear in the bottom box, appropriately colored.  Once you get 15 words correct, you win! 
-    Wrong words will appear in the penalty box for two turns and then get put back into the queue.  
+    Just drag the words to the correct box and see how you do.  
 </p>
 </div>
 

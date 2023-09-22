@@ -4,21 +4,16 @@
 	import drag from '$lib/functions/drag.js';
 	import { tick } from 'svelte';
 	import { writable } from 'svelte/store';
-	import {interpolateRgb} from "d3-interpolate";
-	import {flip} from 'svelte/animate';
+	import { interpolateRgb } from 'd3-interpolate';
+	import { flip } from 'svelte/animate';
 	import WordCard from './WordCard.svelte';
 	import { words } from '$lib/db/words';
-
-	let hints = [
-		'Usually nouns ending "-e" or "-ion" are feminine, nouns ending in anything else are masculine.',
-		'Except that the endings "-age", "-ège" and "-isme" are usually masculine.', 
-		'And, of course, there are other exceptions.',
-	]
-
+	let numWords = 10;
 	let unique = {};
 	export let toggleGame;
 	export let toggleHints;
 	export let toggleHowtoPlay;
+	export let showSummary;
 	let mascBox, femBox;
 	let correctWords = [];
 	let wrongWords = [];
@@ -33,21 +28,14 @@
 	let ansFemVis = false;
 	let makeConfetti = false;
 	let confettiColor = 'purple';
-
-
-	$: mybackground='lightgray';
-
-
-
-
+	$: mybackground = 'lightgray';
 	let nextWord = randomWord();
 	let currentWord = nextWord;
 
 	function refresh() {
 		unique = {};
-		mybackground='lightgray'
+		mybackground = 'lightgray';
 	}
-
 
 	function randomWord() {
 		let random = Math.floor(Math.random() * words.length);
@@ -61,15 +49,14 @@
 	async function handleCorrect(backgroundColor) {
 		confettiColor = backgroundColor;
 		console.log('correct!');
-		wrongAnswer=false;
+		wrongAnswer = false;
 
 		correctWords.push(currentWord);
 
-		
 		setTimeout(() => {
-			revealColor("lightgray", backgroundColor)
+			revealColor('lightgray', backgroundColor);
 		}, 100);
-		await tick()
+		await tick();
 		setTimeout(() => {
 			makeConfetti = true;
 		}, 600);
@@ -77,43 +64,36 @@
 	}
 
 	async function handleIncorrect(backgroundColor) {
-		console.log("handling incorrect")
-
+		console.log('handling incorrect');
 
 		setTimeout(() => {
-			revealColor("lightgray", backgroundColor)
+			revealColor('lightgray', backgroundColor);
 		}, 100);
-		await tick()
+		await tick();
 		console.log('incorrect!');
 
+		console.log('wrong words', wrongWords);
 
-		console.log("wrong words", wrongWords);
-
-		await tick()
-		currentWord.id = wrongWords.length+1
+		await tick();
+		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
 		wrongAnswer = true;
 
 		nextWord = randomWord();
 	}
 
-	async function revealColor(color1, color2){
-		console.log("revealing the color!")
-		mybackground = color1
-		let fraction = 0.0
-		for (let i=0; i<20; i++) {
+	async function revealColor(color1, color2) {
+		console.log('revealing the color!');
+		mybackground = color1;
+		let fraction = 0.0;
+		for (let i = 0; i < 20; i++) {
 			setTimeout(() => {
-				fraction = i/20.
+				fraction = i / 20;
 
 				mybackground = interpolateRgb(color1, color2)(fraction);
-
-				
-			}, 300)
-			await tick()
-			
+			}, 300);
+			await tick();
 		}
-		
-		
 	}
 
 	async function handleDragStop(e) {
@@ -122,7 +102,7 @@
 		let mascBound = mascBox.getBoundingClientRect();
 		let femBound = femBox.getBoundingClientRect();
 
-		console.log("next word is ", nextWord);
+		console.log('next word is ', nextWord);
 		if (
 			e.detail.x > femBound.left &&
 			e.detail.x < femBound.right &&
@@ -144,7 +124,7 @@
 			}
 			setTimeout(() => {
 				ansFemVis = false;
-				wrongWordsDisplay=wrongWords.slice(-3,)
+				wrongWordsDisplay = wrongWords.slice(-3);
 			}, 500);
 		} else if (
 			e.detail.x > mascBound.left &&
@@ -165,23 +145,29 @@
 			}
 			setTimeout(() => {
 				ansMasVis = false;
-				wrongWordsDisplay=wrongWords.slice(-3,)
+				wrongWordsDisplay = wrongWords.slice(-3);
 			}, 500);
 		}
-		await tick()
-		
+		await tick();
+
 		setTimeout(() => {
 			nextCardVis = true;
 		}, 1200);
-		await tick()
-
+		await tick();
 
 		scoreStore.set(correctWords.length);
 		percCorrectStore.set(
 			Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
 		);
 		console.log(wrongWords);
-		refresh();
+		console.log(correctWords.length + wrongWords.length);
+		if (correctWords.length + wrongWords.length >= numWords) {
+			confettiColor = ['lightblue', 'pink'];
+			makeConfetti = true;
+			showSummary = true;
+		} else {
+			refresh();
+		}
 	}
 
 	function resetConfetti() {
@@ -193,35 +179,41 @@
 	}
 
 	function wrongInAnimation() {
-		const degrees=360
+		const degrees = 360;
 		return {
-				duration: 200,
-				delay: 100,
-				
-				css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`
-			};
+			duration: 200,
+			delay: 100,
+
+			css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`
+		};
 	}
 	function outAnimation() {
 		if (wrongAnswer) {
-			console.log("it's wrong")
-			const degrees=360
+			console.log("it's wrong");
+			const degrees = 360;
 			return {
 				duration: 200,
 				delay: 100,
-				
+
 				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`
 			};
 		} else {
-			console.log("it's right")
+			console.log("it's right");
 			return {
 				duration: 200,
-				delay:100,
+				delay: 100,
 
 				css: (t) => `transform: fade(${t});`
 			};
 		}
 	}
-
+	function resetGame() {
+		showSummary = false;
+		wrongWords = [];
+		correctWords = [];
+		scoreStore.set(0);
+		percCorrectStore.set(0);
+	}
 </script>
 
 <div class="modal">
@@ -233,52 +225,67 @@
 				<li><button on:click={toggleGame}> Close </button></li>
 			</ul>
 		</nav>
-		<div bind:this={mascBox} class="answerBoxMasc" >
-			<div class="helpWordsMasc" style="top:10px; transform:rotate(13deg)">Un</div>
-			<div class="helpWordsMasc" style="top:15px; left:-50px; transform:rotate(-26deg)">Le</div>
-			<div class="helpWordsMasc" style="bottom: 10px; left:45px; transform:rotate(41deg)">au</div>
-			<div class="helpWordsMasc" style="bottom:8px; left:-5px; transform:rotate(-40deg)">du</div>
-			{#if ansMasVis}
-				<div class="answerCardMasc" out:outAnimation>
-					<WordCard backgroundColor={mybackground}>
-						<div slot="frontContent">
-							{currentWord.FR}
-						</div>
+		{#if showSummary}
+			<h2>Good game!</h2>
+			<h4>You got {correctWords.length} out of {numWords}</h4>
+			<h4>{$percCorrectStore}% correct</h4>
+			<button on:click={resetGame}>Play again?</button>
+		{:else}
+			<div bind:this={mascBox} class="answerBoxMasc">
+				<div class="helpWordsMasc" style="top:10px; transform:rotate(13deg)">Un</div>
+				<div class="helpWordsMasc" style="top:15px; left:-50px; transform:rotate(-26deg)">Le</div>
+				<div class="helpWordsMasc" style="bottom: 10px; left:45px; transform:rotate(41deg)">au</div>
+				<div class="helpWordsMasc" style="bottom:8px; left:-5px; transform:rotate(-40deg)">du</div>
+				{#if ansMasVis}
+					<div class="answerCardMasc" out:outAnimation>
+						<WordCard backgroundColor={mybackground}>
+							<div slot="frontContent">
+								{currentWord.FR}
+							</div>
 
-						<div slot="backContent" />
-					</WordCard>
+							<div slot="backContent" />
+						</WordCard>
+					</div>
+				{/if}
+			</div>
+			<div bind:this={femBox} class="answerBoxFem">
+				<div class="helpWordsFem" style="top:10px; transform:rotate(-40deg)">Une</div>
+				<div class="helpWordsFem" style="top:15px; left:-50px; transform:rotate(26deg)">La</div>
+				<div class="helpWordsFem" style="bottom: 14px; left:45px; transform:rotate(21deg)">
+					à la
 				</div>
-			{/if}
-		</div>
-		<div bind:this={femBox} class="answerBoxFem">
-			<div class="helpWordsFem" style="top:10px; transform:rotate(-40deg)">Une</div>
-			<div class="helpWordsFem" style="top:15px; left:-50px; transform:rotate(26deg)">La</div>
-			<div class="helpWordsFem" style="bottom: 14px; left:45px; transform:rotate(21deg)">à la</div>
-			<div class="helpWordsFem" style="bottom:8px; left:-5px; transform:rotate(-20deg)">de la</div>
-			{#if ansFemVis}
-				<div class="answerCardFem" out:outAnimation>
-					<WordCard backgroundColor={mybackground}>
-						<div slot="frontContent">
-							{currentWord.FR}
-						</div>
-					</WordCard>
+				<div class="helpWordsFem" style="bottom:8px; left:-5px; transform:rotate(-20deg)">
+					de la
 				</div>
-			{/if}
-		</div>
+				{#if ansFemVis}
+					<div class="answerCardFem" out:outAnimation>
+						<WordCard backgroundColor={mybackground}>
+							<div slot="frontContent">
+								{currentWord.FR}
+							</div>
+						</WordCard>
+					</div>
+				{/if}
+			</div>
 
-		<div class="scoreBox">
-			<h3>
-				Score: {$scoreStore}
+			<div class="scoreBox">
+				<h3>
+					Score: {$scoreStore}
 				</h3>
 				<h3>
-				{$percCorrectStore}% correct
-			</h3>
-		</div>
+					{$percCorrectStore}% correct
+				</h3>
+			</div>
 
-		<div class="wrongWordsBox">
-			{#each wrongWordsDisplay as word (word.id)}
-					<div class="flexWordContainer" animate:flip in:wrongInAnimation out:slide={{duration:200, axis:'-x'}}>
-						<WordCard backgroundColor = {(word.gender == 'M') ? 'lightblue' : 'pink'}>
+			<div class="wrongWordsBox">
+				{#each wrongWordsDisplay as word (word.id)}
+					<div
+						class="flexWordContainer"
+						animate:flip
+						in:wrongInAnimation
+						out:slide={{ duration: 200, axis: '-x' }}
+					>
+						<WordCard backgroundColor={word.gender == 'M' ? 'lightblue' : 'pink'}>
 							<div slot="frontContent">
 								{word.FR}
 							</div>
@@ -288,50 +295,51 @@
 							</div>
 						</WordCard>
 					</div>
-			{/each}
-		</div>
-		{#if nextCardVis}
-			{#key unique}
-				<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
-					<WordCard  backgroundColor='lightgray'>
-						<div slot="frontContent">
-							{nextWord.FrWO}
-						</div>
-						<div slot="backContent">
-							{nextWord.EngWO}
-						</div>
-					</WordCard>
-				</div>
-			{/key}
+				{/each}
+			</div>
+			{#if nextCardVis}
+				{#key unique}
+					<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
+						<WordCard backgroundColor="lightgray">
+							<div slot="frontContent">
+								{nextWord.FrWO}
+							</div>
+							<div slot="backContent">
+								{nextWord.EngWO}
+							</div>
+						</WordCard>
+					</div>
+				{/key}
+			{/if}
+
+			<div class="centered">
+				{#if makeConfetti}
+					<div
+						on:animationend={resetConfetti}
+						style="position: absolute; left: 50%; top: 30%"
+						use:confetti={{
+							force: 0.5,
+							stageWidth: window.innerWidth,
+							stageHeight: window.innerHeight,
+							colors: [confettiColor]
+						}}
+					/>
+				{/if}
+
+				{#if correctWords.length === 15}
+					<div
+						on:animationstart={resetWordList}
+						style="position: absolute; left: 50%; top: 30%"
+						use:confetti={{
+							force: 0.9,
+							stageWidth: window.innerWidth,
+							stageHeight: window.innerHeight,
+							colors: ['pink', 'lightblue']
+						}}
+					/>
+				{/if}
+			</div>
 		{/if}
-
-		<div class="centered">
-			{#if makeConfetti}
-				<div
-					on:animationend={resetConfetti}
-					style="position: absolute; left: 50%; top: 30%"
-					use:confetti={{
-						force: 0.5,
-						stageWidth: window.innerWidth,
-						stageHeight: window.innerHeight,
-						colors: [confettiColor]
-					}}
-				/>
-			{/if}
-
-			{#if correctWords.length === 15}
-				<div
-					on:animationstart={resetWordList}
-					style="position: absolute; left: 50%; top: 30%"
-					use:confetti={{
-						force: 0.9,
-						stageWidth: window.innerWidth,
-						stageHeight: window.innerHeight,
-						colors: ['pink', 'lightblue']
-					}}
-				/>
-			{/if}
-		</div>
 	</div>
 	<div on:click={toggleGame} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
 </div>
@@ -458,8 +466,8 @@
 		background: rgb(180, 180, 180);
 	}
 	h3 {
-		margin:5%;
-		color:aliceblue;
+		margin: 5%;
+		color: aliceblue;
 	}
 	nav {
 		display: flex;

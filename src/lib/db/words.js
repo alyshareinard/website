@@ -33,26 +33,14 @@ export const words =
     {
       "FrWO": "monde",
       "EngWO": "world",
-      "FR": "un monde",
+      "FR": "le monde",
       "gender": "M"
-    },
-    {
-      "FrWO": "information",
-      "EngWO": "information",
-      "FR": "une information",
-      "gender": "F"
     },
     {
       "FrWO": "carte",
       "EngWO": "map",
       "FR": "une carte",
       "gender": "F"
-    },
-    {
-      "FrWO": "deux",
-      "EngWO": "two",
-      "FR": "un deux",
-      "gender": "M"
     },
     {
       "FrWO": "famille",
@@ -65,12 +53,6 @@ export const words =
       "EngWO": "government",
       "FR": "un gouvernement",
       "gender": "M"
-    },
-    {
-      "FrWO": "santé",
-      "EngWO": "health",
-      "FR": "une santé",
-      "gender": "F"
     },
     {
       "FrWO": "système",
@@ -87,7 +69,7 @@ export const words =
     {
       "FrWO": "viande",
       "EngWO": "meat",
-      "FR": "une viande",
+      "FR": "la viande",
       "gender": "F"
     },
     {
@@ -105,7 +87,7 @@ export const words =
     {
       "FrWO": "musique",
       "EngWO": "music",
-      "FR": "une musique",
+      "FR": "la musique",
       "gender": "F"
     },
     {
@@ -167,12 +149,6 @@ export const words =
       "EngWO": "literature",
       "FR": "une littérature",
       "gender": "F"
-    },
-    {
-      "FrWO": "problème",
-      "EngWO": "problem",
-      "FR": "un problème",
-      "gender": "M"
     },
     {
       "FrWO": "logiciel",
@@ -309,7 +285,7 @@ export const words =
     {
       "FrWO": "média",
       "EngWO": "media",
-      "FR": "un média",
+      "FR": "le média",
       "gender": "M"
     },
     {
@@ -391,12 +367,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "sécurité",
-      "EngWO": "security",
-      "FR": "une sécurité",
-      "gender": "F"
-    },
-    {
       "FrWO": "pays",
       "EngWO": "country",
       "FR": "un pays",
@@ -429,7 +399,7 @@ export const words =
     {
       "FrWO": "physique",
       "EngWO": "physics",
-      "FR": "une physique",
+      "FR": "de la physique",
       "gender": "F"
     },
     {
@@ -497,6 +467,12 @@ export const words =
       "EngWO": "camera",
       "FR": "un appareil photo",
       "gender": "M"
+    },
+    {
+      "FrWO": "caméra",
+      "EngWO": "camera",
+      "FR": "une caméra",
+      "gender": "F"
     },
     {
       "FrWO": "liberté",
@@ -937,12 +913,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "enseignement",
-      "EngWO": "teaching",
-      "FR": "un enseignement",
-      "gender": "M"
-    },
-    {
       "FrWO": "cellule",
       "EngWO": "cell",
       "FR": "une cellule",
@@ -1145,12 +1115,6 @@ export const words =
       "EngWO": "city",
       "FR": "une ville",
       "gender": "F"
-    },
-    {
-      "FrWO": "comté",
-      "EngWO": "county",
-      "FR": "un comté",
-      "gender": "M"
     },
     {
       "FrWO": "profondeur",
@@ -1737,7 +1701,7 @@ export const words =
     {
       "FrWO": "leadership",
       "EngWO": "leadership",
-      "FR": "un leadership",
+      "FR": "le leadership",
       "gender": "M"
     },
     {
@@ -1821,7 +1785,7 @@ export const words =
     {
       "FrWO": "retour d'information",
       "EngWO": "feedback",
-      "FR": "un retour d'information",
+      "FR": "le retour d'information",
       "gender": "M"
     },
     {
@@ -1829,12 +1793,6 @@ export const words =
       "EngWO": "guitar",
       "FR": "une guitare",
       "gender": "F"
-    },
-    {
-      "FrWO": "devoir à domicile",
-      "EngWO": "homework",
-      "FR": "un devoir à domicile",
-      "gender": "M"
     },
     {
       "FrWO": "dirigeant",
@@ -2013,7 +1971,7 @@ export const words =
     {
       "FrWO": "boue",
       "EngWO": "mud",
-      "FR": "une boue",
+      "FR": "la boue",
       "gender": "F"
     },
     {
@@ -2025,13 +1983,13 @@ export const words =
     {
       "FrWO": "poésie",
       "EngWO": "poetry",
-      "FR": "une poésie",
+      "FR": "la poésie",
       "gender": "F"
     },
     {
       "FrWO": "police",
       "EngWO": "police",
-      "FR": "une police",
+      "FR": "la police",
       "gender": "F"
     },
     {
@@ -2161,12 +2119,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "ballon de baseball",
-      "EngWO": "baseball",
-      "FR": "un ballon de baseball",
-      "gender": "M"
-    },
-    {
       "FrWO": "chapitre",
       "EngWO": "chapter",
       "FR": "un chapitre",
@@ -2193,7 +2145,7 @@ export const words =
     {
       "FrWO": "enthousiasme",
       "EngWO": "enthusiasm",
-      "FR": "un enthousiasme",
+      "FR": "son enthousiasme",
       "gender": "M"
     },
     {
@@ -2343,7 +2295,7 @@ export const words =
     {
       "FrWO": "thé",
       "EngWO": "tea",
-      "FR": "un thé",
+      "FR": "du thé",
       "gender": "M"
     },
     {
@@ -2379,7 +2331,7 @@ export const words =
     {
       "FrWO": "assistance",
       "EngWO": "assistance",
-      "FR": "une assistance",
+      "FR": "l'assistance importante",
       "gender": "F"
     },
     {
@@ -2468,7 +2420,7 @@ export const words =
     },
     {
       "FrWO": "épicerie",
-      "EngWO": "grocery",
+      "EngWO": "grocery store",
       "FR": "une épicerie",
       "gender": "F"
     },
@@ -2785,12 +2737,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "minuit",
-      "EngWO": "midnight",
-      "FR": "un minuit",
-      "gender": "M"
-    },
-    {
       "FrWO": "négociation",
       "EngWO": "negotiation",
       "FR": "une négociation",
@@ -2937,7 +2883,7 @@ export const words =
     {
       "FrWO": "argent",
       "EngWO": "money",
-      "FR": "un argent",
+      "FR": "son argent",
       "gender": "M"
     },
     {
@@ -2985,7 +2931,7 @@ export const words =
     {
       "FrWO": "air",
       "EngWO": "air",
-      "FR": "un air",
+      "FR": "l'air pur",
       "gender": "M"
     },
     {
@@ -3393,7 +3339,7 @@ export const words =
     {
       "FrWO": "sol",
       "EngWO": "soil",
-      "FR": "un sol",
+      "FR": "le sol",
       "gender": "M"
     },
     {
@@ -3405,7 +3351,7 @@ export const words =
     {
       "FrWO": "huile",
       "EngWO": "oil",
-      "FR": "une huile",
+      "FR": "l'huile noire",
       "gender": "F"
     },
     {
@@ -3505,12 +3451,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "mauvaise",
-      "EngWO": "bad",
-      "FR": "une mauvaise",
-      "gender": "F"
-    },
-    {
       "FrWO": "bateau",
       "EngWO": "boat",
       "FR": "un bateau",
@@ -3549,7 +3489,7 @@ export const words =
     {
       "FrWO": "liquide",
       "EngWO": "cash",
-      "FR": "un liquide",
+      "FR": "le liquide",
       "gender": "M"
     },
     {
@@ -3723,7 +3663,7 @@ export const words =
     {
       "FrWO": "sel",
       "EngWO": "salt",
-      "FR": "un sel",
+      "FR": "le sel",
       "gender": "M"
     },
     {
@@ -3765,7 +3705,7 @@ export const words =
     {
       "FrWO": "soleil",
       "EngWO": "sun",
-      "FR": "un soleil",
+      "FR": "le soleil",
       "gender": "M"
     },
     {
@@ -3789,7 +3729,7 @@ export const words =
     {
       "FrWO": "vitesse",
       "EngWO": "speed",
-      "FR": "une vitesse",
+      "FR": "la vitesse",
       "gender": "F"
     },
     {
@@ -3825,13 +3765,13 @@ export const words =
     {
       "FrWO": "intérieur",
       "EngWO": "inside",
-      "FR": "un intérieur",
+      "FR": "le grand intérieur",
       "gender": "M"
     },
     {
       "FrWO": "extérieur",
       "EngWO": "outside",
-      "FR": "un extérieur",
+      "FR": "le grand extérieur",
       "gender": "M"
     },
     {
@@ -3879,7 +3819,7 @@ export const words =
     {
       "FrWO": "stress",
       "EngWO": "stress",
-      "FR": "un stress",
+      "FR": "le stress",
       "gender": "M"
     },
     {
@@ -3945,7 +3885,7 @@ export const words =
     {
       "FrWO": "peinture",
       "EngWO": "paint",
-      "FR": "une peinture",
+      "FR": "la peinture",
       "gender": "F"
     },
     {
@@ -3997,12 +3937,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "support",
-      "EngWO": "medium",
-      "FR": "un support",
-      "gender": "M"
-    },
-    {
       "FrWO": "action",
       "EngWO": "share",
       "FR": "une action",
@@ -4018,12 +3952,6 @@ export const words =
       "FrWO": "peu",
       "EngWO": "bit",
       "FR": "un peu",
-      "gender": "M"
-    },
-    {
-      "FrWO": "noir",
-      "EngWO": "black",
-      "FR": "un noir",
       "gender": "M"
     },
     {
@@ -4161,7 +4089,7 @@ export const words =
     {
       "FrWO": "glace",
       "EngWO": "ice",
-      "FR": "une glace",
+      "FR": "la glace",
       "gender": "F"
     },
     {
@@ -4173,7 +4101,7 @@ export const words =
     {
       "FrWO": "nord",
       "EngWO": "north",
-      "FR": "un nord",
+      "FR": "le nord",
       "gender": "M"
     },
     {
@@ -4279,12 +4207,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "front",
-      "EngWO": "front",
-      "FR": "un front",
-      "gender": "M"
-    },
-    {
       "FrWO": "fonction",
       "EngWO": "function",
       "FR": "une fonction",
@@ -4299,7 +4221,7 @@ export const words =
     {
       "FrWO": "vivant",
       "EngWO": "living",
-      "FR": "un vivant",
+      "FR": "le vivant",
       "gender": "M"
     },
     {
@@ -4311,7 +4233,7 @@ export const words =
     {
       "FrWO": "plastique",
       "EngWO": "plastic",
-      "FR": "un plastique",
+      "FR": "le plastique",
       "gender": "M"
     },
     {
@@ -4383,7 +4305,7 @@ export const words =
     {
       "FrWO": "gaz",
       "EngWO": "gas",
-      "FR": "un gaz",
+      "FR": "le gaz",
       "gender": "M"
     },
     {
@@ -4401,7 +4323,7 @@ export const words =
     {
       "FrWO": "pluie",
       "EngWO": "rain",
-      "FR": "une pluie",
+      "FR": "la pluie",
       "gender": "F"
     },
     {
@@ -4419,7 +4341,7 @@ export const words =
     {
       "FrWO": "dommage",
       "EngWO": "damage",
-      "FR": "un dommage",
+      "FR": "le dommage",
       "gender": "M"
     },
     {
@@ -4443,7 +4365,7 @@ export const words =
     {
       "FrWO": "épargne",
       "EngWO": "savings",
-      "FR": "une épargne",
+      "FR": "la épargne",
       "gender": "F"
     },
     {
@@ -4539,13 +4461,13 @@ export const words =
     {
       "FrWO": "registre",
       "EngWO": "register",
-      "FR": "un registre",
+      "FR": "le registre",
       "gender": "M"
     },
     {
       "FrWO": "ciel",
       "EngWO": "sky",
-      "FR": "un ciel",
+      "FR": "le ciel",
       "gender": "M"
     },
     {
@@ -4568,8 +4490,8 @@ export const words =
     },
     {
       "FrWO": "problème",
-      "EngWO": "trouble",
-      "FR": "un problème",
+      "EngWO": "problem",
+      "FR": "le problème",
       "gender": "M"
     },
     {
@@ -4611,7 +4533,7 @@ export const words =
     {
       "FrWO": "preuve",
       "EngWO": "evidence",
-      "FR": "une preuve",
+      "FR": "la preuve",
       "gender": "F"
     },
     {
@@ -4631,12 +4553,6 @@ export const words =
       "EngWO": "lock",
       "FR": "une serrure",
       "gender": "F"
-    },
-    {
-      "FrWO": "maximum",
-      "EngWO": "maximum",
-      "FR": "un maximum",
-      "gender": "M"
     },
     {
       "FrWO": "roman",
@@ -4664,7 +4580,7 @@ export const words =
     },
     {
       "FrWO": "abondance",
-      "EngWO": "plenty",
+      "EngWO": "abundance",
       "FR": "une abondance",
       "gender": "F"
     },
@@ -4677,13 +4593,13 @@ export const words =
     {
       "FrWO": "peau",
       "EngWO": "skin",
-      "FR": "une peau",
+      "FR": "la peau",
       "gender": "F"
     },
     {
       "FrWO": "sorte",
       "EngWO": "sort",
-      "FR": "une sorte",
+      "FR": "la sorte",
       "gender": "F"
     },
     {
@@ -4706,7 +4622,7 @@ export const words =
     },
     {
       "FrWO": "report",
-      "EngWO": "carry",
+      "EngWO": "report",
       "FR": "un report",
       "gender": "M"
     },
@@ -4753,12 +4669,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "rouge",
-      "EngWO": "red",
-      "FR": "un rouge",
-      "gender": "M"
-    },
-    {
       "FrWO": "force",
       "EngWO": "strength",
       "FR": "une force",
@@ -4767,7 +4677,7 @@ export const words =
     {
       "FrWO": "trafic",
       "EngWO": "traffic",
-      "FR": "un trafic",
+      "FR": "le trafic",
       "gender": "M"
     },
     {
@@ -4796,7 +4706,7 @@ export const words =
     },
     {
       "FrWO": "équipement",
-      "EngWO": "gear",
+      "EngWO": "equipment",
       "FR": "un équipement",
       "gender": "M"
     },
@@ -4815,7 +4725,7 @@ export const words =
     {
       "FrWO": "terrain",
       "EngWO": "land",
-      "FR": "un terrain",
+      "FR": "le terrain",
       "gender": "M"
     },
     {
@@ -4846,12 +4756,6 @@ export const words =
       "FrWO": "principe",
       "EngWO": "principle",
       "FR": "un principe",
-      "gender": "M"
-    },
-    {
-      "FrWO": "relatif",
-      "EngWO": "relative",
-      "FR": "un relatif",
       "gender": "M"
     },
     {
@@ -4941,7 +4845,7 @@ export const words =
     {
       "FrWO": "progrès",
       "EngWO": "progress",
-      "FR": "un progrès",
+      "FR": "le progrès",
       "gender": "M"
     },
     {
@@ -4959,7 +4863,7 @@ export const words =
     {
       "FrWO": "sud",
       "EngWO": "south",
-      "FR": "un sud",
+      "FR": "le sud",
       "gender": "M"
     },
     {
@@ -4970,8 +4874,8 @@ export const words =
     },
     {
       "FrWO": "truc",
-      "EngWO": "stuff",
-      "FR": "un truc",
+      "EngWO": "thing",
+      "FR": "le truc",
       "gender": "M"
     },
     {
@@ -4993,15 +4897,9 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "bleu",
-      "EngWO": "blue",
-      "FR": "un bleu",
-      "gender": "M"
-    },
-    {
       "FrWO": "petit-déjeuner",
       "EngWO": "breakfast",
-      "FR": "un petit-déjeuner",
+      "FR": "le petit-déjeuner",
       "gender": "M"
     },
     {
@@ -5067,7 +4965,7 @@ export const words =
     {
       "FrWO": "financement",
       "EngWO": "finance",
-      "FR": "un financement",
+      "FR": "le financement",
       "gender": "M"
     },
     {
@@ -5091,13 +4989,13 @@ export const words =
     {
       "FrWO": "chance",
       "EngWO": "luck",
-      "FR": "une chance",
+      "FR": "le chance",
       "gender": "F"
     },
     {
       "FrWO": "lait",
       "EngWO": "milk",
-      "FR": "un lait",
+      "FR": "le lait",
       "gender": "M"
     },
     {
@@ -5109,7 +5007,7 @@ export const words =
     {
       "FrWO": "paix",
       "EngWO": "peace",
-      "FR": "une paix",
+      "FR": "la paix",
       "gender": "F"
     },
     {
@@ -5125,10 +5023,10 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "stable",
+      "FrWO": "écurie",
       "EngWO": "stable",
-      "FR": "un stable",
-      "gender": "M"
+      "FR": "une écurie",
+      "gender": "F"
     },
     {
       "FrWO": "tempête",
@@ -5212,12 +5110,6 @@ export const words =
       "FrWO": "détail",
       "EngWO": "detail",
       "FR": "un détail",
-      "gender": "M"
-    },
-    {
-      "FrWO": "or",
-      "EngWO": "gold",
-      "FR": "un or",
       "gender": "M"
     },
     {
@@ -5461,12 +5353,6 @@ export const words =
       "gender": "M"
     },
     {
-      "FrWO": "parking",
-      "EngWO": "parking",
-      "FR": "un parking",
-      "gender": "M"
-    },
-    {
       "FrWO": "partenaire",
       "EngWO": "partner",
       "FR": "un partenaire",
@@ -5481,13 +5367,13 @@ export const words =
     {
       "FrWO": "respect",
       "EngWO": "respect",
-      "FR": "un respect",
+      "FR": "le respect",
       "gender": "M"
     },
     {
       "FrWO": "riz",
       "EngWO": "rice",
-      "FR": "un riz",
+      "FR": "le riz",
       "gender": "M"
     },
     {
@@ -5505,7 +5391,7 @@ export const words =
     {
       "FrWO": "baignade",
       "EngWO": "swimming",
-      "FR": "une baignade",
+      "FR": "la natation",
       "gender": "F"
     },
     {
@@ -5516,14 +5402,14 @@ export const words =
     },
     {
       "FrWO": "conseil",
-      "EngWO": "tip",
+      "EngWO": "advice",
       "FR": "un conseil",
       "gender": "M"
     },
     {
       "FrWO": "hiver",
       "EngWO": "winter",
-      "FR": "un hiver",
+      "FR": "l'hiver froid",
       "gender": "M"
     },
     {
@@ -5775,7 +5661,7 @@ export const words =
     {
       "FrWO": "fumée",
       "EngWO": "smoke",
-      "FR": "une fumée",
+      "FR": "la fumée",
       "gender": "F"
     },
     {
@@ -5803,12 +5689,6 @@ export const words =
       "gender": "F"
     },
     {
-      "FrWO": "ouest",
-      "EngWO": "west",
-      "FR": "un ouest",
-      "gender": "M"
-    },
-    {
       "FrWO": "roue",
       "EngWO": "wheel",
       "FR": "une roue",
@@ -5817,7 +5697,7 @@ export const words =
     {
       "FrWO": "vin",
       "EngWO": "wine",
-      "FR": "un vin",
+      "FR": "le vin",
       "gender": "M"
     },
     {
@@ -5913,7 +5793,7 @@ export const words =
     {
       "FrWO": "poussière",
       "EngWO": "dust",
-      "FR": "une poussière",
+      "FR": "la poussière",
       "gender": "F"
     },
     {
@@ -5925,7 +5805,7 @@ export const words =
     {
       "FrWO": "sol",
       "EngWO": "floor",
-      "FR": "un sol",
+      "FR": "le sol",
       "gender": "M"
     },
     {
