@@ -1,9 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/fav_logo.png';
-	import github from '$lib/images/github-mark-white.svg';
-	import linkedin from '$lib/images/In-White-96.png';
-	import upwork from '$lib/images/upwork-round-white.png';
+
 </script>
 
 <header>
@@ -37,19 +35,11 @@
 			</svg>
 		</nav>
 	{:else}
-		<h1 class="hoverRainbow">Let's make your tech work for you</h1>
+		<h1 class="hoverRainbow">Tech-Aly</h1>
 	{/if}
 
 	<div class="rightCorner">
-		<a href="https://github.com/alyshareinard">
-			<img src={github} alt="GitHub" />
-		</a>
-		<a href="https://www.linkedin.com/in/alysha-reinard/">
-			<img src={linkedin} alt="LinkedIn" />
-		</a>
-		<a href="https://www.upwork.com/freelancers/~0195af2deb010d271c">
-			<img src={upwork} alt="Upwork" />
-		</a>
+
 	</div>
 </header>
 
