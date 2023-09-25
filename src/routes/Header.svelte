@@ -4,7 +4,6 @@
 	import github from '$lib/images/github-mark-white.svg';
 	import linkedin from '$lib/images/In-White-96.png';
 	import upwork from '$lib/images/upwork-round-white.png';
-	import { custom } from './custom.js';
 </script>
 
 <header>
@@ -38,7 +37,7 @@
 			</svg>
 		</nav>
 	{:else}
-		<h1 class="hoverRainbow">Tech-Aly</h1>
+		<h1 class="hoverRainbow">Let's make your tech work for you</h1>
 	{/if}
 
 	<div class="rightCorner">

@@ -35,7 +35,7 @@
 		delayMs: 500
 	});
 </script>
-
+<div class="container">
 <div class="contactbox divbox">
 	<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 
@@ -115,7 +115,7 @@
         </div>
         </form>
 	{/if}
-
+</div>
 
 </div>
 <style>
@@ -142,7 +142,12 @@
 		font-size: 0.8rem;
 		font: var(--sk-font-mono);
 	}
+	.container{
+		display:flex;
+		justify-content: center;
+	}
 	.contactbox {
+		margin:5%;
 		width:fit-content;
         height:fit-content;
 	}

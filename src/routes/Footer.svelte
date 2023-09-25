@@ -1,7 +1,25 @@
 
+<script>
+    import github from '$lib/images/github-mark-white.svg';
+	import linkedin from '$lib/images/In-White-96.png';
+	import upwork from '$lib/images/upwork-round-white.png';
+</script>
+
 <footer>
 
-    <a href="/contact">Contact</a>
+   
+    <div class="social">
+		<a href="https://github.com/alyshareinard">
+			<img src={github} alt="GitHub" />
+		</a>
+		<a href="https://www.linkedin.com/in/alysha-reinard/">
+			<img src={linkedin} alt="LinkedIn" />
+		</a>
+		<a href="https://www.upwork.com/freelancers/~0195af2deb010d271c">
+			<img src={upwork} alt="Upwork" />
+		</a>
+	</div>
+    <a href="/contact">Contact me</a>
     <p class=darkBackground>© 2023 Tech-Aly</p>
 </footer>
  
@@ -10,14 +28,33 @@
 
     footer {
         margin-top: 10px;
-		padding: 0px 20px 0px 20px;
+        margin-bottom:-10px;
+		padding: 10px 20px 1px 20px;
+        width:100%;
+        bottom:0;
+        background:var(--mainThemeOpacity);
+        margin-left:-10px;
+        display:flex;
+        flex-flow:row;
+        justify-content:space-between;
     }
     p {
         font-size: smaller;
-        text-align: right;
-        margin-right:10%;
-        margin-top:-10px;
     }
+    a {
+        align-self:center;
+    }
+    .social {
+        margin-top:10px;
+        width: 7em;
+		height: 3em;
+    }
+    .social img {
+        --height:25px;
+		width: var(--height);
+		height: var(--height);
+		object-fit: contain;
+	}
 
 
 

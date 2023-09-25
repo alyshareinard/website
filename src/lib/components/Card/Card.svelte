@@ -2,11 +2,13 @@
 	.backText {
 		color:darkcyan;
 		text-align: center;
+		padding:5px;
 		
 	}
 
 	.frontText {
 		text-align: center;	
+		padding:5px;
 	}
 
 	
@@ -74,7 +76,7 @@
 <div class="card-container" style="position:relative; width: {cardWidth}px; height:{cardHeight}px" tabindex="0" role="cell" on:mouseover={handleMouseOver} on:focus={handleMouseOver} on:mouseout={handleMouseOut} on:blur={handleMouseOut}>
 	<div class="card">
 		{#if !flipped}
-		<div class="side">
+		<div class="side" transition:flip>
 			<h2 class="frontText">
 				<slot name="content">
 					Unknown content
@@ -82,7 +84,7 @@
 			</h2>
 		</div>
 		{:else}
-		<div class="side back">
+		<div class="side back" transition:flip>
 			<h2 class="backText">
 				<slot name="backContent">
 					Unknown back content

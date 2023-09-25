@@ -6,26 +6,29 @@
 	let showTestimonials=false
 	const mainHeight = 200;
 	const mainWidth = 300;
-	const portHeight = 150;
-	const portWidth = 225;
 	onMount(() => {
 		showTestimonials=true
 	})
 	let main_cards = [
 		{
-			front: 'About',
-			back: 'Rocket scientist',
+			front: 'About me',
+			back: 'A little bit about me and my work',
 			link: '/about'
 		},
 		{
-			front: 'Offerings',
-			back: 'Cool stuff',
+			front: 'How can I help you?',
+			back: 'Web pages, webapps, integrations, and more',
 			link: '/offerings'
 		},
 		{
-			front: 'Contact',
-			back: 'Contact me',
+			front: 'Contact me',
+			back: 'I usually get back to you within 24 hours',
 			link: '/contact'
+		},
+		{
+			front: 'Porfolio',
+			back: 'Descriptions and examples of my work',
+			link: '/portfolio'
 		}
 	];
 
@@ -76,15 +79,13 @@
 		}
 	];
 
-	//	main {
-	//        background: linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.40)), url($lib/images/background-wall.jpg)
-	//	}
 </script>
 
-<body>
+
 	<main>
 		<div class="mainNav">
 			{#each main_cards as card}
+			<div class="card">
 				{#if card['link']}
 					<a href={card['link']}>
 						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
@@ -97,7 +98,7 @@
 						</Card>
 					</a>
 				{/if}
-					
+			</div>
 			{/each}
 		</div>
 		<div>
@@ -118,35 +119,45 @@
 		{/if}
 	</div>
 </div>
-		<p class="darkBackground">
+<div class="leftJustified">
+		<h3 class="darkBackground">
 			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
-			exist? Here are some simple examples of apps I've created. See <a href ="/portfolio">Portfolio</a> for descriptions of more complex apps I've developed for customers. Tell me about your app idea and lets turn it into reality. 
-		</p>
+			exist? Here are some simple examples of apps I've created. See <a href ="/portfolio">Portfolio</a> for descriptions of more complex apps I've developed for customers. 
+			</h3>
 
-		<h2 style="text-align: center;">Portfolio</h2>
-
+	</div>
 		<PorfolioCards/>
+		<div class="centered">
+		<h3 class="darkBackground">
+			Tell me about your app idea and lets turn it into reality. 
+		</h3>
+	</div>
 
 	</main>
-</body>
+
 
 <style>
 	main {
 		justify-content: center;
 	}
-	body {
-		background: transparent;
+	.card {
+		padding:10px 10px;
 	}
 	.mainNav {
-		display: grid;
-		justify-content: center;
-		justify-items: center;
-		grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-		grid-auto-rows: 225px;
+		display: flex;
+		flex-wrap:wrap;
+		justify-content: space-evenly;
 		padding: 2%;
-		width: 96%;
-		height: 100%;
+        width: 96%;
+        height: 100%;
 	}
+	.leftJustified {
+		text-align: left;
+		margin-left:10%;
+		margin-right:10%;
+	}
+	.centered {
+		text-align: center;}
 
 	.testimonials {
 		display:block;

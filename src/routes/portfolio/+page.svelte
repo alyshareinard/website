@@ -6,7 +6,7 @@
 </script>
 
 <h1>Portfolio</h1>
-
+<hr/>
 <h2>Selected client projects: </h2>
 <Accordion>
 <span slot="head">
@@ -100,8 +100,11 @@
     </div>
 </Accordion>
 <hr/>
-<h2>Apps you can explore </h2>
+<h2>Apps to explore: </h2>
 
 <PortfolioCards/>
 
 
+<style>
+
+</style>
