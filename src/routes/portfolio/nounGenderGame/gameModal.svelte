@@ -413,6 +413,7 @@
 		top: 0;
 		align-items: center;
 		justify-content: center;
+		overscroll-behavior: none;
 	}
 
 	.wordContainer {
