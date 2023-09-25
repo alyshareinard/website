@@ -2,6 +2,7 @@
 	import { Card } from '$lib/components/Card';
 	import Carousel from 'svelte-carousel';
 	import { onMount } from 'svelte';
+	import PorfolioCards from './portfolioCards.svelte';
 	let showTestimonials=false
 	const mainHeight = 200;
 	const mainWidth = 300;
@@ -119,24 +120,12 @@
 </div>
 		<p class="darkBackground">
 			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
-			exist? Here are some simple examples of apps I've created. See <a href ="/about">About me</a> for descriptions of more complex apps I've developed for customers. Tell me about your app idea and lets turn it into reality. 
+			exist? Here are some simple examples of apps I've created. See <a href ="/portfolio">Portfolio</a> for descriptions of more complex apps I've developed for customers. Tell me about your app idea and lets turn it into reality. 
 		</p>
 
 		<h2 style="text-align: center;">Portfolio</h2>
-		<div class="portfolioNav">
-			{#each portfolio_cards as card}
-				<a href={card['link']}>
-					<Card cardHeight={portHeight} cardWidth={portWidth}>
-						<div slot="content">
-							{card['front']}
-						</div>
-						<div slot="backContent">
-							{card['back']}
-						</div>
-					</Card>
-				</a>
-			{/each}
-		</div>
+
+		<PorfolioCards/>
 
 	</main>
 </body>
@@ -158,19 +147,7 @@
 		width: 96%;
 		height: 100%;
 	}
-	.portfolioNav {
-		width: 96%;
-		padding: 2%;
-		display: grid;
-		justify-content: center;
-		justify-items: center;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		grid-auto-rows: 175px;
-	}
-	.divnopad {
-		padding: 0px;
-		margin: 0;
-	}
+
 	.testimonials {
 		display:block;
 		width:80%;

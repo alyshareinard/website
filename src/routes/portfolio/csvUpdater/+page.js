@@ -1,4 +1,12 @@
 
+
+import Papa from 'papaparse';
+let allowedFileExtensions = ['csv'];
+const maxFileSize = 1000000;
+let uploader;
+//let prevDataToCSV;
+//let dataToCSV = [];
+
 const parse_birthday = (date) => {
     if (date.length>0){
     date = date.split('/')
@@ -35,3 +43,37 @@ const clean_phone= (number) => {
     console.log(new_number)
         return new_number
 };
+
+export async function load(event) {
+//        event.preventDefault();
+        const file = event.uploader.files[0];
+
+        const fileExtensionArray = file.type.split("/");
+        const fileExtension = fileExtensionArray[fileExtensionArray.length-1];
+
+        if (file.size > maxFileSize) {
+            console.log("Above the max file size threshold")
+            return;
+        }
+        if (fileExtension.includes('csv') && file.size < maxFileSize ) {
+
+            const csvData = Papa.parse(
+                file,
+                {
+                    complete: (results) => {
+                        onUpload ? onUpload(results.data) : console.log("Remember to define an onUpload function as props. Parsed CSV:", results.data);
+                    }
+                }
+            );
+        } else if (allowedFileExtensions.includes(fileExtension)) {
+            onUpload ? onUpload(file) : console.log("Remember to define an onUpload function as props. Plain file:", file);
+        } else {
+            console.log("Not an allowed file type");
+        }
+
+    return {
+        parse_birthday,
+        clean_status,
+        clean_phone
+    }
+}

@@ -58,10 +58,10 @@
 				type="text"
 				name="fname"
 				aria-label="first name"
-				placeholder="first name"
+				placeholder=""
 				required
 				autocomplete="off"
-				class="input input-bordered w-full {$errors.fname ? 'input-error' : ''}"
+				class="input input-bordered w-full {$errors.fname ? 'input-error' : ''}, label-text-default"
 			/>
 
 
@@ -74,10 +74,10 @@
 				type="text"
 				name="lname"
 				aria-label="last name"
-				placeholder="last name"
+				placeholder=""
 				required
 				autocomplete="off"
-				class="input input-bordered w-full {$errors.lname ? 'input-error' : ''}"
+				class="input input-bordered w-full {$errors.lname ? 'input-error' : ''}, label-text-default"
 			/>
 
 			<label for="email" class="label-short">
@@ -88,10 +88,10 @@
 				type="email"
 				name="email"
 				aria-label="email"
-				placeholder="bill@hotmail.com"
+				placeholder=""
 				required
 				autocomplete="off"
-				class="input input-bordered w-full {$errors.email ? 'input-error' : ''}"
+				class="input input-bordered w-full {$errors.email ? 'input-error' : ''}, label-text-default"
 			/>
 
 
@@ -102,11 +102,11 @@
 				bind:value={$form.memo}
 				name="memo"
 				aria-label="How can I help?"
-				placeholder="Message"
+				placeholder=""
 				required
 				rows="3"
 				autocomplete="off"
-				class="textarea input-bordered w-full {$errors.memo ? 'input-error' : ''}"
+				class="textarea input-bordered w-full {$errors.memo ? 'input-error' : ''}, label-text-default"
 			/>
             
 			<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
@@ -135,12 +135,16 @@
         grid-column:1
     }
     .label-text {
-        color: var(--mainThemeLight)
+        color: var(--mainThemeLight);
+		font: var(--sk-font);
     }
+	.label-text-default {
+		font-size: 0.8rem;
+		font: var(--sk-font-mono);
+	}
 	.contactbox {
 		width:fit-content;
         height:fit-content;
-		resize:unset;
 	}
 
 </style>
