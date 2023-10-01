@@ -299,7 +299,7 @@
 			</div>
 			{#if nextCardVis}
 				{#key unique}
-					<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
+					<div class="wordContainer" use:drag on:dragStop={handleDragStop} on:mouseup:{handleDragStop}>
 						<WordCard backgroundColor="lightgray">
 							<div slot="frontContent">
 								{nextWord.FrWO}
