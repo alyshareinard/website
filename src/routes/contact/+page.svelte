@@ -1,25 +1,26 @@
 <script lang="ts">
-	import { LOGNAME } from '$env/static/private';
 	import { superForm } from 'sveltekit-superforms/client';
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte';
+
 	import { z } from 'zod';
-    //adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
+	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let data;
-
+	let wasSubmitted=false;
 	let submission_status = '';
-
+	const serviceOptions = ["Webpage", "Webapp", "Integration"] as const;
 	const new_contact = z.object({
 		fname: z.string().min(2),
-        lname: z.string().min(2),
+		lname: z.string().min(2),
 		email: z.string().email(),
+		serviceTypes: z.enum(serviceOptions),
 		memo: z.string().min(10)
 	});
 
-	const { form, message, errors, enhance } = superForm(data.form, {
+	const { form, message, errors, constraints, enhance } = superForm(data.form, {
 		validators: new_contact,
 		resetForm: false,
 		onSubmit: (event) => {
+			wasSubmitted=true;
 			submission_status = 'submitting';
 		},
 		onUpdated: ({ form }) => {
@@ -27,129 +28,169 @@
 				submission_status = 'success';
 			} else {
 				submission_status = form.message;
-
+				console.log(form)
 			}
-
-			
 		},
 		delayMs: 500
 	});
 </script>
-<div class="container">
-<div class="contactbox divbox">
-	<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 
-	{#if submission_status === 'submitting'}
-		<h3>Submitting...</h3>
-	{:else if submission_status === 'failed'}
-		<h3>Submission failed.</h3>
-	{:else if submission_status === 'success'}
-		<h3>Thanks for your message. I'll get back to you soon!</h3>
-	{:else}
-	
-		<form method="POST" use:enhance>
-            <div class="myform">
-			<label for="fname" class="label-short">
-				<span class="label-text">First name</span>
-			</label>
-			<input
-				bind:value={$form.fname}
-				data-invalid={$errors.fname}
-				type="text"
-				name="fname"
-				aria-label="first name"
-				placeholder=""
-				required
-				autocomplete="off"
-				class="input input-bordered w-full {$errors.fname ? 'input-error' : ''}, label-text-default"
-			/>
+<h1>What can I do for you?</h1>
 
+<h2>Simple to complex webapps</h2>
+<p class="darkBackground">
+	From simple apps to keep track of your spending to complex inventory systems, let's talk about
+	what you need. For something customer facing I'll need a figma (or similar) design from you. I can
+	also work with a designer.
+</p>
+<hr />
+<h2>Webpages</h2>
+<p class="darkBackground"> 
+	From your design I can create your website with any custom or existing webapps you need. I created
+	everything on this webpage myself. Single page or multiple pages, etc. I code in
+	Svelte/Javascript, but can also use React.
+</p>
+<hr />
+<h2>Integrations between platforms</h2>
+<p class="darkBackground">
+	Do you have customer information in more than one platform (e.g. Mailchimp and Hubspot?) and you
+	need a way to keep the information in sync when changes are made? I can set up a integration for
+	you. Simple integrations can be done through Zapier (and I can show you some tricks) -- and if
+	your needs are more complex I can create a custom integration (assuming the platform has a public
+	API).
+</p>
 
-            <label for="lname" class="label-short">
-				<span class="label-text">Last name</span>
-			</label>
-			<input
-				bind:value={$form.lname}
-				data-invalid={$errors.lname}
-				type="text"
-				name="lname"
-				aria-label="last name"
-				placeholder=""
-				required
-				autocomplete="off"
-				class="input input-bordered w-full {$errors.lname ? 'input-error' : ''}, label-text-default"
-			/>
+<div id="contactForm" class="container">
+	<div class="contactbox divbox">
+		
+		
 
-			<label for="email" class="label-short">
-				<span class="label-text">Email</span>
-			</label>
-			<input
-				bind:value={$form.email}
-				type="email"
-				name="email"
-				aria-label="email"
-				placeholder=""
-				required
-				autocomplete="off"
-				class="input input-bordered w-full {$errors.email ? 'input-error' : ''}, label-text-default"
-			/>
+		{#if submission_status === 'submitting'}
+			<h3>Submitting...</h3>
+		{:else if submission_status === 'failed'}
+			<h3>Submission failed.</h3>
+		{:else if submission_status === 'success'}
+			<h3>Thanks for your message. I'll get back to you soon!</h3>
+		{:else}
+		<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
+			<form method="POST" use:enhance>
+				<div class="myform">
+					<label for="fname" class="label-short">
+						<span class="label-text">First name</span>
+					</label>
+					<input
+						bind:value={$form.fname}
+						data-invalid={$errors.fname}
+						type="text"
+						name="fname"
+						aria-label="first name"
+						placeholder=""
+						required
+						autocomplete="off"
+						{...$constraints.fname} />
+					{#if wasSubmitted && $errors.fname}<span class="invalid">{$errors.fname}</span>{/if}
 
 
-			<label for="memo" class="label">
-				<span class="label-text">How can I help?</span>
-			</label>
-			<textarea
-				bind:value={$form.memo}
-				name="memo"
-				aria-label="How can I help?"
-				placeholder=""
-				required
-				rows="3"
-				autocomplete="off"
-				class="textarea input-bordered w-full {$errors.memo ? 'input-error' : ''}, label-text-default"
-			/>
-            
-			<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
-			<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
-		</div>
-        </div>
-        </form>
-	{/if}
+					<label for="lname" class="label-short">
+						<span class="label-text">Last name</span>
+					</label>
+					<input
+						bind:value={$form.lname}
+						data-invalid={$errors.lname}
+						type="text"
+						name="lname"
+						aria-label="last name"
+						placeholder=""
+						required
+						autocomplete="off"
+						{...$constraints.lname} />
+					{#if wasSubmitted && $errors.lname}<span class="invalid">{$errors.lname}</span>{/if}
+
+					<label for="email" class="label-short">
+						<span class="label-text">Email</span>
+					</label>
+					<input
+						bind:value={$form.email}
+						type="email"
+						name="email"
+						aria-label="email"
+						aria-invalid={$errors.email ? 'true' : undefined}
+						placeholder=""
+						required
+						autocomplete="off"
+						{...$constraints.email} />
+						{#if wasSubmitted && $errors.email}<span class="invalid">{$errors.email}</span>{/if}
+
+					<label for="type" class="label-short">
+						<span class="label-text">Type of service</span>
+					</label>
+
+					<select name="serviceTypes" bind:value={$form.serviceTypes}>
+						{#each serviceOptions as serviceTypes, i}
+							<option value={serviceTypes}>{serviceTypes}</option>
+						{/each}
+					</select>
+
+
+					{#if $errors.serviceTypes}<p>{$errors.serviceTypes}</p>{/if}
+
+					<label for="memo" class="label">
+						<span class="label-text">How can I help?</span>
+					</label>
+					<textarea
+						bind:value={$form.memo}
+						name="memo"
+						aria-label="How can I help?"
+						placeholder=""
+						required
+						rows="3"
+						autocomplete="off"
+						{...$constraints.memo} />
+					{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
+
+					<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
+						<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
+					</div>
+				</div>
+			</form>
+		{/if}
+	</div>
 </div>
 
-</div>
 <style>
-    .myform{
-        display:grid;
-        justify-content: start;
-        gap: 5%;
-        margin: 4% 10% 10% 10%;
-        grid-template-columns: 1fr 3fr;
-        
-    }
+	.myform {
+		display: grid;
+		justify-content: start;
+		gap: 5%;
+		margin: 4% 10% 10% 10%;
+		grid-template-columns: 1fr 3fr;
+	}
 
-    .label{
-        grid-column:1
-    }
-    .label-short{
-        grid-column:1
-    }
-    .label-text {
-        color: var(--mainThemeLight);
+	.label {
+		grid-column: 1;
+	}
+	.label-short {
+		grid-column: 1;
+	}
+	.label-text {
+		color: var(--mainThemeLight);
 		font: var(--sk-font);
-    }
+	}
 	.label-text-default {
 		font-size: 0.8rem;
 		font: var(--sk-font-mono);
 	}
-	.container{
-		display:flex;
+	.container {
+		display: flex;
 		justify-content: center;
 	}
 	.contactbox {
-		margin:5%;
-		width:fit-content;
-        height:fit-content;
+		margin: 5%;
+		width: fit-content;
+		height: fit-content;
 	}
-
+	.invalid{
+		color:red;
+		font-size:0.6rem;
+	}
 </style>

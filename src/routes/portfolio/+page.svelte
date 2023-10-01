@@ -1,7 +1,6 @@
 
 <script>
     import { Accordion} from '$lib/components/Accordion';
-    import { Card } from '$lib/components/Card';
 	import PortfolioCards from '../portfolioCards.svelte';
 </script>
 
@@ -106,5 +105,9 @@
 
 
 <style>
-
+    h4 {
+        color:var(--mainThemeDark);
+        font-weight: 400;
+        
+    }
 </style>

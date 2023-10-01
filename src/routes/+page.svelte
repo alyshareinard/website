@@ -18,13 +18,13 @@
 		{
 			front: 'How can I help you?',
 			back: 'Web pages, webapps, integrations, and more',
-			link: '/offerings'
+			link: '/contact'
 		},
-		{
+/*		{
 			front: 'Contact me',
 			back: 'I usually get back to you within 24 hours',
 			link: '/contact'
-		},
+		},*/
 		{
 			front: 'Porfolio',
 			back: 'Descriptions and examples of my work',

@@ -72,7 +72,7 @@
 	<div style="margin-top:20px" />
 	<label for="todays_playlist">
 		<strong
-			>And which playlist will be used for this mix (any existing songs will be replaced)?</strong
+			>And which playlist will be used for this mix (existing songs will be replaced)?</strong
 		>
 	</label>
 	<MultiSelect

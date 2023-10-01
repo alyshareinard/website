@@ -24,7 +24,7 @@
 					<a href="/about">About</a>
 				</li>
 				<li aria-current={$page.url.pathname.startsWith('/offerings') ? 'page' : undefined}>
-					<a href="/offerings">Offerings</a>
+					<a href="/contact">Offerings</a>
 				</li>
 				<li aria-current={$page.url.pathname.startsWith('/portfolio') ? 'page' : undefined}>
 					<a href="/portfolio">Portfolio</a>
@@ -35,10 +35,16 @@
 			</svg>
 		</nav>
 	{:else}
-		<h1 class="hoverRainbow">Tech-Aly</h1>
+		<h1 class="hoverRainbow">Webapps, Websites, Integrations</h1>
 	{/if}
 
 	<div class="rightCorner">
+		<button>
+		login
+		</button>
+		<button>
+			En/Fr
+		</button>
 
 	</div>
 </header>
@@ -55,7 +61,7 @@
 		height: 6em;
 	}
 	.rightCorner {
-		width: 7em;
+		width: 10em;
 		height: 3em;
 		justify-content: right;
 	}

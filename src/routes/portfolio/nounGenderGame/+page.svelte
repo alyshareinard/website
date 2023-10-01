@@ -66,14 +66,7 @@
 
 
 <style>
-    button {
-        background: darkcyan;
-        color: white;
-        border: none;
-        padding: 10px;
-        border-radius: 5px;
-        margin: 10px;
-    }
+
     .center {
         display:flex;
     margin: auto;

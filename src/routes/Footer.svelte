@@ -19,7 +19,7 @@
 			<img src={upwork} alt="Upwork" />
 		</a>
 	</div>
-    <a href="/contact">Contact me</a>
+    <a href="/contact#contactForm">Contact me</a>
     <p class=darkBackground>© 2023 Tech-Aly</p>
 </footer>
  
