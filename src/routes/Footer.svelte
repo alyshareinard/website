@@ -22,7 +22,7 @@
     <a href="/contact#contactForm">Contact me</a>
     <p class=darkBackground>© 2023 Tech-Aly</p>
 </footer>
- 
+
 
 <style>
 
@@ -30,7 +30,7 @@
         margin-top: 10px;
         margin-bottom:-10px;
 		padding: 10px 20px 1px 20px;
-        width:100%;
+        width:98%;
         bottom:0;
         background:var(--mainThemeOpacity);
         margin-left:-10px;

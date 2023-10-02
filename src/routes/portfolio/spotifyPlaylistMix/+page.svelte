@@ -113,7 +113,7 @@
 		</div>
 
 		<h4>
-			Your new mix will be created in: <span style="color:var(--accent)"
+			Your new mix will be created in (ALL songs currently in this playlist will be removed): <span style="color:var(--accent)"
 				>{todays_playlist_label}</span
 			>
 		</h4>
