@@ -167,6 +167,12 @@
 	@media (max-width: 390px) {
 		nav ul {
 			flex-direction:column;
+			overflow: auto;
+			justify-content:start;
+		}
+		li[aria-current='page']::before {
+			width: 100%;
+			border-top: var(--size) solid transparent;
 		}
 
 	}
