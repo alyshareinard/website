@@ -33,38 +33,34 @@ body {
 main{
     flex-grow:1;
 }
-h1 {
-    color:var(--mainThemeLight);
-    font-size: 2em;
+h1, h2, h3, h4, h5,p {
     font-family: 'Rubik', sans-serif;
+    color: var(--mainThemeLight);
+}
+h1 {
+
+    font-size: 2em;
     font-weight: 600;
     margin: 0.67em 0;
 }
 
 h2 {
-    color: var(--mainThemeLight);
+    
     font-size: 1.5em;
-    font-family: 'Rubik', sans-serif;
     font-weight: 600;
     margin: 0.83em 0;
 }
 
 h3 {
-    color: var(--mainThemeLight);
+
     font-size: 1.17em;
-    font-family: 'Rubik', sans-serif;
+
     font-weight: 500;
     margin: 1em 0;}
-h4 {
-    color: var(--mainThemeLight);
-    font-family: 'Rubik', sans-serif;
-}
-h5 {
-    color: var(--mainThemeLight);
-    font-family: 'Rubik', sans-serif;
-}
+
+
 p {
-    color: white;
+
     font-size: 1.2em;
     font-weight: 400;
     margin: 1.33em 0;

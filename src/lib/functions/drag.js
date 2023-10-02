@@ -18,18 +18,22 @@ export default function drag(node, params) {
   })
 
   node.addEventListener("mousedown", handleMouseDown)
-  node.addEventListener("touchstart", handleMouseDown)
+  node.addEventListener("touchstart", handleTouchStart)
 
   function handleMouseDown(event) {
     x = event.clientX
     y = event.clientY
     window.addEventListener("mousemove", handleMouseMove)
-    window.addEventListener("touchstart", handleMouseMove)
     window.addEventListener("mouseup", handleMouseUp)
-    window.addEventListener("touchend", handleMouseUp)
-    window.addEventListener("touchmove", handleMouseMove)
+
   }
 
+  function handleTouchStart(event){
+    x = event.touches[0].clientX
+    y = event.touches[0].clientY
+    window.addEventListener("touchend", handleTouchUp)
+    window.addEventListener("touchmove", handleTouchMove)
+  }
   function handleMouseMove(event) {
     // Delta X = difference of where we clicked vs where we are currently
     const dx = event.clientX - x
@@ -44,7 +48,22 @@ export default function drag(node, params) {
     })
   }
 
+  function handleTouchMove(event) {
+    // Delta X = difference of where we clicked vs where we are currently
+    const dx = event.touches[0].clientX - x
+    const dy = event.touches[0].clientY - y
+    x = event.touches[0].clientX
+    y = event.touches[0].clientY
+    coordinates.update(($coords) => {
+      return {
+        x: $coords.x + dx,
+        y: $coords.y + dy,
+      }
+    })
+  }
+
   function handleMouseUp() {
+    console.log("Mouse up", x, y)
     // Fire up event
     node.dispatchEvent(
       new CustomEvent("dragStop", {
@@ -66,12 +85,38 @@ export default function drag(node, params) {
     // Remove event listers
     window.removeEventListener("mousemove", handleMouseMove)
     window.removeEventListener("mouseup", handleMouseUp)
-    window.removeEventListener("touchstart", handleMouseUp)
-    window.removeEventListener("touchend", handleMouseUp)
+  }
+
+  function handleTouchUp() {
+    console.log("Touch up", x, y)
+    // Fire up event
+    node.dispatchEvent(
+      new CustomEvent("dragStop", {
+        detail: {
+          x,
+          y,
+        },
+      })
+    )
+    // Reset values
+    x = 0
+    y = 0
+    coordinates.update(() => {
+      return {
+        x: 0,
+        y: 0,
+      }
+    })
+    // Remove event listers
+
+    window.removeEventListener("touchstart", handleTouchStart)
+    window.removeEventListener("touchmove", handleTouchMove)
+    window.removeEventListener("touchend", handleTouchUp)
   }
 
   return {
     destroy() {
+      node.removeEventListener('touchstart', () => console.log("clicks"))
       node.removeEventListener("mousedown", () => console.log("clicks"))
     },
   }

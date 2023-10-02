@@ -1,6 +1,6 @@
 <script>
 	import { confetti } from '@neoconfetti/svelte';
-	import { scale, fly, fade, blur, crossfade, slide } from 'svelte/transition';
+	import { scale, fly, slide } from 'svelte/transition';
 	import drag from '$lib/functions/drag.js';
 	import { tick } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -48,7 +48,6 @@
 
 	async function handleCorrect(backgroundColor) {
 		confettiColor = backgroundColor;
-		console.log('correct!');
 		wrongAnswer = false;
 
 		correctWords.push(currentWord);
@@ -64,7 +63,7 @@
 	}
 
 	async function handleIncorrect(backgroundColor) {
-		console.log('handling incorrect');
+
 
 		setTimeout(() => {
 			revealColor('lightgray', backgroundColor);
@@ -97,6 +96,8 @@
 	}
 
 	async function handleDragStop(e) {
+		console.log("Drag has stopped")
+		console.log(e.detail)
 		console.log(e.detail.x);
 		console.log(e.detail.y);
 		let mascBound = mascBox.getBoundingClientRect();
@@ -159,8 +160,7 @@
 		percCorrectStore.set(
 			Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
 		);
-		console.log(wrongWords);
-		console.log(correctWords.length + wrongWords.length);
+
 		if (correctWords.length + wrongWords.length >= numWords) {
 			confettiColor = ['lightblue', 'pink'];
 			makeConfetti = true;
@@ -189,7 +189,6 @@
 	}
 	function outAnimation() {
 		if (wrongAnswer) {
-			console.log("it's wrong");
 			const degrees = 360;
 			return {
 				duration: 200,
@@ -198,7 +197,6 @@
 				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`
 			};
 		} else {
-			console.log("it's right");
 			return {
 				duration: 200,
 				delay: 100,
@@ -226,7 +224,13 @@
 			</ul>
 		</nav>
 		{#if showSummary}
-			<h2>Good game!</h2>
+			{#if percCorrectStore>80}
+				<h2>Great job!</h2>
+			{:else if percCorrectStore>50}
+			<h2>Not bad!</h2>
+			{:else}
+			<h2>Better luck next time</h2>
+			{/if}
 			<h4>You got {correctWords.length} out of {numWords}</h4>
 			<h4>{$percCorrectStore}% correct</h4>
 			<button on:click={resetGame}>Play again?</button>
@@ -299,7 +303,7 @@
 			</div>
 			{#if nextCardVis}
 				{#key unique}
-					<div class="wordContainer" use:drag on:dragStop={handleDragStop} on:mouseup:{handleDragStop}>
+					<div class="wordContainer" use:drag on:dragStop={handleDragStop} >
 						<WordCard backgroundColor="lightgray">
 							<div slot="frontContent">
 								{nextWord.FrWO}
@@ -422,6 +426,7 @@
 		position: absolute;
 		top: 15%;
 		left: 40%;
+		
 	}
 	.flexWordContainer {
 		width: 29%;
@@ -439,6 +444,7 @@
 		border-radius: 10px;
 		height: 60%;
 		width: 60%;
+		overflow:hidden;
 	}
 	.background {
 		position: absolute;

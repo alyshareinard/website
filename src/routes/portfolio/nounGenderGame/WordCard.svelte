@@ -1,50 +1,10 @@
 <script>
 	import { fit, parent_style } from '@leveluptuts/svelte-fit';
-	import {interpolateRgb} from "d3-interpolate";
-	import { tweened } from 'svelte/motion';
 
-	
 	export let backgroundColor;
 	export let flipped = false;
-	/*
-	export let showGender = 'show';
-	let neutralColor = 'lightgray';
-	let genderedColor = '';
-$:	if (gender == 'F') {
-		genderedColor = 'pink'	
-	} else {
-		genderedColor = 'lightBlue'
-	}
-	let newColor='lightgray'
-	// we either hide the gender/color (in the question box), reveal it (in the fem/masc boxes) or show it (in the wrong answers box)
-	console.log("showGender is: ", showGender);
-	let startColor=''
-	if (showGender == 'yes') {
-		console.log("I should be showing the gender");
-		startColor=genderedColor
-		newColor=genderedColor
 
-	} else if (showGender == 'no') {
-		console.log("I should be hiding the gender");
-		startColor=neutralColor
-		newColor=neutralColor
-
-	} else {
-		console.log("I should be revealing the gender");
-		startColor=neutralColor
-		newColor=genderedColor
-	}
-	background=tweened(startColor,{delay: 0, duration: 100, interpolate: interpolateRgb});
-	$: background.set(
-		newColor,
-		{ duration: 500, delay: 0 },
-		);
-	console.log("background", background)
-	console.log("background length", background.length)
-	console.log("d3 ", interpolateRgb("lightgrey", "pink")(0.5))
-*/
 	function flip(node, { delay = 0, duration = 1000 }) {
-		console.log('in flip');
 		return {
 			delay,
 			duration,
@@ -69,7 +29,7 @@ $:	if (gender == 'F') {
 	role="cell"
 	on:click={handleClick}
 	on:keypress={handleClick}
-	on:touchstart={handleClick}
+	
 >
 	<div class="card">
 		{#if !flipped}
