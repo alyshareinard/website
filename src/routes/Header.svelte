@@ -39,19 +39,13 @@
 	{/if}
 
 	<div class="rightCorner">
-		<button>
-		login
-		</button>
-		<button>
-			En/Fr
-		</button>
-
+		<button> login </button>
+		<button> En/Fr </button>
 	</div>
 </header>
 
 <style>
 	header {
-
 		display: flex;
 		justify-content: space-between;
 	}
@@ -85,7 +79,6 @@
 		height: 2em;
 		object-fit: contain;
 	}
-
 
 	@keyframes textShine {
 		0% {
@@ -169,5 +162,12 @@
 
 	a:hover {
 		color: var(--accent);
+	}
+
+	@media (max-width: 390px) {
+		nav ul {
+			flex-direction:column;
+		}
+
 	}
 </style>
