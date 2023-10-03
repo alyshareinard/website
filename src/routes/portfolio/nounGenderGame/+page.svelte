@@ -77,11 +77,13 @@
 
     .blueborder {
         width:20%;
+        height:20%;
         border:5px solid lightblue;
     }
     .pinkborder{
         border:5px solid pink;
-        width:15%
+        width:15%;
+        height:15%;
     }
     .container {
         display:flex;

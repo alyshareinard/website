@@ -39,10 +39,7 @@
 
 	function randomWord() {
 		let random = Math.floor(Math.random() * words.length);
-
 		let nextWord = words[random];
-		console.log(words[random]);
-
 		return nextWord;
 	}
 
@@ -82,7 +79,6 @@
 	}
 
 	async function revealColor(color1, color2) {
-		console.log('revealing the color!');
 		mybackground = color1;
 		let fraction = 0.0;
 		for (let i = 0; i < 20; i++) {
@@ -96,14 +92,12 @@
 	}
 
 	async function handleDragStop(e) {
-		console.log("Drag has stopped")
 		console.log(e.detail)
 		console.log(e.detail.x);
 		console.log(e.detail.y);
 		let mascBound = mascBox.getBoundingClientRect();
 		let femBound = femBox.getBoundingClientRect();
 
-		console.log('next word is ', nextWord);
 		if (
 			e.detail.x > femBound.left &&
 			e.detail.x < femBound.right &&
@@ -157,9 +151,13 @@
 		await tick();
 
 		scoreStore.set(correctWords.length);
+		if ((correctWords.length + wrongWords.length>0)){
+
+
 		percCorrectStore.set(
 			Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
 		);
+	}
 
 		if (correctWords.length + wrongWords.length >= numWords) {
 			confettiColor = ['lightblue', 'pink'];
@@ -356,41 +354,36 @@
 		justify-content: center;
 		align-items: center;
 	}
-	.answerBoxMasc {
+
+	.answerBoxMasc, .answerBoxFem {
 		width: 30%;
 		height: 50%;
 		margin-left: 10px;
 		margin-right: 10px;
-		background: lightblue;
 		position: absolute;
-		top: 10%;
+		top: 15%;
+	}
+	.answerBoxMasc {
+		background: lightblue;
 	}
 
 	.answerBoxFem {
-		width: 30%;
-		height: 50%;
-		margin-left: 10px;
-		margin-right: 10px;
 		background: pink;
-		position: absolute;
 		right: 0;
-		top: 10%;
 	}
 
-	.answerCardFem {
+	.answerCardFem, .answerCardMasc {
 		position: absolute;
 		width: 40%;
 		height: 20%;
-		bottom: 60px;
 		left: 40px;
+	}
+	.answerCardFem {
+		bottom: 60px;
 	}
 
 	.answerCardMasc {
-		position: absolute;
-		width: 40%;
-		height: 20%;
 		bottom: 40px;
-		left: 40px;
 	}
 
 	.wrongWordsBox {
