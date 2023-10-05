@@ -1,7 +1,6 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/fav_logo.png';
-	import { language } from './stores.js';
 	import LoginModal from './LoginModal.svelte';
 	let showLogin=false;
 </script>
@@ -39,7 +38,7 @@
 
 	<div class="rightCorner">
 		<button on:click={() => (showLogin = true)}> login </button>
-		<button on:click={() => language.update()}> En/Fr </button>
+		<button on:click={() => console.log("clicked")}> En/Fr </button>
 	</div>
 
 	<LoginModal bind:showLogin>
