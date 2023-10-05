@@ -16,8 +16,8 @@
 			link: '/about'
 		},
 		{
-			front: 'How can I help you?',
-			back: 'Web pages, webapps, integrations, and more',
+			front: 'What I can do for you',
+			back: 'Web pages, apps, integrations, and more',
 			link: '/contact'
 		},
 /*		{
@@ -26,7 +26,7 @@
 			link: '/contact'
 		},*/
 		{
-			front: 'Porfolio',
+			front: 'Portfolio',
 			back: 'Descriptions and examples of my work',
 			link: '/portfolio'
 		}
@@ -106,7 +106,7 @@
 			{#if showTestimonials}
 		<Carousel autoplay pauseOnFocus autoplayDuration={4000}>
 			{#each testimonials as testimonial}
-				<div>
+				<div class="verticalCenter">
 					{#each testimonial.text as t}
 					<h3>"{t}"</h3>
 					{/each}
@@ -157,7 +157,13 @@
 		margin-right:10%;
 	}
 	.centered {
-		text-align: center;}
+		text-align: center;
+	}
+	.verticalCenter {
+
+		align-self:center;
+
+	}
 
 	.testimonials {
 		display:block;

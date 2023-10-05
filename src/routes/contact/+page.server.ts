@@ -4,7 +4,7 @@ import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 //watch https://levelup.video/tutorials/sveltekit/custom-form-handlers to improve in future
 
-const serviceOptions = ["Webpage", "Webapp", "Integration"] as const;
+const serviceOptions = ["Webpage", "App", "Integration"] as const;
 const new_contact = z.object({
 	fname: z.string(),
     lname: z.string(),

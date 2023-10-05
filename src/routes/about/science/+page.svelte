@@ -35,7 +35,7 @@ Worked with Michele Cash to develop an automated shock detection algorithm (Cash
     <li>
 Found evidence that subsurface changes in kinetic helicity precede flares by 2-3 days, providing a potential flare prediction technique (<a href = "https://iopscience.iop.org/article/10.1088/2041-8205/710/2/L121/pdf" >Reinard et al. 2010</a>). 
 </li><li>
-Lead a team in a thorough analysis of the spatial structure and evolution of a series of CMEs including the development of a new method to extract ion composition information from MHD models of CME eruptions, new techniques for mapping the spatial structure of CMEs in-situ including the non-magnetic cloud portion and a comparison of the predicted and observed two dimensional ionic composition structure (Reinard et al. 2010, Lynch et al. 2011, Reinard et al. 2012, Mulligan et al. 2013).    
+Led a team in a thorough analysis of the spatial structure and evolution of a series of CMEs including the development of a new method to extract ion composition information from MHD models of CME eruptions, new techniques for mapping the spatial structure of CMEs in-situ including the non-magnetic cloud portion and a comparison of the predicted and observed two dimensional ionic composition structure (Reinard et al. 2010, Lynch et al. 2011, Reinard et al. 2012, Mulligan et al. 2013).    
 </li><li>
 Worked with Josh Rigler to develop software based on the Bayesian method of machine learning to classify solar image data. The resulting maps will replace the hand-drawn maps currently in use at SWPC (Rigler et al. 2012).
 </li><li>
@@ -94,30 +94,42 @@ Calibrated photomultiplier tubes and repaired instrumentation related to Fabry-P
 <h3>
 Awards and professional activities
 </h3>
+<ul>
+    <li>
 •	CIRES Outstanding Performance Award in Service, 2015
+</li><li>
 •	Parker Lecture at the AAS/SPD meeting, 2010 “Using helioseismology to improve space weather predictions”
+</li><li>
 •	CIRES Outstanding Performance Award in Science and Engineering, 2010 
+</li><li>
 •	Member of AGU and SPD
-•	Member of the Boulder Solar Alliance (2009-present) and on the organizing committee for Boulder Solar Day (2010-present)
+</li><li>
+•	Member of the Boulder Solar Alliance (2009-2017) and on the organizing committee for Boulder Solar Day (2010-2017)
+</li><li>
 •	Member of the COSPAR Science Organizing Committee (2010)
+</li><li>
 •	Member of the SPD meeting local organizing committee (2009, 2016)
+</li><li>
 •	Member of the Whole Heliospheric Interval local organizing committee (2009)
-•	Member of the National Solar Observatory User’s Committee (2007-present)
+</li><li>
+•	Member of the National Solar Observatory User’s Committee (2007-2017)
+</li><li>
 •	NASA Graduate Student Researchers Program Fellowship, 1999-2002
+</li><li>
 •	NASA Space Grant Scholarship, 1993-1997
+</li><li>
 •	Acted as a mentor and supervisor for numerous undergraduate student researchers and two postdocs.
+</li><li>
 •	PI of 5 grants and CU-PI of 3 grants totaling more than $1M
+</li><li>
 •	Presented numerous talks and posters at national and international meetings
+</li><li>
 •	Involved in outreach activity including elementary school, middle school and college-level presentations. 
+</li>
+</ul>
 
+<a href = "science/pubs">   List of publications</a>
 
-<a href = "science/presentations">   presentations</a>
-
-and 
-
-<a href = "science/pubs">   publications</a>
-
-Maybe use slide to show presentations/publications?
 
 
 <style>

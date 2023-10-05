@@ -7,7 +7,7 @@
 	export let data;
 	let wasSubmitted=false;
 	let submission_status = '';
-	const serviceOptions = ["Webpage", "Webapp", "Integration"] as const;
+	const serviceOptions = ["Webpage", "App", "Integration"] as const;
 	const new_contact = z.object({
 		fname: z.string().min(2),
 		lname: z.string().min(2),
@@ -19,6 +19,8 @@
 	const { form, message, errors, constraints, enhance } = superForm(data.form, {
 		validators: new_contact,
 		resetForm: false,
+		taintedMessage: null,
+
 		onSubmit: (event) => {
 			wasSubmitted=true;
 			submission_status = 'submitting';
@@ -37,7 +39,7 @@
 
 <h1>What can I do for you?</h1>
 
-<h2>Simple to complex webapps</h2>
+<h2>Simple to complex web and desktop apps</h2>
 <p class="darkBackground">
 	From simple apps to keep track of your spending to complex inventory systems, let's talk about
 	what you need. For something customer facing I'll need a figma (or similar) design from you. I can
@@ -86,7 +88,7 @@
 						aria-label="first name"
 						placeholder=""
 						required
-						autocomplete="off"
+				
 						{...$constraints.fname} />
 					{#if wasSubmitted && $errors.fname}<span class="invalid">{$errors.fname}</span>{/if}
 

@@ -1,7 +1,9 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/fav_logo.png';
-
+	import { language } from './stores.js';
+	import LoginModal from './LoginModal.svelte';
+	let showLogin=false;
 </script>
 
 <header>
@@ -12,72 +14,69 @@
 	</div>
 
 	{#if $page.url.pathname != '/'}
-		<nav>
-			<svg viewBox="0 0 2 3" aria-hidden="true">
-				<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-			</svg>
-			<ul>
-				<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-					<a href="/">Home</a>
-				</li>
-				<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-					<a href="/about">About</a>
-				</li>
-				<li aria-current={$page.url.pathname.startsWith('/offerings') ? 'page' : undefined}>
-					<a href="/contact">Offerings</a>
-				</li>
-				<li aria-current={$page.url.pathname.startsWith('/portfolio') ? 'page' : undefined}>
-					<a href="/portfolio">Portfolio</a>
-				</li>
-			</ul>
-			<svg viewBox="0 0 2 3" aria-hidden="true">
-				<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-			</svg>
-		</nav>
+		<div class="navdiv">
+			<nav>
+				<ul>
+					<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
+						<a href="/">Home</a>
+					</li>
+					<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+						<a href="/about">About</a>
+					</li>
+					<li aria-current={$page.url.pathname.startsWith('/contact') ? 'page' : undefined}>
+						<a href="/contact">Offerings</a>
+					</li>
+					<li aria-current={$page.url.pathname.startsWith('/portfolio') ? 'page' : undefined}>
+						<a href="/portfolio">Portfolio</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
 	{:else}
-		<h1 class="hoverRainbow">Webapps, Websites, Integrations</h1>
+		<h1 class="hoverRainbow">Custom apps and integrations</h1>
+		<h1 class="shortTitle">Custom apps</h1>
 	{/if}
 
 	<div class="rightCorner">
-		<button> login </button>
-		<button> En/Fr </button>
+		<button on:click={() => (showLogin = true)}> login </button>
+		<button on:click={() => language.update()}> En/Fr </button>
 	</div>
+
+	<LoginModal bind:showLogin>
+		<h2>Login</h2>
+		<input>
+	</LoginModal>
 </header>
 
 <style>
 	header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	.corner {
-		width: 6em;
-		height: 6em;
+		float:left;
+		width: 5em;
 	}
 	.rightCorner {
-		width: 10em;
-		height: 3em;
-		justify-content: right;
-	}
-
-	.corner a {
+		float:right;
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
+		flex-wrap: wrap;
+
+	}
+	.shortTitle {
+		display: none;
 	}
 
 	.corner img {
-		width: 5em;
-		height: 5em;
+		width: 4em;
 		object-fit: contain;
 	}
-
-	.rightCorner img {
-		width: 2em;
-		height: 2em;
-		object-fit: contain;
+	button {
+		font-size:12px;
+		padding:5px;
+		margin:5px;
 	}
 
 	@keyframes textShine {
@@ -91,6 +90,8 @@
 
 	.hoverRainbow {
 		font-weight: 800;
+		justify-content: center;
+		text-align: center;
 	}
 	.hoverRainbow:hover {
 		background-image: linear-gradient(140deg, violet, indigo, blue, green, yellow, orange, red);
@@ -103,44 +104,33 @@
 	nav {
 		display: flex;
 		justify-content: center;
-		--background: var(--mainTheme);
+		background: var(--mainTheme);
 	}
 
-	svg {
-		width: 2em;
-		height: 3em;
-		display: block;
-	}
-
-	path {
-		fill: var(--background);
-	}
-
-	ul {
-		position: relative;
-		padding: 0;
-		margin: 0;
-		height: 3em;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		list-style: none;
+	.navdiv {
+		border-radius: 2px;
+		border-color: var(--accent);
+		border-top: solid;
+		border-bottom: solid;
 		background: var(--background);
-		background-size: contain;
+		align-items: center;
+	}
+	ul {
+		padding: 20px;
+		margin: 0;
+		display: flex;
+		list-style: none;
 	}
 
 	li {
 		position: relative;
-		height: 100%;
 	}
 
 	li[aria-current='page']::before {
 		--size: 6px;
 		content: '';
-		width: 0;
-		height: 0;
 		position: absolute;
-		top: 0;
+		bottom: calc(1.3 * var(--size));
 		left: calc(50% - var(--size));
 		border: var(--size) solid transparent;
 		border-top: var(--size) solid var(--accent);
@@ -148,7 +138,7 @@
 
 	nav a {
 		display: flex;
-		height: 100%;
+
 		align-items: center;
 		padding: 0 0.5rem;
 		color: white;
@@ -166,14 +156,32 @@
 
 	@media (max-width: 390px) {
 		nav ul {
-			flex-direction:column;
+			padding: 5px;
+			flex-direction: column;
 			overflow: auto;
-			justify-content:start;
+			justify-content: start;
 		}
 		li[aria-current='page']::before {
-			width: 100%;
-			border-top: var(--size) solid transparent;
+			bottom: calc(50% - var(--size));
+			left: 0;
+			border: var(--size) solid transparent;
+			border-left: var(--size) solid var(--accent);
 		}
+		.shortTitle {
+			display: block;
+			visibility: visible;
+			font-weight: 800;
+			justify-content: center;
+			text-align: center;
+		}
+		.hoverRainbow {
+			display: none;
+		}
+		.rightCorner {
 
+			width: 5em;
+			height:5em;
+			top: 0;
+		}
 	}
 </style>

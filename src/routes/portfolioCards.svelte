@@ -40,6 +40,7 @@ const portfolio_cards = [
 
 <div class="portfolioNav">
     {#each portfolio_cards as card}
+	<div class="card">
         <a href={card['link']}>
             <Card cardHeight={portHeight} cardWidth={portWidth}>
                 <div slot="content">
@@ -50,6 +51,7 @@ const portfolio_cards = [
                 </div>
             </Card>
         </a>
+	</div>
     {/each}
 </div>
 
@@ -58,11 +60,16 @@ const portfolio_cards = [
     .portfolioNav {
 		width: 96%;
 		padding: 2%;
-		display: grid;
-		justify-content: center;
-		justify-items: center;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		grid-auto-rows: 175px;
+		display: flex;
+		flex-wrap:wrap;
+		justify-content: space-evenly;
+	
+
+	}
+	.card {
+		padding:10px 10px;
 	}
 </style>
+
+
 

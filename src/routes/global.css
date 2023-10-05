@@ -31,6 +31,7 @@ body {
 }
 main{
     flex-grow:1;
+    margin-bottom:50px;
 }
 h1, h2, h3, h4, h5,p {
     font-family: 'Rubik', sans-serif;
@@ -41,10 +42,11 @@ h1 {
     font-size: 2em;
     font-weight: 600;
     margin: 0.67em 0;
+    text-align:center;
 }
 
 h2 {
-    
+    text-align:center;
     font-size: 1.5em;
     font-weight: 600;
     margin: 0.83em 0;
@@ -94,4 +96,12 @@ button {
     padding: 10px;
     border-radius: 5px;
     margin: 10px;
+
+}
+
+button:hover {
+    cursor: pointer;
+    color: var(--accent);
+    border-color:var(--accent);
+    border-style:solid;
 }
