@@ -60,8 +60,6 @@
 	}
 
 	async function handleIncorrect(backgroundColor) {
-
-
 		setTimeout(() => {
 			revealColor('lightgray', backgroundColor);
 		}, 100);
@@ -92,7 +90,7 @@
 	}
 
 	async function handleDragStop(e) {
-		console.log(e.detail)
+		console.log(e.detail);
 		console.log(e.detail.x);
 		console.log(e.detail.y);
 		let mascBound = mascBox.getBoundingClientRect();
@@ -151,13 +149,11 @@
 		await tick();
 
 		scoreStore.set(correctWords.length);
-		if ((correctWords.length + wrongWords.length>0)){
-
-
-		percCorrectStore.set(
-			Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
-		);
-	}
+		if (correctWords.length + wrongWords.length > 0) {
+			percCorrectStore.set(
+				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
+			);
+		}
 
 		if (correctWords.length + wrongWords.length >= numWords) {
 			confettiColor = ['lightblue', 'pink'];
@@ -222,12 +218,12 @@
 			</ul>
 		</nav>
 		{#if showSummary}
-			{#if percCorrectStore>80}
+			{#if percCorrectStore > 80}
 				<h2>Great job!</h2>
-			{:else if percCorrectStore>50}
-			<h2>Not bad!</h2>
+			{:else if percCorrectStore > 50}
+				<h2>Not bad!</h2>
 			{:else}
-			<h2>Better luck next time</h2>
+				<h2>Better luck next time</h2>
 			{/if}
 			<h4>You got {correctWords.length} out of {numWords}</h4>
 			<h4>{$percCorrectStore}% correct</h4>
@@ -301,7 +297,7 @@
 			</div>
 			{#if nextCardVis}
 				{#key unique}
-					<div class="wordContainer" use:drag on:dragStop={handleDragStop} >
+					<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
 						<WordCard backgroundColor="lightgray">
 							<div slot="frontContent">
 								{nextWord.FrWO}
@@ -355,7 +351,8 @@
 		align-items: center;
 	}
 
-	.answerBoxMasc, .answerBoxFem {
+	.answerBoxMasc,
+	.answerBoxFem {
 		width: 30%;
 		height: 50%;
 		margin-left: 10px;
@@ -372,7 +369,8 @@
 		right: 0;
 	}
 
-	.answerCardFem, .answerCardMasc {
+	.answerCardFem,
+	.answerCardMasc {
 		position: absolute;
 		width: 40%;
 		height: 20%;
@@ -419,7 +417,6 @@
 		position: absolute;
 		top: 15%;
 		left: 40%;
-		
 	}
 	.flexWordContainer {
 		width: 29%;
@@ -437,7 +434,7 @@
 		border-radius: 10px;
 		height: 60%;
 		width: 60%;
-		overflow:hidden;
+		overflow: hidden;
 	}
 	.background {
 		position: absolute;

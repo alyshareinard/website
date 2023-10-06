@@ -2,8 +2,8 @@ import { encrypt, getAccessToken } from '../api'
 import { serialize } from 'cookie'
 import { dev } from '$app/env'
 
-/** @type {import('@sveltejs/kit').RequestHandler} */
-export const get = async ({ url }) => {
+/** @type {import('@sveltejs/kit').PageServerLoad} */
+export const load = async ({ url }) => {
     const code = url.searchParams.get('code')
     const state = url.searchParams.get('state')
 

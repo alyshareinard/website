@@ -1,8 +1,6 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/fav_logo.png';
-	import LoginModal from './LoginModal.svelte';
-	let showLogin=false;
 </script>
 
 <header>
@@ -37,14 +35,10 @@
 	{/if}
 
 	<div class="rightCorner">
-		<button on:click={() => (showLogin = true)}> login </button>
+		<button><a href="/login">login</a> </button>
 		<button on:click={() => console.log("clicked")}> En/Fr </button>
 	</div>
 
-	<LoginModal bind:showLogin>
-		<h2>Login</h2>
-		<input>
-	</LoginModal>
 </header>
 
 <style>
@@ -135,18 +129,20 @@
 		border-top: var(--size) solid var(--accent);
 	}
 
-	nav a {
+	nav a, button a {
 		display: flex;
-
 		align-items: center;
-		padding: 0 0.5rem;
 		color: white;
+		text-decoration: none;
+		transition: color 0.2s linear;
+	}
+	nav a {
+		padding: 0 0.5rem;
 		font-weight: 700;
 		font-size: 0.8rem;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
-		text-decoration: none;
-		transition: color 0.2s linear;
+
 	}
 
 	a:hover {
@@ -182,5 +178,12 @@
 			height:5em;
 			top: 0;
 		}
+		.navdiv {
+
+		border-top: none;
+		border-bottom: none;
+		border-left: solid;
+		border-right: solid;
+	}
 	}
 </style>

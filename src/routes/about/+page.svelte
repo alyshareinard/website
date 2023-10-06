@@ -21,7 +21,7 @@ quickly work through and around typical issues and build the best tool to solve 
 <h4>
 After a few years of working in a variety of different tech spaces, I've decided to focus on building apps and tools, 
 as well as integrations between different platforms.  This lets me worry less about the details and syntax of how each platform works
-so I can spend more time solving the problem at hand with the tools and code I'm most comfortable with -- python/Streamlit and Svelte.
+so I can spend more time solving the problem at hand with the tools and code I'm most comfortable with -- Python/Streamlit and Svelte.
 I've detailed a few recent projects in the <a href="/portfolio">portfolio section</a>.
 
 </h4>

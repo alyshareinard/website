@@ -195,4 +195,10 @@
 		color:red;
 		font-size:0.6rem;
 	}
+	input{
+		width:100%;
+	}
+	input.btn {
+		width:auto
+	}
 </style>

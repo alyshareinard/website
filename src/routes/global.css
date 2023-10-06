@@ -76,6 +76,7 @@ hr {
     
 }
 
+
 .divbox {
     background-color: var(--accentLight);
     padding: 1rem;
@@ -89,7 +90,7 @@ hr {
     padding-right:2%;
 }
 
-button {
+button,.btn {
     background: darkcyan;
     color: white;
     border: none;
