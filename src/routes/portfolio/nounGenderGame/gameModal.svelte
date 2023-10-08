@@ -230,10 +230,10 @@
 			<button on:click={resetGame}>Play again?</button>
 		{:else}
 			<div bind:this={mascBox} class="answerBoxMasc">
-				<div class="helpWordsMasc" style="top:10px; transform:rotate(13deg)">Un</div>
-				<div class="helpWordsMasc" style="top:15px; left:-50px; transform:rotate(-26deg)">Le</div>
-				<div class="helpWordsMasc" style="bottom: 10px; left:45px; transform:rotate(41deg)">au</div>
-				<div class="helpWordsMasc" style="bottom:8px; left:-5px; transform:rotate(-40deg)">du</div>
+				<div class="helpWordsMasc uncss">Un</div>
+				<div class="helpWordsMasc lecss">Le</div>
+				<div class="helpWordsMasc aucss">au</div>
+				<div class="helpWordsMasc ducss">du</div>
 				{#if ansMasVis}
 					<div class="answerCardMasc" out:outAnimation>
 						<WordCard backgroundColor={mybackground}>
@@ -247,12 +247,12 @@
 				{/if}
 			</div>
 			<div bind:this={femBox} class="answerBoxFem">
-				<div class="helpWordsFem" style="top:10px; transform:rotate(-40deg)">Une</div>
-				<div class="helpWordsFem" style="top:15px; left:-50px; transform:rotate(26deg)">La</div>
-				<div class="helpWordsFem" style="bottom: 14px; left:45px; transform:rotate(21deg)">
+				<div class="helpWordsFem unecss">Une</div>
+				<div class="helpWordsFem lacss">La</div>
+				<div class="helpWordsFem alacss">
 					à la
 				</div>
-				<div class="helpWordsFem" style="bottom:8px; left:-5px; transform:rotate(-20deg)">
+				<div class="helpWordsFem delacss">
 					de la
 				</div>
 				{#if ansFemVis}
@@ -351,23 +351,7 @@
 		align-items: center;
 	}
 
-	.answerBoxMasc,
-	.answerBoxFem {
-		width: 30%;
-		height: 50%;
-		margin-left: 10px;
-		margin-right: 10px;
-		position: absolute;
-		top: 15%;
-	}
-	.answerBoxMasc {
-		background: lightblue;
-	}
 
-	.answerBoxFem {
-		background: pink;
-		right: 0;
-	}
 
 	.answerCardFem,
 	.answerCardMasc {
@@ -444,10 +428,56 @@
 		opacity: 0.9;
 		background: linear-gradient(142deg, pink 5%, lightblue 100%);
 	}
+
+	.answerBoxMasc,
+	.answerBoxFem {
+		width: 30%;
+		height: 50%;
+		margin-left: 10px;
+		margin-right: 10px;
+		position: absolute;
+		top: 15%;
+	}
+	.answerBoxMasc {
+		background: lightblue;
+	}
+
+	.answerBoxFem {
+		background: pink;
+		right: 0;
+	}
 	.helpWordsMasc {
 		color: rgb(12, 150, 196);
 		font-size: 2rem;
 		position: relative;
+	}
+	.uncss {
+		top:10px; transform:rotate(13deg)
+	}
+	.aucss {
+		top:0%; left:20%; transform:rotate(41deg)
+	}
+	.lecss {
+		top:30%; right:20%; transform:rotate(-26deg)
+	}
+	.ducss {
+		top:25%; left:-5px; transform:rotate(-40deg)
+	}
+
+	.lacss {
+		top:30%; right:20%; transform:rotate(26deg)
+	}
+	.alacss {
+		top:10%; left:20%; transform:rotate(21deg)
+		
+	}
+	.delacss {
+		top:25%; left:-5px; transform:rotate(-20deg)
+		
+	}
+	.unecss {
+		
+		top:10%;  transform:rotate(-40deg)
 	}
 	.helpWordsFem {
 		color: rgb(249, 90, 117);
@@ -488,5 +518,26 @@
 		position: relative;
 		height: 100%;
 		margin: 2px;
+	}
+
+	@media (max-width: 700px) or (max-height:700px) {
+
+
+		.modalEnvelope {
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+	
+	}
+	@media (max-width: 400px) or (max-height:400px)  {
+		.helpWordsFem {
+		font-size: 1.5em;
+		}
+		.helpWordsMasc {
+		font-size: 1.5em;
+		}
+
+	
 	}
 </style>
