@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import logo from '$lib/images/fav_logo.png';
+	//<button on:click={() => console.log("clicked")}> En/Fr </button>
 </script>
 
 <header>
@@ -36,7 +37,8 @@
 
 	<div class="rightCorner">
 		<button><a href="/login">login</a> </button>
-		<button on:click={() => console.log("clicked")}> En/Fr </button>
+		
+		
 	</div>
 
 </header>
