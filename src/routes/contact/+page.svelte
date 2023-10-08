@@ -48,8 +48,9 @@
 <hr />
 <h2>Webpages</h2>
 <p class="darkBackground"> 
-	From your design I can create your website with any custom or existing webapps you need. I created
-	everything on this webpage myself. Single page or multiple pages, etc. I code in
+	I can put one or several webapps together in a webpage for you.  A dashboard for internal use or, with your design,
+	an interactive webpage for your customers. I created
+	everything on this webpage myself. I code in
 	Svelte/Javascript, but can also use React.
 </p>
 <hr />
