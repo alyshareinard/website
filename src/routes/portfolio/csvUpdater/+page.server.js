@@ -1,4 +1,4 @@
-import PapaParse from 'papaparse';
+import Papa from 'papaparse';
 let message;
 let allowedFileExtensions = ['csv'];
 
@@ -7,7 +7,7 @@ const maxFileSize = 1000000;
 const parse_birthday = (date) => {
 	if (date.length > 0) {
 		date = date.split('/');
-		date = date[0] + '-' + date[1];q
+		date = date[0] + '-' + date[1];
 	}
 	return date;
 };
@@ -54,7 +54,10 @@ const clean_phone = (number) => {
 
 function create_output(data) {
 	console.log('in create output');
-	const csvOutput = PapaParse.unparse(data);
+    for (let i = 0; i < data.length; i++) {
+        console.log(data[i]);
+    }
+	const csvOutput = Papa.unparse(data);
 	message = 'Your CSV is ready!';
 	let href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
 	return message, href;
@@ -79,14 +82,14 @@ export const actions = {
 		if (fileExtension.includes('csv') && file.size < maxFileSize) {
 			console.log('ready to parse!');
 			console.log(file);
-			PapaParse.parse(
+			Papa.parse(
 				file,
 				{
 					//header: true,
 					complete: (results) => {
 						message = 'working...';
 						console.log(results);
-						//                        create_output(results.data)
+						create_output(results.data)
 					}
 				}
 			);
