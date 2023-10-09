@@ -128,7 +128,7 @@
 	<h1>CSV cleaner</h1>
 	<h3>How often do you download a csv file and then have to manually remove or rename fields, concatenate values, format phone numbers etc. before uploading the file to another program?</h3>
 	<h3>I can create a web or desktop app that automatically makes the changes you need.  If the apps you use have a good API I can even remove the download and upload steps. </h3>
-	<h3> Here I've created a toy example that lets you select fields you want to keep and then <i>Reverse</i> (reverse the order of the letters or numbers in each cell), <i>Concatenate</i> (add '-' plus the row number to each cell), and/or <i>Rename</i> the field. </h3>
+	<h3> Here I've created a toy example that lets you select fields you want to keep and those you want to rename.  For each you can then <i>Reverse</i> (reverse the order of the letters or numbers in each cell), <i>Concatenate</i> (add '-' plus the row number to each cell), or leave them unchanged. </h3>
 
 	<h2>Let's clean up that CSV file!</h2>
 
