@@ -133,9 +133,8 @@
 	<h2>Let's clean up that CSV file!</h2>
 
 	<label for="myfile">Select a file:</label>
-	<input  type="file" id="myfile" name="myfile" bind:this={myfile} accept=".csv" on:select={() => uploadFile(myfile)}/>
+	<input  type="file" id="myfile" name="myfile" bind:this={myfile} accept=".csv" on:change={() => uploadFile(myfile)}/>
 	
-	<button on:click={() => uploadFile(myfile)}> Upload </button>
 </div>
 
 
