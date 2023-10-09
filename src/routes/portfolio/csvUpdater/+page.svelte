@@ -12,6 +12,7 @@
 	let initialcsv = [];
 	let renamed=false;
 	let transformation=false;
+	let selected=false;
 
 	function uploadFile(myfile) {
 		const file = myfile.files[0];
@@ -25,9 +26,15 @@
 
 				{
 					header: true,
+					encoding: "ISO-8859-1",
 					complete: (results) => {
 						message = 'working...';
+						if (results.errors.length > 0) {
+							console.log(errors)
+							message='error: '+results.errors[0].message;
+						}
 						create_columns(results.data);
+							
 					}
 				}
 			);
@@ -36,11 +43,11 @@
 		}
 	}
 	function create_columns(data) {
-		console.log('in create output');
+		
 		initialcsv = data;
 		message = "Your CSV is uploaded.  Select the columns you'd like to keep.";
 		keys = Object.keys(data[0]);
-		console.log('keys', keys);
+		
 		columns = [];
 		for (let i = 0; i < keys.length; i++) {
 			columns.push({
@@ -53,7 +60,7 @@
 
 	function create_output() {
 		let data = initialcsv;
-		console.log('length is ', data.length);
+		
 		let newcsv = [];
 		let newdata = [];
 		let fields = []
@@ -96,11 +103,11 @@
 			
 			newcsv.push( newdata );
 		}
-		console.log(newcsv)
+		
 		csvOutput = PapaParse.unparse(newcsv, {
 
 		});
-		console.log("Here's the output", csvOutput);
+		
 		href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
 		message = 'Your CSV ready to download.';
 		downloadReady = true;
@@ -108,13 +115,16 @@
 		return message, href;
 	}
 	function toggleSelect(column) {
-		console.log('toggling');
+		
 		transformation=true;
 		column.status == true ? (column.status = false) : (column.status = true);
 		selected=true
+		if (column.status==false){
+			column.rename=false;
+		}
 	}
 	function toggleRename(column) {
-		console.log('toggling');
+		
 		renamed=true
 		column.rename == true ? (column.rename = false) : (column.rename = true);
 		if (column.rename==true){
