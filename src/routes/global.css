@@ -90,7 +90,7 @@ hr {
     padding-right:2%;
 }
 
-button,.btn {
+button,.btn, input::file-selector-button{
     background: darkcyan;
     color: white;
     border: none;
