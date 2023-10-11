@@ -1,33 +1,54 @@
 <script>
-	let base = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
-	let params = {
-		key: 'AIzaSyDDQkZiYCXR4Chb6g5Z4dvI5D3YaVc6MlQ',
-		location: '-33.8670522,151.1957362',
-		radius: '1500',
-		type: 'restaurant'
-	};
-    let restaurants;
+	import { onMount } from 'svelte';
+    import { Loader } from '@googlemaps/js-api-loader';
 
-	async function getRestaurants () {
-		restaurants = await fetch(
-			`${base}?location=${params.location}&radius=${params.radius}&type=${params.type}&key=${params.key}`,
-			{
-				method,
-				headers: {
-					Authorization: `Bearer ${token}`,
-					'Content-Type': 'application/json'
-				}
+    const google = new Loader({
+    apiKey: "AIzaSyCD3O5MY8snLdnPi6eBEgxvksOoeYd7ceM",
+    version: "weekly",
+    libraries: ["places"]
+    });
+
+    console.log(google)
+	let coffeeShops = [];
+
+	onMount(() => {
+		const latitude = 14.33702; // Example latitude
+		const longitude = 121.064365; // Example longitude
+		const radius = 5000; // Search radius in meters
+
+		const mapOptions = {
+			center: { lat: latitude, lng: longitude },
+			zoom: 15
+		};
+
+		const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+		const request = {
+			location: { lat: latitude, lng: longitude },
+			radius: radius,
+			type: 'cafe'
+		};
+
+		const service = new google.maps.places.PlacesService(map);
+		service.nearbySearch(request, (results, status) => {
+			if (status === google.maps.places.PlacesServiceStatus.OK) {
+				coffeeShops = results;
 			}
-        ).then(response => response.json());
-        console.log("response: ", response);
-	};
-	console.log(restaurants);
+		});
+	});
 </script>
 
-<div>
-	<input type="text" bind:value={params.location} placeholder="Location" />
-</div>
-<div>
-	<input type="text" bind:value={params.radius} placeholder="Distance" />
-</div>
-<button on:click={getRestaurants}>Find</button>
+<main>
+	<h1>Nearby Cafe</h1>
+	<div id="map" style="height: 400px;" />
+
+	{#if coffeeShops.length > 0}
+		<ul>
+			{#each coffeeShops as coffeeShop}
+				<li>{coffeeShop.name}</li>
+			{/each}
+		</ul>
+	{:else}
+		<p>No coffee shops found nearby.</p>
+	{/if}
+</main>
