@@ -1,8 +1,8 @@
-
 <script lang="ts">
 	/* eslint-disable */
 	import { page } from '$app/stores';
 	import { analyticsStore } from '$lib/stores/analyticsStore';
+
 	$: {
 		// @ts-ignore
 		if (typeof gtag !== 'undefined') {
@@ -15,6 +15,7 @@
 	}
 	// subscribe to store and see if there is any event in store(array) then run that event
 	analyticsStore.subscribe((queue) => {
+        console.log("queue in analytics.svelte ", queue)
 		let next = queue && queue.length && queue.shift();
 		let retries = 3;
 		let previousExecutedOperationId;
@@ -46,7 +47,7 @@
 		}
 	});
 </script>
-  
+
 <svelte:head>
 	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-KLD80XGDYF"></script>
@@ -58,9 +59,10 @@
 					dataLayer.push(arguments);
 				}
 				gtag('js', new Date());
-				gtag('config', G-KLD80XGDYF);
+
+				gtag('config', 'G-KLD80XGDYF');
 			}
-			console.log('Google analytics setup successfull');
+			console.log('Google analytics setup successful');
 		} catch (err) {
 			console.log('Error setting up google analytics ', err);
 		}

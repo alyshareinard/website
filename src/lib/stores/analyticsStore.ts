@@ -1,4 +1,4 @@
 
 import { writable } from 'svelte/store';
 
-export const analyticsStore = writable([]);
+export let analyticsStore = writable([]);
