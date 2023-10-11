@@ -3,6 +3,16 @@
 	import Carousel from 'svelte-carousel';
 	import { onMount } from 'svelte';
 	import PorfolioCards from './portfolioCards.svelte';
+
+	import { analyticsStore } from '$lib/stores/analyticsStore';
+
+	const new_event = {
+		id: "any-random-id",
+		data: {}, //anything you want to send to GA,
+		event: "name-of-your-event",
+		type: "event",
+	}
+	analyticsStore.update(existing_events => [ ...existing_events, new_event ]) 
 	let showTestimonials=false
 	const mainHeight = 200;
 	const mainWidth = 300;
