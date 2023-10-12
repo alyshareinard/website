@@ -19,7 +19,7 @@ body {
     color:var(--accentLight);
     font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     accent-color: --accent;
-    background: linear-gradient(rgba(0, 0, 0, 0.40), rgba(0, 0, 0, 0.40)), url($lib/images/background-wall.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)), url($lib/images/background-wall.webp);
     background-size: cover;
     background-repeat:repeat-y;
     background-color:black;

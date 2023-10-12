@@ -1,5 +1,5 @@
 <script>
-	import { analyticsStore } from '...';
+	import { analyticsStore } from '$lib/stores/analyticsStore';
 
 	const new_event = {
 		id: "any-random-id",
