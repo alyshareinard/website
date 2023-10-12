@@ -37,6 +37,9 @@
 	});
 </script>
 
+<title>How to hire me</title>
+<meta name="description" content="I can help you with your next project. Here's how to contact me.">
+
 <h1>What can I do for you?</h1>
 
 <h2>Simple to complex web and desktop apps</h2>

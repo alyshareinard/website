@@ -1,4 +1,13 @@
 <script>
+	import { analyticsStore } from '...';
+
+	const new_event = {
+		id: "any-random-id",
+		data: {}, //anything you want to send to GA,
+		event: "name-of-your-event",
+		type: "event",
+	}
+	analyticsStore.update(existing_events => [ ...existing_events, new_event ]) 
 	import { enhance } from '$app/forms';
 	import MultiSelect from 'svelte-multiselect';
 	export let data;
@@ -25,6 +34,9 @@
 		console.log('Todays Playlist:', todays_playlist_label);
 	}
 </script>
+
+<title>Spotify playlist generator</title>
+<meta name="description" content="A tool that works with the Spotify API. You can select one or more playlists from your account and combine them into a single playlist, random order, no duplicates.">
 
 <p>
 	Hello {data.user_name}

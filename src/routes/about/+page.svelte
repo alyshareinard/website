@@ -4,16 +4,19 @@
     let startOpen=true;
 </script>
 
+<title>From Solar Physicist to Web Developer</title>
+<meta name="description" content="I'm a software developer with a background in solar physics and software engineering. I love solving problems and finding new ways to do things.">
+
 <h1>About Me</h1>
 
-<p class="darkBackground">From solar physics to tech guru to app building, my career has spanned many areas, 
+<p class="darkBackground">From solar physics to tech guru to  developer, my career has spanned many areas, 
 but I've always gravitated towards solving puzzles and finding or creating better 
 ways to do things. Growing up in the years before smart phones and apps for everything, I learned 
 technology as it appeared, which often required writing code to make things work.  
 Because of that I'm very comfortable with how computers "think" and I'm able to 
 quickly work through and around typical issues and build the best tool to solve the problem at hand.
 </p>
-<Accordion open={startOpen}>
+<Accordion isOpen=true>
     <span slot="head">
 <h2> Current focus: building apps and tools, working with APIs, creating custom integrations (2022-present) </h2>
 </span>
@@ -117,6 +120,9 @@ calls, notes, and other data.  I was able to move all those events directly usin
         color:var(--mainThemeDark);
         font-weight: 400;
         
+    }
+    hr {
+        width:80%
     }
 
 
