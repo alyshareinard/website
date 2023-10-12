@@ -9,7 +9,7 @@
 	const new_event = {
 		id: "any-random-id",
 		data: {}, //anything you want to send to GA,
-		event: "name-of-your-event",
+		event: "main page view",
 		type: "event",
 	}
 	analyticsStore.update(existing_events => [ ...existing_events, new_event ]) 
@@ -90,8 +90,9 @@
 	];
 
 </script>
-
-
+<title>Tech-Aly Main Page</title>
+<meta name="description" content="Do you have tasks you have to repeat over and over? You've looked for a simple app or tool, but none
+exist? Or maybe you have an idea for a webapp or tool? Let's turn that idea into reality">
 	<main>
 		<div class="mainNav">
 			{#each main_cards as card}
@@ -131,7 +132,7 @@
 </div>
 <div class="leftJustified">
 		<h3 class="darkBackground">
-			Do you have tasks you have to repeat over and over? You've looked for a simple app, but none
+			Do you have tasks you have to repeat over and over? You've looked for a simple app or tool, but none
 			exist? Here are some simple examples of apps I've created. See <a href ="/portfolio">Portfolio</a> for descriptions of more complex apps I've developed for customers. 
 			</h3>
 

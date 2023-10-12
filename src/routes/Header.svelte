@@ -32,7 +32,7 @@
 		</div>
 	{:else}
 		<h1 class="hoverRainbow">Custom apps and integrations</h1>
-		<h1 class="shortTitle">Custom apps</h1>
+		<h2 class="shortTitle">Custom apps</h2>
 	{/if}
 
 	<div class="rightCorner">
