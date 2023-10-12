@@ -24,6 +24,10 @@
     }
     
 </script>
+<svelte:head>
+    <title>Noun Gender Game</title>
+<meta name="description" content="A game to help language learners learn noun gender">
+</svelte:head>
 
 <h2>Nouns have gender?!</h2>
 <div class=container>

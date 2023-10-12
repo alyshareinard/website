@@ -37,8 +37,10 @@
 	});
 </script>
 
-<title>How to hire me</title>
+<svelte:head>
+<title>Hire me</title>
 <meta name="description" content="I can help you with your next project. Here's how to contact me.">
+</svelte:head>
 
 <h1>What can I do for you?</h1>
 
