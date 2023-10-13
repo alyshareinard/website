@@ -24,19 +24,17 @@
 	function openDescription(){
 
 		isOpen = true;
-		console.log("setting is open to true");
-		opener = "-";
-		console.log(isOpen)
+
 	}
 	function closeDescription(){
-		isOpen = false;
-		console.log("setting is open to false");
-		opener = "+";
-		console.log(isOpen)
+		setTimeout(() => {
+			isOpen = false;
+		}, 1000)
+
 	}
 	
 </script>
-
+<div class=container>
 <div on:mouseenter={openDescription} on:mouseleave={closeDescription} class="accordion" role="button" tabindex="0">
 
 	<div class="header">
@@ -51,16 +49,18 @@
 	</div>
 
 
-		<div class="details" use:slide={isOpen} >
+		<div class="details mouseHover" use:slide={isOpen} >
 			<slot name="details" />
 		</div>
 
 </div>
+</div>
 
 <style>
 	div.accordion {
-		margin: 0 10px;
+		width: 100%;
 	}
+
 
 	div.header {
 		display: flex;
@@ -80,6 +80,9 @@
 		margin:0 20px;
         border-radius:10px;
         color: var(--mainThemeDark);
+	}
+	.container {
+		padding:10px;
 	}
     button{
         background: transparent;
@@ -117,6 +120,8 @@
 	.isOpen {
 		transform: rotate(0.5turn);
 	}
-
+	.mouseHover {
+    	pointer-events: none;
+	}	
 
 </style>

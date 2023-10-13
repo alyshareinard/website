@@ -8,21 +8,23 @@ export function slide(node, isOpen) {
         [
         {
             height:0,
-            padding:0
+            padding:0,
+
         }, {
             height: `${initialHeight}px`,
         }],{
             duration:500,
             fill: 'both',
-            direction: isOpen ? 'normal' : 'normal'
+            direction: isOpen ? 'reverse' : 'normal'
         }
 
     )
     animation.pause()
     animation.onfinish = ({ currentTime }) => {
         if (!currentTime){
-        animation.reverse();
-        animation.pause();
+                animation.reverse();
+                animation.pause();
+
     }
     node.dispatchEvent( new CustomEvent('animationEnd') );
     }
