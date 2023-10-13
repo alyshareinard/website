@@ -1,6 +1,5 @@
 import Papa from 'papaparse';
-let message;
-let allowedFileExtensions = ['csv'];
+let  message="";
 
 const maxFileSize = 1000000;
 
