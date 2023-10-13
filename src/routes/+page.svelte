@@ -90,12 +90,6 @@
 	];
 
 </script>
-<svelte:head>
-	<title>Custom apps and integrations</title>
-	<meta name="description" content="Do you have tasks you have to repeat over and over? You've looked for a simple app or tool, but none
-	exist? Or maybe you have an idea for a webapp or tool? Let's turn that idea into reality. American based in Swtizerland.">
-	<meta name="canonical" content="www.tech-aly.com">
-</svelte:head>
 
 <main>
 		<div class="mainNav">
