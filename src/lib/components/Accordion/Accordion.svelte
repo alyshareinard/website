@@ -2,21 +2,6 @@
 	import { quadInOut } from 'svelte/easing';
 	import { slide } from './Slide'
 	export let isOpen = false;
-	/*
-	let opener = "+";
-	if (open) {
-		opener = "-"
-	}
-    
-//	import { slide } from 'svelte/transition';
-	function handleClick(){
-        open = !open
-        if (open) {
-            opener = "-"
-        } else {
-            opener = "+"
-        }
-    };*/
 
 	function toggleDescription(){
 		isOpen ? (isOpen = false) : (isOpen = true);
@@ -24,12 +9,14 @@
 	function openDescription(){
 
 		isOpen = true;
+		console.log(isOpen)
 
 	}
 	function closeDescription(){
 		setTimeout(() => {
 			isOpen = false;
-		}, 1000)
+			console.log(isOpen)
+		}, 500)
 
 	}
 	
@@ -39,7 +26,7 @@
 
 	<div class="header">
 
-        <button aria-label="toggle description" on:click={toggleDescription}> <span class="chevron right"> </button>
+        <button aria-label="toggle description" on:click={toggleDescription}> <span class={isOpen ? "chevron right" : "chevron down"}/> </button>
 
 		<div class="text">
 			<slot name="head" />
@@ -49,7 +36,7 @@
 	</div>
 
 
-		<div class="details mouseHover" use:slide={isOpen} >
+		<div class="details" use:slide={isOpen} >
 			<slot name="details" />
 		</div>
 
@@ -117,11 +104,8 @@
 		top: 0;
 		transform: rotate(135deg);
 	}
-	.isOpen {
-		transform: rotate(0.5turn);
-	}
-	.mouseHover {
-    	pointer-events: none;
-	}	
+
+
+	
 
 </style>
