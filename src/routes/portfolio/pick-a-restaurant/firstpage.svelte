@@ -29,4 +29,4 @@
 <div>
 	<input type="text" bind:value={params.radius} placeholder="Distance" />
 </div>
-<button on:click={getRestaurants}>Find</button>
+<button on:click={}>Find</button>

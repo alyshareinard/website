@@ -53,31 +53,28 @@ async function get_all_songs(playlist, access_token) {
 }
 
 export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
-	console.log('in create_playlist');
+
 
 	let tracks = [];
 	chosen = eval(chosen);
 	avoid = eval(avoid);
-    console.log("CHOSEN ", chosen)
-    console.log("AVOID ", avoid)
+
 	todays_playlist = eval(todays_playlist);
-	console.log('TODAYS_PLAYLIST ***************** : ', todays_playlist);
+
 
 	const access_token = cookies.get('access_token');
     let chosen_songs = await get_all_songs(chosen, access_token)
-    console.log("chosen_songs: ", chosen_songs)
+ 
     let avoid_songs = await get_all_songs(avoid, access_token)
-    console.log("chosen_songs: ", chosen_songs)
-    console.log("before: ", chosen_songs)
+
     tracks= chosen_songs.filter((item) => !avoid_songs.includes(item))
-    console.log("after: ", tracks)
+
 	//    console.log("These are the track URIS: ", tracks)
-    console.log(todays_playlist)
+
 	const todays_id = todays_playlist[0].value;
-    console.log('number of tracks to select from: ', tracks.length);
-    console.log(tracks.length)
+
     tracks = [...new Set(tracks)];
-    console.log('number of tracks to select from: ', tracks.length);
+
 	tracks = shuffle(tracks);
 	tracks = tracks.slice(0, 100);
 	//Now replace/add items in the new playlist
@@ -89,7 +86,7 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 			'Content-Type': 'application/json'
 		}
 	});
-	console.log("Response from add today's list ", response);
+
 
 	return("All done!  Go check out your playlist in Spotify.");
 }
@@ -98,11 +95,11 @@ export async function get_playlists(cookies, playlists) {
 	if (playlists) {
 		return playlists;
 	}
-	console.log('in get playlists');
+
 	const user_id = cookies.get('user_id');
 	const access_token = cookies.get('access_token');
 	const url = `https://api.spotify.com/v1/users/${user_id}/playlists?limit=50`;
-	console.log(url);
+
 	const response = await fetch(url, {
 		headers: {
 			Authorization: 'Bearer ' + access_token
@@ -116,7 +113,7 @@ export async function get_playlists(cookies, playlists) {
 		let data = await response.json();
 		let nextURL = data.next;
 		while (nextURL) {
-			console.log(data.next);
+
 			const url = data.next;
 			const response = await fetch(url, {
 				headers: {

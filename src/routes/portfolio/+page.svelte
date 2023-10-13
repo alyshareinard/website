@@ -22,6 +22,7 @@
 </div>
 
 </Accordion>
+<hr/>
 <Accordion>
     <span slot="head">
         <h3> Shipping info from tracking API to Purchase Order record</h3>
@@ -37,6 +38,7 @@
 
     </div>
 </Accordion>
+<hr/>
 
 
     <Accordion>
@@ -58,7 +60,7 @@
         </div>
     </Accordion>
 
-
+    <hr/>
     <Accordion>
         <span slot="head">
             <h3>
@@ -78,7 +80,7 @@
         </div>
     </Accordion>
 
-
+    <hr/>
 
 <Accordion>
     <span slot="head">
@@ -108,5 +110,8 @@
         color:var(--mainThemeDark);
         font-weight: 400;
         
+    }
+    hr {
+        width:0;
     }
 </style>

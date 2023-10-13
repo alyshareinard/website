@@ -35,8 +35,6 @@
 	}
 </script>
 
-<title>Spotify playlist generator</title>
-<meta name="description" content="A tool that works with the Spotify API. You can select one or more playlists from your account and combine them into a single playlist, random order, no duplicates.">
 
 <p>
 	Hello {data.user_name}
