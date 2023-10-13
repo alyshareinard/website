@@ -9,6 +9,7 @@
 	import { onMount } from 'svelte';
 	import * as Fathom from 'fathom-client';
 	import { PUBLIC_FATHOM_SITE_ID } from '$env/static/public';
+    import browser from '$app/environment';
 
 	onMount(() => {
 		Fathom.load(PUBLIC_FATHOM_SITE_ID);
