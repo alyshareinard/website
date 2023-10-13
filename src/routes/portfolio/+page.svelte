@@ -3,8 +3,6 @@
     import { Accordion} from '$lib/components/Accordion';
 	import PortfolioCards from '../portfolioCards.svelte';
 </script>
-<title>Portfolio</title>
-<meta name="description" content="Description of past projects and a few simple examples of my work.">
 
 <h1>Portfolio</h1>
 <hr/>
