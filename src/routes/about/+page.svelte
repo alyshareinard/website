@@ -4,8 +4,6 @@
     let startOpen=true;
 </script>
 
-<title>From Solar Physicist to Web Developer</title>
-<meta name="description" content="I'm a software developer with a background in solar physics and software engineering. I love solving problems and finding new ways to do things.">
 
 <h1>About Me</h1>
 
@@ -16,7 +14,7 @@ technology as it appeared, which often required writing code to make things work
 Because of that I'm very comfortable with how computers "think" and I'm able to 
 quickly work through and around typical issues and build the best tool to solve the problem at hand.
 </p>
-<Accordion isOpen=true>
+<Accordion startOpen=true>
     <span slot="head">
 <h2> Current focus: building apps and tools, working with APIs, creating custom integrations (2022-present) </h2>
 </span>

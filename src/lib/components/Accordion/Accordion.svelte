@@ -2,6 +2,11 @@
 	import { quadInOut } from 'svelte/easing';
 	import { slide } from './Slide'
 	export let isOpen = false;
+	export let startOpen=false;
+	if (startOpen){
+		isOpen = true;
+
+	}
 
 	function toggleDescription(){
 		isOpen ? (isOpen = false) : (isOpen = true);
@@ -9,13 +14,13 @@
 	function openDescription(){
 
 		isOpen = true;
-		console.log(isOpen)
+
 
 	}
 	function closeDescription(){
 		setTimeout(() => {
 			isOpen = false;
-			console.log(isOpen)
+
 		}, 500)
 
 	}
