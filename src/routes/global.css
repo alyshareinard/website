@@ -106,3 +106,11 @@ button:hover {
     border-color:var(--accent);
     border-style:solid;
 }
+
+@media (max-width: 600px) {
+    body {
+        background: none;
+        background-color:rgb(40, 40, 40);
+        
+    }
+}

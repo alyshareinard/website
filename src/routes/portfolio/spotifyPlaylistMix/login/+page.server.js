@@ -1,5 +1,4 @@
 import { spotifyClientId, spotifyRedirectURL } from '$env/static/private';
-import { browser } from '$app/environment';
 import { redirect } from '@sveltejs/kit';
 
 function generateRandomString(length) {
@@ -21,23 +20,21 @@ async function generateCodeChallenge(codeVerifier) {
 
 	const encoder = new TextEncoder();
 	const data = encoder.encode(codeVerifier);
-	console.log("codeverifier ", codeVerifier)
-	console.log("data ", data)
+
 
 	const digest = await  crypto.subtle.digest('SHA-256', data);
-	console.log("digest ", digest)
+
 	return base64encode(digest);
 
 }
 async function get_code(event) {
 	event.cookies.delete('refresh_token')
-	console.log("in get_code.  Should redirect to: ")
-	console.log(spotifyRedirectURL)
+
 	
 	let codeVerifier = await generateRandomString(128);
-	console.log("code verifier", codeVerifier)
+
 	const challenge = await generateCodeChallenge(codeVerifier);
-    console.log("challenge"), challenge
+
 	event.cookies.set('code_verifier', codeVerifier)
 	let state = generateRandomString(16);
 	let scope = 'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played'
@@ -60,7 +57,7 @@ export const actions = {
     default: async (event) => {
 		console.log(event)
         let url = await get_code(event);
-        console.log("URL is: ", url);
+
         throw(redirect(303, url))
 
     }
