@@ -16,21 +16,29 @@
 
 	function uploadFile(myfile) {
 		const file = myfile.files[0];
-
+		if (file.size > maxFileSize) {
+			message = 'Above the max file size threshold';
+			return;
+		}
 		const fileExtensionArray = file.type.split('/');
 		const fileExtension = fileExtensionArray[fileExtensionArray.length - 1];
-
+		
 		if (fileExtension.includes('csv')) {
+			console.log("ready to papaparse")
 			const csvData = PapaParse.parse(
 				file,
 
 				{
 					header: true,
 					encoding: "ISO-8859-1",
+					error: (err, file) => {
+						console.log(err)
+					},
 					complete: (results) => {
+						console.log(results)
 						message = 'working...';
 						if (results.errors.length > 0) {
-							console.log(errors)
+							console.log(results.errors)
 							message='error: '+results.errors[0].message;
 						}
 						create_columns(results.data);
@@ -43,6 +51,7 @@
 		}
 	}
 	function create_columns(data) {
+		console.log(data)
 		
 		initialcsv = data;
 		message = "Your CSV is uploaded.  Select the columns you'd like to keep.";

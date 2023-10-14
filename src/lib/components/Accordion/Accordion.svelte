@@ -21,7 +21,7 @@
 		setTimeout(() => {
 			isOpen = false;
 
-		}, 500)
+		}, 200)
 
 	}
 	

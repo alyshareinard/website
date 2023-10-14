@@ -44,8 +44,8 @@ I've detailed a few recent projects in the <a href="/portfolio">portfolio sectio
     Some examples:
 </h4>
 <h4> 
-    I worked quite a bit with Airtable (I still do) and I used it to build a scheduling app for a business so they could easily 
-    see which employees were available when they were scheduling appointments.  I also used Airtable to build a system for a gym, 
+    I worked quite a bit with Airtable (I still do) and I have used it to build a scheduling app for a business so they could easily 
+    see which employees were available when they were scheduling appointments. I've also used it to build a system for a gym, 
     where each trainer had a separate base/table to keep track of their clients and sessions.  Summaries of each trainer were 
     then automatically fed into a main table which the gym owner could see as a report.  
 </h4>
