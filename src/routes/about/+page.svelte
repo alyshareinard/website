@@ -7,7 +7,7 @@
 
 <h1>About Me</h1>
 
-<p class="darkBackground">From solar physics to tech guru to  developer, my career has spanned many areas, 
+<p class="darkBackground">From solar physics to tech guru to app developer, my career has spanned many areas, 
 but I've always gravitated towards solving puzzles and finding or creating better 
 ways to do things. Growing up in the years before smart phones and apps for everything, I learned 
 technology as it appeared, which often required writing code to make things work.  
@@ -20,7 +20,7 @@ quickly work through and around typical issues and build the best tool to solve 
 </span>
 <div slot="details">
 <h4>
-After a few years of working in a variety of different tech spaces, I've decided to focus on building apps and tools, 
+After a few years of working in a variety of different tech spaces, I've decided to focus on developing apps and tools, 
 as well as integrations between different platforms.  This lets me worry less about the details and syntax of how each platform works
 so I can spend more time solving the problem at hand with the tools and code I'm most comfortable with -- Python/Streamlit and Svelte.
 I've detailed a few recent projects in the <a href="/portfolio">portfolio section</a>.
