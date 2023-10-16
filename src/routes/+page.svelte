@@ -130,9 +130,9 @@
 	</div>
 		<PorfolioCards/>
 		<div class="centered">
-		<h3 class="darkBackground">
-			Tell me about your app idea and lets turn it into reality. 
-		</h3>
+		<h2 class="darkBackground">
+			Tell me about your app idea and lets turn it into reality! <button><a href ="/contact#contactForm">Contact me</a></button>
+		</h2>
 	</div>
 
 	</main>
@@ -175,5 +175,8 @@
 		border-width:2px;
 		border-color:var(--accent);
 
+	}
+	button>a{
+		text-decoration:none;
 	}
 </style>
