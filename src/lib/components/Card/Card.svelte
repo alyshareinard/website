@@ -1,6 +1,6 @@
 <style>
 	.backText {
-		color:-var(--mainTheme);
+		color:var(--mainTheme);
 		text-align: center;
 		padding:5px;
 		
@@ -37,6 +37,7 @@
 	.back {
 		background-color: #fff;
 		border-color: var(--mainTheme);
+
 		border-style: solid;
 		border-width: 5px;
 	}
