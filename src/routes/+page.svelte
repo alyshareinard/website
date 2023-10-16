@@ -85,7 +85,7 @@
 </script>
 
 <main>
-		<div class="mainNav">
+		<div role=menu class="mainNav">
 			{#each main_cards as card}
 			<div class="card">
 				{#if card['link']}
@@ -178,5 +178,6 @@
 	}
 	button>a{
 		text-decoration:none;
+		color:white;
 	}
 </style>

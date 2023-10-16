@@ -38,7 +38,7 @@ const portfolio_cards = [
 	];
 </script>
 
-<div class="portfolioNav">
+<div role="menu" class="portfolioNav">
     {#each portfolio_cards as card}
 	<div class="card">
         <a href={card['link']}>

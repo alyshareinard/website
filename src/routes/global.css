@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
 :root {
-    --mainTheme: darkcyan;
+    --mainTheme: #008282;
     --mainThemeLight: #3CAAAA;
     --mainThemeDark: #005757;
+    --mainThemeLighter:#50e6e6;
     --accent: #FFA55A;
     --accentLight: #fae0cb;
 	--sk-font: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
@@ -91,7 +92,7 @@ hr {
 }
 
 button,.btn, input::file-selector-button{
-    background: darkcyan;
+    background: var(--mainTheme);
     color: white;
     border: none;
     padding: 10px;

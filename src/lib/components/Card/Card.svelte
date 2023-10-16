@@ -1,6 +1,6 @@
 <style>
 	.backText {
-		color:darkcyan;
+		color:-var(--mainTheme);
 		text-align: center;
 		padding:5px;
 		
@@ -73,7 +73,7 @@
 	}
 </script>
 
-<div class="card-container" style="position:relative; width: {cardWidth}px; height:{cardHeight}px" tabindex="0" role="cell" on:mouseover={handleMouseOver} on:focus={handleMouseOver} on:mouseout={handleMouseOut} on:blur={handleMouseOut}>
+<div class="card-container" style="position:relative; width: {cardWidth}px; height:{cardHeight}px" tabindex="0" role="menuitem" on:mouseover={handleMouseOver} on:focus={handleMouseOver} on:mouseout={handleMouseOut} on:blur={handleMouseOut}>
 	<div class="card">
 		{#if !flipped}
 		<div class="side" transition:flip>
