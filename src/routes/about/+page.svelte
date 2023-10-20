@@ -2,18 +2,30 @@
 <script>
     import { Accordion} from '$lib/components/Accordion';
     let startOpen=true;
+    import meAlps from '$lib/images/alysha-mountains.webp';
+    import silly from '$lib/images/silly.jpg';
+    import scientist from '$lib/images/alysha-scientist.jpg';
 </script>
 
 
 <h1>About Me</h1>
-
+<div style="display:flex">
 <p class="darkBackground">From solar physics to tech guru to app developer, my career has spanned many areas, 
 but I've always gravitated towards solving puzzles and finding or creating better 
 ways to do things. Growing up in the years before smart phones and apps for everything, I learned 
 technology as it appeared, which often required writing code to make things work.  
 Because of that I'm very comfortable with how computers "think" and I'm able to 
-quickly work through and around typical issues and build the best tool to solve the problem at hand.
-</p>
+quickly work through and around issues and build the best tool to solve the problem at hand.
+<br/>
+<br/>
+    I've lived in the French speaking part of Switzerland for the last 6 years and though my French is still a work in progress 
+    (I have a B2 certificate, but still struggle at times), I really love it here.  
+  </p>
+<img class="mountainpic" src={meAlps} alt="me in the Alps"/>
+</div>
+
+
+
 <Accordion startOpen=true>
     <span slot="head">
 <h2> Current focus: building apps and tools, working with APIs, creating custom integrations (2022-present) </h2>
@@ -66,7 +78,10 @@ calls, notes, and other data.  I was able to move all those events directly usin
 <span slot="head">
 <h2>My sordid past as a solar physicist (before 2018)</h2>
 </span>
-<div slot="details">
+<span class = "inline" slot="details">
+    
+    <div style = "display:relative">
+        <img class="sciencepic" src={scientist} alt="me at paradox museum"/>
     <h4>
         I worked for several years as a solar physicist at the University of Colorado in Boulder.  
         My scientific career was focused on improving our understanding of solar storms (flares and coronal mass ejections) and our ability to predict the impacts of those events on the Earth.
@@ -79,7 +94,7 @@ calls, notes, and other data.  I was able to move all those events directly usin
         I built tools to help me sort through the data and look for patterns.  Then I created visualizations to show the results, gave presentations and wrote papers.
         It was the coding and tool making that I enjoyed the most. As I grew in my career, my work transitioned to managing people
         and projects. And as science funding declined, I spent more and more time writing grant proposals.  I was good at both management 
-        and writing, but I didn't really enjoy either. #ratherBeCoding The opportunity came to move to Switzerland and I took it. 
+        and writing, but I didn't really enjoy either. <em>#ratherBeCoding</em>  The opportunity came to move to Switzerland with my family and I took it. 
         
     </h4>
 <h4>
@@ -94,19 +109,23 @@ calls, notes, and other data.  I was able to move all those events directly usin
 <Accordion>
 <span slot="head">
 <h2>Beyond coding</h2>
+
 </span>
-<span slot="details">
+<span class = "inline" slot="details">
+    <img class="sillypic" src={silly} alt="me at paradox museum"/>
+    <div>
     <h4>I grew up in Wyoming and the Pacific Northwest and spent a good part of my adult life in Colorado.  
     I moved to Switzerland in 2017 with my family (my wife is Swiss).  I always say, as long as I'm near the mountains, I'm happy.
     </h4>
 <h4>
     In my free time I like to play video games (e.g. Oxygen not included, Factorio, currently Dysmantle), run, and take on crazy projects 
-    like <a href = "about/beyond/desk">building a desktop out of old wine crates</a>.
+    like <a href = "about/beyond/desk">building a desktop out of old wine crates</a>. 
     </h4>
     <h4>
     I also volunteer at a local second hand shop, <a  href="https://csp.ch/vaud/galetas-et-boutiques/">Les Galetas</a>, which lets me practice my French and give back to the community.  
     The proceeds from the shop go to help those in the community who can't afford legal services.
 </h4>
+</div>
 </span>
 </Accordion>
 
@@ -122,6 +141,28 @@ calls, notes, and other data.  I was able to move all those events directly usin
     hr {
         width:80%
     }
-
+    .mountainpic {
+        display:flex;
+        float:right;
+        margin-right:15px;
+        width:20%
+    }
+    .sillypic {
+        display:inline;
+        width:10%;
+        margin-right:15px;
+    }
+    .sciencepic {
+        display:flex;
+        float:right;
+        width:20%;
+        height:auto;
+        margin-left:15px;
+        margin-top:15px;
+    }
+    .inline {
+        display:flex;
+        flex-direction: row;
+    }
 
 </style>

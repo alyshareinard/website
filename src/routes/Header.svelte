@@ -7,7 +7,7 @@
 <header>
 	<div class="corner">
 		<a href="/">
-			<img src={logo} alt="Tech-Aly" />
+			<img src={logo} alt="Tech-Aly logo" />
 		</a>
 	</div>
 
@@ -32,7 +32,7 @@
 		</div>
 	{:else}
 		<h1 class="hoverRainbow">Custom apps and integrations</h1>
-		<h2 class="shortTitle">Custom apps</h2>
+		<h1 class="shortTitle">Custom apps</h1>
 	{/if}
 
 	<div class="rightCorner">
