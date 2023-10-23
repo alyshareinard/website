@@ -20,13 +20,14 @@ const portfolio_cards = [
 			back: 'Upload a CSV file, and then download it in a different format',
 			link: '/portfolio/csvUpdater'
 		},
+				/*,
 		{
 			front: 'Better RSS feed',
 			back: 'Prioritize certain words or phrases, see the most relevant stories first.',
 			link: '/portfolio/RSSfeed'
-		}
+		},
 		
-		/*,
+
 		{
 			front: 'Allowance tracker',
 			back: 'An app that lets you and your child keep track of allowance, current balance and chores',

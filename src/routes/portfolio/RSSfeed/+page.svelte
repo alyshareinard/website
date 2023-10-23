@@ -92,7 +92,7 @@
 			>
 		</div>
 		<div class="wordlist">
-			<h3>Pull to title phrases starting with</h3>
+			<h3>Pull to subtitle phrases starting with... (experimental)</h3>
 			{#each importantPhrases as phrase}
 				<div>{phrase}</div>
 			{/each}
@@ -117,9 +117,12 @@
 	{#await fetch(`/portfolio/RSSfeed/?url=${url}`).then((res) => res.json())}
 		<p>Gathering information... Please wait</p>
 	{:then data}
+	console.log(data)
 		{#if data.message === 'Internal Error'}
 			<p>Something went wrong...Check your URL and try again</p>
+
 		{:else}
+			<p>does this work?</p>
 			<div>
 				<input bind:value={title} default={data.title} placeholder="Title" />
 				<p>{data.description || ''}</p>
