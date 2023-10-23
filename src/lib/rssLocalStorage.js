@@ -1,19 +1,19 @@
 // place files you want to import through the `$lib` alias in this folder.
-export default function addToLocalStorage (title, url){
-    let feedInLocalStorage = JSON.parse(localStorage.getItem("feeds")) || [];
-    localStorage.setItem("feeds", JSON.stringify([...feedInLocalStorage, {title:title, url:url}]));
+export default function addToLocalStorage (key, item ){
+    let feedInLocalStorage = JSON.parse(localStorage.getItem(key)) || [];
+    localStorage.setItem(key, JSON.stringify([...feedInLocalStorage, item]));
 }
 
-export function removeFromLocalStorage (title, url){
-    console.log("removing ", url)
-    let feedInLocalStorage = JSON.parse(localStorage.getItem("feeds")) || [];
+export function removeFromLocalStorage (key, item){
+    console.log("removing ", item)
+    let feedInLocalStorage = JSON.parse(localStorage.getItem(key)) || [];
     let newfeed=[]
     for (let i=0; i<feedInLocalStorage.length; i++){
-        if (feedInLocalStorage[i].url != url){
+        if (feedInLocalStorage[i] != item){
             newfeed.push(feedInLocalStorage[i])
         }
     }
     console.log(newfeed)
-    localStorage.removeItem("feeds");
-    localStorage.setItem("feeds", JSON.stringify(newfeed));
+    localStorage.removeItem(key);
+    localStorage.setItem(key, JSON.stringify(newfeed));
 }

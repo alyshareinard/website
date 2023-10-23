@@ -50,7 +50,13 @@
 			front: 'CSV formatter',
 			back: 'Upload a CSV file, and then download it in a different format',
 			link: '/portfolio/csvUpdater'
-		}/*,
+		},
+		{
+			front: 'Better RSS feed',
+			back: 'Select feeds, prioritize certain words or phrases, see the most relevant stories first.',
+			link: '/portfolio/rssFeed'
+		}
+		/*,
 		{
 			front: 'Allowance tracker',
 			back: 'An app that lets you and your child keep track of allowance, current balance and chores',
