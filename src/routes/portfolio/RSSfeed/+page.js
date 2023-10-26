@@ -1,9 +1,10 @@
 /** @type {import('./feed/best/$types').PageLoad} */
 import { browser } from '$app/environment';
+import rssReader from './rssReader.js'
 
 
-
-export async function load({ fetch }) {
+export async function load() {
+	/*
 	let jobs = []
 	async function loadFeeds() {
 		let jobs = [];
@@ -88,10 +89,11 @@ export async function load({ fetch }) {
 		}
 		return plus-minus
 
-    }
+    }*/
+	let jobs
 	if (browser) {
 
-		jobs = loadFeeds();
+		jobs = rssReader();
 	}
 		
 		
