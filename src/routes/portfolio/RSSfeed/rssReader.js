@@ -55,7 +55,7 @@ async function readAtom(url, pluswords, minuswords, importantPhrases){
                 let description = getContent(item, 'content')
                 let title = getContent(item, 'title')
                 let score = getScore( description, title, pluswords, minuswords )
-                if (score>0){
+                if (score>=0){
                 jobs.push({
                     title: title,
                     subtitle: getImportantPhrases(description, importantPhrases),
