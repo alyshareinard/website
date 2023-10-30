@@ -8,10 +8,10 @@ export async function testFeed(rawurl){
     .then((text) => new window.DOMParser().parseFromString(text, 'text/xml'))
     .then((data) => {
 
-        if (data.getElementsByTagName('rss').length==0){
+        if (data.getElementsByTagName('rss').length==0 && data.getElementsByTagName('feed').length==0){
 //            console.log('returning invalid')
             returnval = {format:'invalid'}
-        } else {
+        } else if (data.getElementsByTagName('rss').length!=0){
             let rss = data.getElementsByTagName('rss')[0];
 //            console.log("rss", rss)
             if (rss.getElementsByTagName('channel').length!=0){
@@ -21,11 +21,16 @@ export async function testFeed(rawurl){
                 let title = channel[0].getElementsByTagName('title')[0].textContent;
                 let url = channel[0].getElementsByTagName('link')[0].textContent;
                 returnval = {format:'rss', title:title, url:url}
+            }
+        } else if (data.getElementsByTagName('feed').length!=0){
+            let feed=data.getElementsByTagName('feed')[0];
 
-            } else if (rss.getElementsByTagName('feed').length!=0){
+
+            if (feed.getElementsByTagName('title').length!=0){
 //                console.log('returning atom')
-                let title = data.title
-                let url =data.link
+ 
+                let title = feed.getElementsByTagName('title')[0].textContent;
+                let url =feed.getElementsByTagName('link')[0].textContent;
                 returnval = {format:'atom', title:title, url:url}
 
             } else {
@@ -48,13 +53,13 @@ async function readAtom(url, pluswords, minuswords, importantPhrases){
     .then((res) => res.text())
     .then((text) => new window.DOMParser().parseFromString(text, 'text/xml'))
     .then((data) => {
-        let channel = data.getElementsByTagName('rss')[0].getElementsByTagName('feed');
-        let items = Array.prototype.slice.call(channel[0].children);
+        let feed = data.getElementsByTagName('feed');
+        let items = Array.prototype.slice.call(feed[0].children);
         items.forEach((item) => {
             if (item.tagName === 'entry') {
                 let description = getContent(item, 'content')
                 let title = getContent(item, 'title')
-                let pubDate = getContent(item, 'pubDate')
+                let pubDate = getContent(item, 'published')
                 let score = getScore( description, title, pubDate, pluswords, minuswords )
                 if (score>=0){
                     
@@ -62,7 +67,7 @@ async function readAtom(url, pluswords, minuswords, importantPhrases){
                     title: title,
                     subtitle: getImportantPhrases(description, importantPhrases),
                     description: description,
-                    link: getContent(item, 'link'),
+                    link: getContent(item, 'uri'),
                     score: score,
                     date: pubDate
                 });
