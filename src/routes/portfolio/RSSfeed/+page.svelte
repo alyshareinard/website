@@ -15,6 +15,7 @@
 	let { jobs } = data;
 	import { tick } from 'svelte';
 	let response;
+	let showOptions=false;
 
 	async function test_feed() {
 		response = await testFeed(url);
@@ -34,16 +35,18 @@
 	}
 </script>
 
-<nav>
-	<h1>Better RSS Reader</h1>
-	<h4>
-		Do you want an RSS feed that prioritizes what you want to see? Here you can add RSS feeds and
-		then define words or phrases you'd like to see, and those that you're not interested in. The
-		most relevant stories will rise to the top of the feed. I use this to sort posting for freelance
-		work -- combining Upwork, Fiverr, and other sites into one list with the most relevant postings
-		at the top.
-	</h4>
+<h1>Better RSS Reader</h1>
 
+<h4>
+	Do you want an RSS feed that prioritizes what you want to see? Here you can add RSS feeds and then
+	define words or phrases you'd like to see, and those that you're not interested in. The most
+	relevant stories will rise to the top of the feed. I use this to sort posting for freelance work
+	-- combining Upwork, Fiverr, and other sites into one list with the most relevant postings at the
+	top.
+</h4>
+<h4>Options</h4><button on:click={() => (showOptions = !showOptions)}>toggle options</button>
+{#if showOptions}
+<div class="options">
 	<div class="my-feeds">
 		<h3>My feeds</h3>
 		{#each feeds as feed}
@@ -51,113 +54,134 @@
 				<button
 					class="deletebutton"
 					on:click={() => {
-						removeFromLocalStorage("feeds", feed);
+						removeFromLocalStorage('feeds', feed);
 					}}>x</button
 				>
 				<a href={`/portfolio/RSSfeed/feed/${feed.title}?url=${feed.url}`}>{feed.title}</a>
 			</div>
 		{/each}
 	</div>
-</nav>
 
-<div let:dataUpdate={feeds}>
-	<input
-		type="url"
-		placeholder="Add an RSS link..."
-		bind:value={url}
-		on:input={() => {
-			if (url.length > 0) {
-				setTimeout(() => {
-					ready = true;
-				}, 250);
-			} else {
-				ready = false;
-			}
-		}}
-	/>
-	<p>{feedmessage}</p>
-	{#if ready}
-		{#await test_feed()}
-		
-
+	<div let:dataUpdate={feeds}>
+		<input
+			type="url"
+			placeholder="Add an RSS link..."
+			bind:value={url}
+			on:input={() => {
+				if (url.length > 0) {
+					setTimeout(() => {
+						ready = true;
+					}, 250);
+				} else {
+					ready = false;
+				}
+			}}
+		/>
+		<p>{feedmessage}</p>
+		{#if ready}
+			{#await test_feed()}
 				<p>Gathering information... Please wait</p>
-
-		{/await}
-	{/if}
-	{#if showFeedButton}
-	<div>
-		<input bind:value={title} default={response.title} placeholder="Title" />
-		
+			{/await}
+		{/if}
+		{#if showFeedButton}
+			<div>
+				<input bind:value={title} default={response.title} placeholder="Title" />
+			</div>
+			<button
+				on:click={() => {
+					addToLocalStorage('feeds', {
+						title: title || response.title,
+						url: url,
+						format: response.format
+					});
+					location.reload();
+				}}>Add to My Feeds</button
+			>
+		{/if}
 	</div>
-	<button
-		on:click={() => {
-			addToLocalStorage('feeds', { title: title || response.title, url: url, format: response.format});
-			location.reload();
-		}}>Add to My Feeds</button>
 
-	{/if}
+	<div class="wordlists">
+		<div class="wordlist">
+			<h3>Words I'm looking for</h3>
+			{#each poswords as word}
+				<div>
+					<button
+						class="deletebutton"
+						on:click={() => {
+							removeFromLocalStorage('poswords', word);
+						}}>x</button
+					>{word}
+				</div>
+			{/each}
+
+			<input
+				type="string"
+				placeholder="enter desired word"
+				bind:value={posword}
+				on:input={() => {}}
+			/>
+			<button
+				on:click={() => {
+					addToLocalStorage('poswords', posword);
+					location.reload();
+				}}>Add</button
+			>
+		</div>
+		<div class="wordlist">
+			<h3>Words I'm not interested in</h3>
+			{#each negwords as word}
+				<div>
+					<button
+						class="deletebutton"
+						on:click={() => {
+							removeFromLocalStorage('negwords', word);
+						}}>x</button
+					>{word}
+				</div>
+			{/each}
+
+			<input
+				type="string"
+				placeholder="enter undesired word"
+				bind:value={negword}
+				on:input={() => {}}
+			/>
+			<button
+				on:click={() => {
+					addToLocalStorage('negwords', negword);
+					location.reload();
+				}}>Add</button
+			>
+		</div>
+		<div class="wordlist">
+			<h3>Pull to subtitle phrases starting with... (experimental)</h3>
+			{#each importantPhrases as phrase}
+				<div>
+					<button
+						class="deletebutton"
+						on:click={() => {
+							removeFromLocalStorage('importantPhrases', phrase);
+						}}>x</button
+					>{phrase}
+				</div>
+			{/each}
+
+			<input
+				type="string"
+				placeholder="important phrase"
+				bind:value={importantPhrase}
+				on:input={() => {}}
+			/>
+			<button
+				on:click={() => {
+					addToLocalStorage('importantPhrases', importantPhrase);
+					location.reload();
+				}}>Add</button
+			>
+		</div>
+	</div>
 </div>
-
-<div class="wordlists">
-	<div class="wordlist">
-		<h3>Words I'm looking for</h3>
-		{#each poswords as word}
-			<div>{word}</div>
-		{/each}
-
-		<input
-			type="string"
-			placeholder="enter desired word"
-			bind:value={posword}
-			on:input={() => {}}
-		/>
-		<button
-			on:click={() => {
-				addToLocalStorage('poswords', posword);
-				location.reload();
-			}}>Add</button
-		>
-	</div>
-	<div class="wordlist">
-		<h3>Words I'm not interested in</h3>
-		{#each negwords as word}
-			<div>{word}</div>
-		{/each}
-
-		<input
-			type="string"
-			placeholder="enter undesired word"
-			bind:value={negword}
-			on:input={() => {}}
-		/>
-		<button
-			on:click={() => {
-				addToLocalStorage('negwords', negword);
-				location.reload();
-			}}>Add</button
-		>
-	</div>
-	<div class="wordlist">
-		<h3>Pull to subtitle phrases starting with... (experimental)</h3>
-		{#each importantPhrases as phrase}
-			<div>{phrase}</div>
-		{/each}
-
-		<input
-			type="string"
-			placeholder="important phrase"
-			bind:value={importantPhrase}
-			on:input={() => {}}
-		/>
-		<button
-			on:click={() => {
-				addToLocalStorage('importantPhrases', importantPhrase);
-				location.reload();
-			}}>Add</button
-		>
-	</div>
-</div>
-
+{/if}
 {#if jobs}
 	{#each jobs as job}
 		<Accordion lethover="false">
@@ -193,6 +217,7 @@
 		width: fit-content;
 		height: fit-content;
 		padding: 1px;
+		margin: 2px;
 		background-color: black;
 	}
 	nav {

@@ -54,15 +54,17 @@ async function readAtom(url, pluswords, minuswords, importantPhrases){
             if (item.tagName === 'entry') {
                 let description = getContent(item, 'content')
                 let title = getContent(item, 'title')
-                let score = getScore( description, title, pluswords, minuswords )
+                let pubDate = getContent(item, 'pubDate')
+                let score = getScore( description, title, pubDate, pluswords, minuswords )
                 if (score>=0){
+                    
                 jobs.push({
                     title: title,
                     subtitle: getImportantPhrases(description, importantPhrases),
                     description: description,
                     link: getContent(item, 'link'),
                     score: score,
-                    date: getContent(item, 'published')
+                    date: pubDate
                 });
             }
             }
@@ -89,7 +91,8 @@ async function readRss(url, pluswords, minuswords, importantPhrases){
             if (item.tagName === 'item') {
                 let description = getContent(item, 'description')
                 let title = getContent(item, 'title')
-                let score = getScore( description, title, pluswords, minuswords )
+                let pubDate = getContent(item, 'pubDate')
+                let score = getScore( description, title, pubDate, pluswords, minuswords )
                 if (score>0){
                 jobs.push({
                     title: title,
@@ -97,7 +100,7 @@ async function readRss(url, pluswords, minuswords, importantPhrases){
                     description: description,
                     link: getContent(item, 'link'),
                     score: score,
-                    date: getContent(item, 'pubDate')
+                    date: pubDate
                 });
             }
             }
@@ -154,10 +157,14 @@ function getImportantPhrases(description, importantPhrases) {
     }
     return subtitle
 }
-function getScore(description, title, pluswords, minuswords) {
-    let plus = 0
-    let minus = 0
+function getScore(description, title, date, pluswords, minuswords) {
 
+    let minus = 0
+    let pubDate = new Date(date)
+    let today = new Date()
+    let diff = today.getTime() - pubDate.getTime();
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let plus = 5-days;
     
     for (let i=0; i<pluswords.length; i++) {
         var regExp = new RegExp(pluswords[i], "gi");
