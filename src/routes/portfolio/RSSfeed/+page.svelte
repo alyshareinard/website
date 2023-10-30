@@ -1,4 +1,5 @@
 <script>
+
 	import addToLocalStorage, { removeFromLocalStorage } from '$lib/rssLocalStorage';
 	import { testFeed } from './rssReader';
 
@@ -15,7 +16,7 @@
 	let { jobs } = data;
 	import { tick } from 'svelte';
 	let response;
-	let showOptions=false;
+	let showOptions=true;
 
 	async function test_feed() {
 		response = await testFeed(url);
@@ -33,6 +34,38 @@
 			showFeedButton = true;
 		}
 	}
+	function addItem(name, value) {
+		addToLocalStorage(name, value);
+		if (name=='feeds') {
+			feeds.push(value);
+			feeds=[...feeds]
+		} else if (name=="poswords") {
+			poswords.push(value);
+			poswords=[...poswords]
+		} else if (name=="negwords") {
+			negwords.push(value);
+			negwords=[...negwords]
+		} else if (name=="importantPhrases") {
+			importantPhrases.push(value);
+			importantPhrases=[...importantPhrases]
+		}
+	}
+	function removeItem(name, value) {
+		removeFromLocalStorage(name, value);
+		if (name=='feeds') {
+			feeds.splice(feeds.indexOf(value), 1);
+			feeds=[...feeds]
+		} else if (name=="poswords") {
+			poswords.splice(poswords.indexOf(value), 1);
+			poswords=[...poswords]
+		} else if (name=="negwords") {
+			negwords.splice(negwords.indexOf(value), 1);
+			negwords=[...negwords]
+		} else if (name=="importantPhrases") {
+			importantPhrases.splice(importantPhrases.indexOf(value), 1);
+			importantPhrases=[...importantPhrases]
+		}
+	}
 </script>
 
 <h1>Better RSS Reader</h1>
@@ -44,7 +77,7 @@
 	-- combining Upwork, Fiverr, and other sites into one list with the most relevant postings at the
 	top.
 </h4>
-<h4>Options</h4><button on:click={() => (showOptions = !showOptions)}>toggle options</button>
+<button on:click={() => (showOptions = !showOptions)}>toggle options</button>
 {#if showOptions}
 <div class="options">
 	<div class="my-feeds">
@@ -54,7 +87,7 @@
 				<button
 					class="deletebutton"
 					on:click={() => {
-						removeFromLocalStorage('feeds', feed);
+						removeItem('feeds', feed);
 					}}>x</button
 				>
 				<a href={`/portfolio/RSSfeed/feed/${feed.title}?url=${feed.url}`}>{feed.title}</a>
@@ -62,7 +95,7 @@
 		{/each}
 	</div>
 
-	<div let:dataUpdate={feeds}>
+	<div>
 		<input
 			type="url"
 			placeholder="Add an RSS link..."
@@ -88,27 +121,26 @@
 				<input bind:value={title} default={response.title} placeholder="Title" />
 			</div>
 			<button
-				on:click={() => {
-					addToLocalStorage('feeds', {
+				on:click={() => { 
+					addItem('feeds', {
 						title: title || response.title,
 						url: url,
 						format: response.format
 					});
-					location.reload();
 				}}>Add to My Feeds</button
 			>
 		{/if}
 	</div>
 
 	<div class="wordlists">
-		<div class="wordlist">
+		<div id="poswords" class="wordlist">
 			<h3>Words I'm looking for</h3>
 			{#each poswords as word}
 				<div>
 					<button
 						class="deletebutton"
 						on:click={() => {
-							removeFromLocalStorage('poswords', word);
+							removeItem('poswords', word);
 						}}>x</button
 					>{word}
 				</div>
@@ -122,8 +154,7 @@
 			/>
 			<button
 				on:click={() => {
-					addToLocalStorage('poswords', posword);
-					location.reload();
+					addItem('poswords', posword);
 				}}>Add</button
 			>
 		</div>
@@ -134,7 +165,7 @@
 					<button
 						class="deletebutton"
 						on:click={() => {
-							removeFromLocalStorage('negwords', word);
+							removeItem('negwords', word);
 						}}>x</button
 					>{word}
 				</div>
@@ -148,8 +179,7 @@
 			/>
 			<button
 				on:click={() => {
-					addToLocalStorage('negwords', negword);
-					location.reload();
+					addItem('negwords', negword);
 				}}>Add</button
 			>
 		</div>
@@ -160,7 +190,7 @@
 					<button
 						class="deletebutton"
 						on:click={() => {
-							removeFromLocalStorage('importantPhrases', phrase);
+							removeItem('importantPhrases', phrase);
 						}}>x</button
 					>{phrase}
 				</div>
@@ -174,8 +204,7 @@
 			/>
 			<button
 				on:click={() => {
-					addToLocalStorage('importantPhrases', importantPhrase);
-					location.reload();
+					addItem('importantPhrases', importantPhrase);
 				}}>Add</button
 			>
 		</div>

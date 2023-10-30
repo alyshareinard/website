@@ -8,29 +8,21 @@ export default function addToLocalStorage(key, item) {
 
 export async function removeFromLocalStorage(key, item) {
     
-	console.log('removing ', item);
+//	console.log('removing ', item);
 	let feedInLocalStorage = JSON.parse(localStorage.getItem(key)) || [];
 	let newfeed = [];
 	for (let i = 0; i < feedInLocalStorage.length; i++) {
 		let same = false;
 		for (let subkey in feedInLocalStorage[i]) {
-			console.log(subkey);
-			console.log(item[subkey]);
-			console.log(feedInLocalStorage[i][subkey]);
 			if (feedInLocalStorage[i][subkey] != item[subkey]) {
-				console.log('not equal');
 				same = true;
 			}
 		}
         await tick()
 
 		if (same) {
-            console.log(same)
-			console.log('not the same, adding to newfeed');
 			newfeed.push(feedInLocalStorage[i]);
 		}
-        console.log(same, !same)
-        console.log(newfeed)
 	}
 	console.log('newfeed', newfeed);
 		localStorage.removeItem(key);
