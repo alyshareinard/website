@@ -149,7 +149,14 @@ export default async function rssReader() {
 
 
 function getContent(xmlObj, tagName) {
-    return xmlObj.getElementsByTagName(tagName)[0].textContent;
+    if (!('getElementsByTagName' in xmlObj)) {
+        return null
+    }
+    if ('textContent' in xmlObj.getElementsByTagName(tagName)) {
+        return xmlObj.getElementsByTagName(tagName)[0].textContent;
+    } else {
+        return xmlObj.getElementsByTagName(tagName)[0]
+    }
 }
 
 function getImportantPhrases(description, importantPhrases) {
