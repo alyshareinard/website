@@ -1,3 +1,5 @@
+import { fetch }
+
 export async function testFeed(rawurl){
     let returnval
 
@@ -129,8 +131,10 @@ export default async function rssReader() {
         let response
         const url = 'https://corsproxy.io/?' + encodeURIComponent(feeds[i].url);
         if (feeds[i].format == 'rss'){
+            console.log('reading rss')
             response = await readRss(url, pluswords, minuswords, importantPhrases)            
         } else if (feeds[i].format == 'atom'){
+            console.log('reading atom')
             response = await readAtom(url, pluswords, minuswords, importantPhrases)
         }
         //console.log("response", response)
