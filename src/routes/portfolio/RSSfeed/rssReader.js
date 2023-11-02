@@ -1,4 +1,4 @@
-import { fetch }
+
 
 export async function testFeed(rawurl){
     let returnval
