@@ -1,7 +1,8 @@
 <script>
 
 	import addToLocalStorage, { removeFromLocalStorage } from '$lib/rssLocalStorage';
-	import { testFeed } from './rssReader';
+	import rssReader, { testFeed } from './rssReader';
+	import {  invalidateAll } from '$app/navigation';
 
 	$: feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
 	$: poswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
@@ -66,6 +67,11 @@
 			importantPhrases=[...importantPhrases]
 		}
 	}
+
+
+	function refreshFeeds(){
+		invalidateAll();
+	}
 </script>
 
 <h1>Better RSS Reader</h1>
@@ -78,6 +84,7 @@
 	top.
 </h4>
 <button on:click={() => (showOptions = !showOptions)}>toggle options</button>
+<button on:click={() => {invalidateAll()}}>refresh feeds</button>
 {#if showOptions}
 <div class="options">
 	<div class="my-feeds">
