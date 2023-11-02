@@ -155,11 +155,10 @@ function getContent(xmlObj, tagName) {
         return null
     }
     console.log(xmlObj.getElementsByTagName(tagName))
-    if ('textContent' in xmlObj.getElementsByTagName(tagName)) {
+
         return xmlObj.getElementsByTagName(tagName)[0].textContent;
-    } else {
-        return xmlObj.getElementsByTagName(tagName)[0].innerHTML;
-    }
+
+
 }
 
 function getImportantPhrases(description, importantPhrases) {
