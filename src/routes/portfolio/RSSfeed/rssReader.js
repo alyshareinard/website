@@ -155,9 +155,12 @@ function getContent(xmlObj, tagName) {
         return null
     }
     console.log(xmlObj.getElementsByTagName(tagName))
-
+    try {
         return xmlObj.getElementsByTagName(tagName)[0].textContent;
-
+    } catch {
+        return null
+    }
+       
 
 }
 
