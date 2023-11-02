@@ -150,12 +150,15 @@ export default async function rssReader() {
 
 function getContent(xmlObj, tagName) {
     if (!('getElementsByTagName' in xmlObj)) {
+        console.log('element not found', tagName)
+
         return null
     }
+    console.log(xmlObj.getElementsByTagName(tagName))
     if ('textContent' in xmlObj.getElementsByTagName(tagName)) {
         return xmlObj.getElementsByTagName(tagName)[0].textContent;
     } else {
-        return xmlObj.getElementsByTagName(tagName)[0]
+        return xmlObj.getElementsByTagName(tagName)[0];
     }
 }
 
