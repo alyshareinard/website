@@ -97,7 +97,7 @@
 		console.log("newcsv", newcsv)
 		csvOutput = PapaParse.unparse({
 			data: newcsv,
-			header:true,
+			fields: fields
 		});
 
 		href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
