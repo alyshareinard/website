@@ -94,12 +94,17 @@
 
 			newcsv.push(newdata);
 		}
-
-		csvOutput = PapaParse.unparse(newcsv, {});
+		console.log("newcsv", newcsv)
+		csvOutput = PapaParse.unparse({
+			data: newcsv,
+			header:true,
+		});
 
 		href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
 		message = 'Your CSV ready to download.';
 		downloadReady = true;
+		
+		
 
 		return message, href;
 	}

@@ -1,5 +1,5 @@
 <script>
-	import addToLocalStorage, { removeFromLocalStorage } from '$lib/rssLocalStorage';
+	import addToLocalStorage, { removeFromLocalStorage, updateLocalStorage } from '$lib/rssLocalStorage';
 	import rssReader, { testFeed } from './rssReader';
 	import { invalidateAll } from '$app/navigation';
 	import { Accordion } from '$lib/components/Accordion';
@@ -24,7 +24,6 @@
 		response = await testFeed(url);
 		await tick();
 
-		console.log('in test_feed', response);
 		if (response.format == 'invalid') {
 			feedmessage = 'This does not seem to be an RSS feed...Check your URL and try again';
 			showFeedButton = false;
@@ -35,6 +34,12 @@
 			feedmessage = 'Feed is valid -- click to add';
 			showFeedButton = true;
 		}
+	}
+
+	function toggleActive(feed) {
+		let myfeed = {...feed}
+		myfeed.active = !myfeed.active
+		updateLocalStorage('feeds', feed, myfeed);
 	}
 	function addItem(name, value) {
 		addToLocalStorage(name, value);
@@ -92,6 +97,7 @@
 			<h3>My feeds</h3>
 			{#each feeds as feed}
 				<div>
+					<input type="checkbox" checked={feed.active} on:click|preventDefault={toggleActive(feed)}/>
 					<button
 						class="deletebutton"
 						on:click={() => {
@@ -133,6 +139,7 @@
 						addItem('feeds', {
 							title: title || response.title,
 							url: url,
+							active: true,
 							format: response.format
 						});
 					}}>Add to My Feeds</button

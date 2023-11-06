@@ -1,3 +1,4 @@
+import addToLocalStorage, { removeFromLocalStorage } from '$lib/rssLocalStorage';
 export async function testFeed(rawurl) {
 	let returnval;
 
@@ -47,7 +48,11 @@ export async function testFeed(rawurl) {
 	return returnval;
 }
 
-async function readAtom(url, pluswords, minuswords, importantPhrases) {
+async function readAtom(url) {
+    
+	const pluswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
+	const minuswords = JSON.parse(window.localStorage.getItem('negwords')) || [];
+	const importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
 	let jobs = [];
 	await fetch(url)
 		.then((res) => res.text())
@@ -81,7 +86,11 @@ async function readAtom(url, pluswords, minuswords, importantPhrases) {
 	return jobs;
 }
 
-async function readRss(url, pluswords, minuswords, importantPhrases) {
+async function readRss(url) {
+
+	const pluswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
+	const minuswords = JSON.parse(window.localStorage.getItem('negwords')) || [];
+	const importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
 	//    console.log('starting readrss')
 	let jobs = [];
 	await fetch(url)
@@ -119,20 +128,32 @@ async function readRss(url, pluswords, minuswords, importantPhrases) {
 
 export default async function rssReader() {
 	let jobs = [];
-	const feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
-	const pluswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
-	const minuswords = JSON.parse(window.localStorage.getItem('negwords')) || [];
-	const importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
+    console.log("running rssReader")
+    
+    const feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
 
 	for (let i = 0; i < feeds.length; i++) {
 		let response;
+        console.log(feeds[i])
+        if ('active' in feeds[i]){
+
+            if (feeds[i].active==false){
+                continue
+            } 
+        } else {
+            const myfeed =[...feeds[i]]
+            removeFromLocalStorage('feeds', feeds[i])
+            myfeed.active=true
+            console.log(myfeed)
+            addToLocalStorage('feeds', myfeed)
+        }
 		const url = 'https://corsproxy.io/?' + encodeURIComponent(feeds[i].url);
 		if (feeds[i].format == 'rss') {
 //			console.log('reading rss');
-			response = await readRss(url, pluswords, minuswords, importantPhrases);
+			response = await readRss(url);
 		} else if (feeds[i].format == 'atom') {
 //			console.log('reading atom');
-			response = await readAtom(url, pluswords, minuswords, importantPhrases);
+			response = await readAtom(url);
 		}
 		//console.log("response", response)
 		if (response) {
