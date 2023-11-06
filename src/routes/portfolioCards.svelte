@@ -1,10 +1,9 @@
 <script>
+	import { Card } from '$lib/components/Card';
+	const portHeight = 150;
+	const portWidth = 225;
 
-import { Card } from '$lib/components/Card';
-const portHeight = 150;
-const portWidth = 225;
-
-const portfolio_cards = [
+	const portfolio_cards = [
 		{
 			front: 'Noun Gender Game',
 			back: 'A game to help language learners learn noun gender',
@@ -25,9 +24,9 @@ const portfolio_cards = [
 			front: 'Better RSS feed',
 			back: 'Prioritize certain words or phrases, see the most relevant stories first.',
 			link: '/portfolio/RSSfeed'
-		},
-		
-				/*,
+		}
+
+		/*,
 		{
 			front: 'Allowance tracker',
 			back: 'An app that lets you and your child keep track of allowance, current balance and chores',
@@ -47,37 +46,31 @@ const portfolio_cards = [
 </script>
 
 <div role="menu" class="portfolioNav">
-    {#each portfolio_cards as card}
-	<div class="card">
-        <a href={card['link']}>
-            <Card cardHeight={portHeight} cardWidth={portWidth}>
-                <div slot="content">
-                    {card['front']}
-                </div>
-                <div slot="backContent">
-                    {card['back']}
-                </div>
-            </Card>
-        </a>
-	</div>
-    {/each}
+	{#each portfolio_cards as card}
+		<div class="card">
+			<a href={card['link']}>
+				<Card cardHeight={portHeight} cardWidth={portWidth}>
+					<div slot="content">
+						{card['front']}
+					</div>
+					<div slot="backContent">
+						{card['back']}
+					</div>
+				</Card>
+			</a>
+		</div>
+	{/each}
 </div>
 
-
 <style>
-    .portfolioNav {
+	.portfolioNav {
 		width: 96%;
 		padding: 2%;
 		display: flex;
-		flex-wrap:wrap;
+		flex-wrap: wrap;
 		justify-content: space-evenly;
-	
-
 	}
 	.card {
-		padding:10px 10px;
+		padding: 10px 10px;
 	}
 </style>
-
-
-

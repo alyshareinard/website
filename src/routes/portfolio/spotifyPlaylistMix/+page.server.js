@@ -21,7 +21,6 @@ function cookieExistsAndHasValue(value, url) {
 }
 
 export async function load(url) {
-
 	let user_name = '';
 	let playlists;
 	//first we check if there is a code in the URL
@@ -38,20 +37,19 @@ export async function load(url) {
 		!cookieExistsAndHasValue('access_token', url)
 	) {
 		await refresh_token(url.cookies);
-        user_name = await get_profile(url.cookies, user_name)
+		user_name = await get_profile(url.cookies, user_name);
 		playlists = await get_playlists(url.cookies, playlists);
 	} else if (cookieExistsAndHasValue('access_token', url)) {
-        user_name = await get_profile(url.cookies, user_name)
+		user_name = await get_profile(url.cookies, user_name);
 		playlists = await get_playlists(url.cookies, playlists);
 	} else if (cookieExistsAndHasValue('code', url)) {
 		try {
 			await get_token(url);
-            user_name = await get_profile(url.cookies, user_name)
-            playlists = await get_playlists(url.cookies, playlists);
+			user_name = await get_profile(url.cookies, user_name);
+			playlists = await get_playlists(url.cookies, playlists);
 		} catch (error) {
-            console.log("Error causing redirect: ", error);
+			console.log('Error causing redirect: ', error);
 			throw redirect(303, url.url.href + '/login');
-            
 		}
 	} else {
 		console.log('no code, sending to login page');
@@ -62,13 +60,12 @@ export async function load(url) {
 		user_name,
 		playlists
 	};
- 
 }
 
 /** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ cookies, request }) => {
-        console.log("IN LOAD ACTIONS")
+		console.log('IN LOAD ACTIONS');
 		const data = await request.formData();
 		const chosen_playlists = data.get('chosen_playlists');
 		const avoid_playlists = data.get('avoid_playlists');

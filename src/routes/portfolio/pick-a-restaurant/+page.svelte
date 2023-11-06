@@ -1,14 +1,14 @@
 <script>
 	import { onMount } from 'svelte';
-    import { Loader } from '@googlemaps/js-api-loader';
+	import { Loader } from '@googlemaps/js-api-loader';
 
-    const google = new Loader({
-    apiKey: "AIzaSyCD3O5MY8snLdnPi6eBEgxvksOoeYd7ceM",
-    version: "weekly",
-    libraries: ["places"]
-    });
+	const google = new Loader({
+		apiKey: 'AIzaSyCD3O5MY8snLdnPi6eBEgxvksOoeYd7ceM',
+		version: 'weekly',
+		libraries: ['places']
+	});
 
-    console.log(google)
+	console.log(google);
 	let coffeeShops = [];
 
 	onMount(() => {

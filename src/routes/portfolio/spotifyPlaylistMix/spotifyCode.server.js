@@ -4,41 +4,39 @@ const shuffle = (array) => {
 
 async function get_songs(url, token) {
 	console.log('fetching songs from ', url);
-    let items
+	let items;
 	const response = await fetch(url, {
 		method: 'GET',
 		headers: {
 			Authorization: 'Bearer ' + token
 		}
 	});
-    console.log('************************response: ', response)
+	console.log('************************response: ', response);
 
-
-    if (response.statusText != 'OK') {
+	if (response.statusText != 'OK') {
 		console.log('Status text: ', response.statusText);
-        items=[]
-        return items
+		items = [];
+		return items;
 	} else {
-        const data  = await response.json();
-        console.log('************************response.json(): ', data)
-        items=data.items
-        console.log("ADDING ITEMS: ", items)
-        return items
-    }
-
+		const data = await response.json();
+		console.log('************************response.json(): ', data);
+		items = data.items;
+		console.log('ADDING ITEMS: ', items);
+		return items;
+	}
 }
 
 async function get_all_songs(playlist, access_token) {
-    console.log("Get all songs")
-    console.log(playlist)
-    let songs = []
-    for (let i = 0; i < playlist.length; i++) {
+	console.log('Get all songs');
+	console.log(playlist);
+	let songs = [];
+	for (let i = 0; i < playlist.length; i++) {
 		const playlist_id = playlist[i].value;
 		let more = true;
 		let url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?limit=50&fields=items(track(uri))`;
 		while (more) {
 			let items = await get_songs(url, access_token);
-            console.log("received these items from get_songs: ", items)
+			console.log('received these items from get_songs: ', items);
 			for (let i = 0; i < items.length; i++) {
 				songs.push(items[i].track.uri);
 			}
@@ -49,31 +47,28 @@ async function get_all_songs(playlist, access_token) {
 			}
 		}
 	}
-    return(songs)
+	return songs;
 }
 
 export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
-
-
 	let tracks = [];
 	chosen = eval(chosen);
 	avoid = eval(avoid);
 
 	todays_playlist = eval(todays_playlist);
 
-
 	const access_token = cookies.get('access_token');
-    let chosen_songs = await get_all_songs(chosen, access_token)
- 
-    let avoid_songs = await get_all_songs(avoid, access_token)
+	let chosen_songs = await get_all_songs(chosen, access_token);
 
-    tracks= chosen_songs.filter((item) => !avoid_songs.includes(item))
+	let avoid_songs = await get_all_songs(avoid, access_token);
+
+	tracks = chosen_songs.filter((item) => !avoid_songs.includes(item));
 
 	//    console.log("These are the track URIS: ", tracks)
 
 	const todays_id = todays_playlist[0].value;
 
-    tracks = [...new Set(tracks)];
+	tracks = [...new Set(tracks)];
 
 	tracks = shuffle(tracks);
 	tracks = tracks.slice(0, 100);
@@ -87,8 +82,7 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 		}
 	});
 
-
-	return("All done!  Go check out your playlist in Spotify.");
+	return 'All done!  Go check out your playlist in Spotify.';
 }
 
 export async function get_playlists(cookies, playlists) {
@@ -113,7 +107,6 @@ export async function get_playlists(cookies, playlists) {
 		let data = await response.json();
 		let nextURL = data.next;
 		while (nextURL) {
-
 			const url = data.next;
 			const response = await fetch(url, {
 				headers: {
@@ -125,7 +118,7 @@ export async function get_playlists(cookies, playlists) {
 			nextURL = more_playlists.next;
 		}
 
-//		console.log(data.items);
+		//		console.log(data.items);
 		return data.items;
 	}
 }

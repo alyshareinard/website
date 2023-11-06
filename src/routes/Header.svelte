@@ -37,10 +37,7 @@
 
 	<div class="rightCorner">
 		<button><a href="/login">login</a> </button>
-		
-		
 	</div>
-
 </header>
 
 <style>
@@ -51,14 +48,13 @@
 	}
 
 	.corner {
-		float:left;
+		float: left;
 		width: 5em;
 	}
 	.rightCorner {
-		float:right;
+		float: right;
 		display: flex;
 		flex-wrap: wrap;
-
 	}
 	.shortTitle {
 		display: none;
@@ -69,9 +65,9 @@
 		object-fit: contain;
 	}
 	button {
-		font-size:12px;
-		padding:5px;
-		margin:5px;
+		font-size: 12px;
+		padding: 5px;
+		margin: 5px;
 	}
 
 	@keyframes textShine {
@@ -131,7 +127,8 @@
 		border-top: var(--size) solid var(--accent);
 	}
 
-	nav a, button a {
+	nav a,
+	button a {
 		display: flex;
 		align-items: center;
 		color: white;
@@ -144,7 +141,6 @@
 		font-size: 0.8rem;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
-
 	}
 
 	a:hover {
@@ -175,17 +171,15 @@
 			display: none;
 		}
 		.rightCorner {
-
 			width: 5em;
-			height:5em;
+			height: 5em;
 			top: 0;
 		}
 		.navdiv {
-
-		border-top: none;
-		border-bottom: none;
-		border-left: solid;
-		border-right: solid;
-	}
+			border-top: none;
+			border-bottom: none;
+			border-left: solid;
+			border-right: solid;
+		}
 	}
 </style>

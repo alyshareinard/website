@@ -5,9 +5,9 @@
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let data;
-	let wasSubmitted=false;
+	let wasSubmitted = false;
 	let submission_status = '';
-	const serviceOptions = ["Webpage", "App", "Integration"] as const;
+	const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
 	const new_contact = z.object({
 		fname: z.string().min(2),
 		lname: z.string().min(2),
@@ -22,7 +22,7 @@
 		taintedMessage: null,
 
 		onSubmit: (event) => {
-			wasSubmitted=true;
+			wasSubmitted = true;
 			submission_status = 'submitting';
 		},
 		onUpdated: ({ form }) => {
@@ -30,14 +30,12 @@
 				submission_status = 'success';
 			} else {
 				submission_status = form.message;
-				console.log(form)
+				console.log(form);
 			}
 		},
 		delayMs: 500
 	});
 </script>
-
-
 
 <h1>What can I do for you?</h1>
 
@@ -49,11 +47,10 @@
 </p>
 <hr />
 <h2>Webpages</h2>
-<p class="darkBackground"> 
-	I can put one or several webapps together in a webpage for you.  A dashboard for internal use or, with your design,
-	an interactive webpage for your customers. I created
-	everything on this webpage myself. I code in
-	Svelte/Javascript, but can also use React.
+<p class="darkBackground">
+	I can put one or several webapps together in a webpage for you. A dashboard for internal use or,
+	with your design, an interactive webpage for your customers. I created everything on this webpage
+	myself. I code in Svelte/Javascript, but can also use React.
 </p>
 <hr />
 <h2>Integrations between platforms</h2>
@@ -68,15 +65,13 @@
 <hr />
 <h2 id="contactForm">Contact me</h2>
 <p class="darkBackground">
-	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to discuss your project.  
-	After that I'll write up a statement of work and a quote.  Once we agree to that I can get started.    
+	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to
+	discuss your project. After that I'll write up a statement of work and a quote. Once we agree to
+	that I can get started.
 </p>
 
-<div  class="container">
+<div class="container">
 	<div class="contactbox divbox">
-		
-		
-
 		{#if submission_status === 'submitting'}
 			<h3>Submitting...</h3>
 		{:else if submission_status === 'failed'}
@@ -84,7 +79,7 @@
 		{:else if submission_status === 'success'}
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
-		<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
+			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 			<form method="POST" use:enhance>
 				<div class="myform">
 					<label for="fname" class="label-short">
@@ -98,10 +93,9 @@
 						aria-label="first name"
 						placeholder=""
 						required
-				
-						{...$constraints.fname} />
+						{...$constraints.fname}
+					/>
 					{#if wasSubmitted && $errors.fname}<span class="invalid">{$errors.fname}</span>{/if}
-
 
 					<label for="lname" class="label-short">
 						<span class="label-text">Last name</span>
@@ -115,7 +109,8 @@
 						placeholder=""
 						required
 						autocomplete="off"
-						{...$constraints.lname} />
+						{...$constraints.lname}
+					/>
 					{#if wasSubmitted && $errors.lname}<span class="invalid">{$errors.lname}</span>{/if}
 
 					<label for="email" class="label-short">
@@ -130,8 +125,9 @@
 						placeholder=""
 						required
 						autocomplete="off"
-						{...$constraints.email} />
-						{#if wasSubmitted && $errors.email}<span class="invalid">{$errors.email}</span>{/if}
+						{...$constraints.email}
+					/>
+					{#if wasSubmitted && $errors.email}<span class="invalid">{$errors.email}</span>{/if}
 
 					<label for="type" class="label-short">
 						<span class="label-text">Type of service</span>
@@ -142,7 +138,6 @@
 							<option value={serviceTypes}>{serviceTypes}</option>
 						{/each}
 					</select>
-
 
 					{#if $errors.serviceTypes}<p>{$errors.serviceTypes}</p>{/if}
 
@@ -157,7 +152,8 @@
 						required
 						rows="3"
 						autocomplete="off"
-						{...$constraints.memo} />
+						{...$constraints.memo}
+					/>
 					{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
 
 					<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
@@ -201,14 +197,14 @@
 		width: fit-content;
 		height: fit-content;
 	}
-	.invalid{
-		color:red;
-		font-size:0.6rem;
+	.invalid {
+		color: red;
+		font-size: 0.6rem;
 	}
-	input{
-		width:100%;
+	input {
+		width: 100%;
 	}
 	input.btn {
-		width:auto
+		width: auto;
 	}
 </style>

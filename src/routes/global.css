@@ -1,117 +1,119 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap');
 :root {
-    --mainTheme: #008282;
-    --mainThemeLight: #3CAAAA;
-    --mainThemeDark: #005757;
-    --mainThemeLighter:#50e6e6;
-    --accent: #FFA55A;
-    --accentLight: #fae0cb;
+	--mainTheme: #008282;
+	--mainThemeLight: #3caaaa;
+	--mainThemeDark: #005757;
+	--mainThemeLighter: #50e6e6;
+	--accent: #ffa55a;
+	--accentLight: #fae0cb;
 	--sk-font: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
 		Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	--sk-font-mono: 'Fira Mono', monospace;
-    --mainThemeOpacity:rgba(60,170,170,0.6)
+	--mainThemeOpacity: rgba(60, 170, 170, 0.6);
 }
 
 html {
-    height: 100%;
+	height: 100%;
 }
 
 body {
-    color:var(--accentLight);
-    font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    accent-color: --accent;
-    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url($lib/images/background.jpg);
-    background-size: cover;
-    background-repeat:repeat-y;
-    background-color:black;
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    padding:10px;
-    flex-flow:column;
+	color: var(--accentLight);
+	font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	accent-color: --accent;
+	background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+		url($lib/images/background.jpg);
+	background-size: cover;
+	background-repeat: repeat-y;
+	background-color: black;
+	margin: 0;
+	min-height: 100vh;
+	display: flex;
+	padding: 10px;
+	flex-flow: column;
 }
-main{
-    flex-grow:1;
-    margin-bottom:50px;
+main {
+	flex-grow: 1;
+	margin-bottom: 50px;
 }
-h1, h2, h3, h4, h5,p {
-    font-family: 'Rubik', sans-serif;
-    color: var(--mainThemeLight);
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+	font-family: 'Rubik', sans-serif;
+	color: var(--mainThemeLight);
 }
 h1 {
-
-    font-size: 2em;
-    font-weight: 600;
-    margin: 0.67em 0;
-    text-align:center;
+	font-size: 2em;
+	font-weight: 600;
+	margin: 0.67em 0;
+	text-align: center;
 }
 
 h2 {
-    text-align:center;
-    font-size: 1.5em;
-    font-weight: 600;
-    margin: 0.83em 0;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: 600;
+	margin: 0.83em 0;
 }
 
 h3 {
-
-    font-size: 1.17em;
-    font-weight: 500;
-    margin: 1em 0;}
+	font-size: 1.17em;
+	font-weight: 500;
+	margin: 1em 0;
+}
 
 p {
-
-    font-size: 1.2em;
-    font-weight: 400;
-    margin: 1.33em 0;
+	font-size: 1.2em;
+	font-weight: 400;
+	margin: 1.33em 0;
 }
 a {
-    color: var(--accent);
-
+	color: var(--accent);
 }
 
 hr {
-    border: 0;
-    height: 1px;
-    background: var(--accent);
-    
+	border: 0;
+	height: 1px;
+	background: var(--accent);
 }
 
-
 .divbox {
-    background-color: var(--accentLight);
-    padding: 1rem;
-    border-radius:10px;
-    color: var(--mainThemeDark);
+	background-color: var(--accentLight);
+	padding: 1rem;
+	border-radius: 10px;
+	color: var(--mainThemeDark);
 }
 
 .darkBackground {
-    color:var(--accentLight);
-    padding-left:2%;
-    padding-right:2%;
+	color: var(--accentLight);
+	padding-left: 2%;
+	padding-right: 2%;
 }
 
-button,.btn, input::file-selector-button{
-    background: var(--mainTheme);
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px;
-
+button,
+.btn,
+input::file-selector-button {
+	background: var(--mainTheme);
+	color: white;
+	border: none;
+	padding: 10px;
+	border-radius: 5px;
+	margin: 10px;
 }
 
 button:hover {
-    cursor: pointer;
-    color: var(--accent);
-    border-color:var(--accent);
-    border-style:solid;
+	cursor: pointer;
+	color: var(--accent);
+	border-color: var(--accent);
+	border-style: solid;
 }
 
 @media (max-width: 600px) {
-    body {
-        background: none;
-        background-color:rgb(40, 40, 40);
-        
-    }
+	body {
+		background: none;
+		background-color: rgb(40, 40, 40);
+	}
 }

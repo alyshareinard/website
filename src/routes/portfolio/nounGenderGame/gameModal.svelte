@@ -64,9 +64,6 @@
 			revealColor('lightgray', backgroundColor);
 		}, 100);
 		await tick();
-		console.log('incorrect!');
-
-		console.log('wrong words', wrongWords);
 
 		await tick();
 		currentWord.id = wrongWords.length + 1;
@@ -90,9 +87,7 @@
 	}
 
 	async function handleDragStop(e) {
-		console.log(e.detail);
-		console.log(e.detail.x);
-		console.log(e.detail.y);
+
 		let mascBound = mascBox.getBoundingClientRect();
 		let femBound = femBox.getBoundingClientRect();
 

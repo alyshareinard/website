@@ -1,8 +1,9 @@
 <script>
-
 	import addToLocalStorage, { removeFromLocalStorage } from '$lib/rssLocalStorage';
 	import rssReader, { testFeed } from './rssReader';
-	import {  invalidateAll } from '$app/navigation';
+	import { invalidateAll } from '$app/navigation';
+	import { Accordion } from '$lib/components/Accordion';
+	import { tick } from 'svelte';
 
 	$: feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
 	$: poswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
@@ -12,12 +13,12 @@
 	let feedmessage = '';
 	let showFeedButton = false;
 	let title, posword, negword, importantPhrase;
-	import { Accordion } from '$lib/components/Accordion';
+	
 	export let data;
 	let { jobs } = data;
-	import { tick } from 'svelte';
+	
 	let response;
-	let showOptions=true;
+	let showOptions = true;
 
 	async function test_feed() {
 		response = await testFeed(url);
@@ -37,41 +38,37 @@
 	}
 	function addItem(name, value) {
 		addToLocalStorage(name, value);
-		if (name=='feeds') {
+		if (name == 'feeds') {
 			feeds.push(value);
-			feeds=[...feeds]
-		} else if (name=="poswords") {
+			feeds = [...feeds];
+		} else if (name == 'poswords') {
 			poswords.push(value);
-			poswords=[...poswords]
-		} else if (name=="negwords") {
+			poswords = [...poswords];
+		} else if (name == 'negwords') {
 			negwords.push(value);
-			negwords=[...negwords]
-		} else if (name=="importantPhrases") {
+			negwords = [...negwords];
+		} else if (name == 'importantPhrases') {
 			importantPhrases.push(value);
-			importantPhrases=[...importantPhrases]
+			importantPhrases = [...importantPhrases];
 		}
 	}
 	function removeItem(name, value) {
 		removeFromLocalStorage(name, value);
-		if (name=='feeds') {
+		if (name == 'feeds') {
 			feeds.splice(feeds.indexOf(value), 1);
-			feeds=[...feeds]
-		} else if (name=="poswords") {
+			feeds = [...feeds];
+		} else if (name == 'poswords') {
 			poswords.splice(poswords.indexOf(value), 1);
-			poswords=[...poswords]
-		} else if (name=="negwords") {
+			poswords = [...poswords];
+		} else if (name == 'negwords') {
 			negwords.splice(negwords.indexOf(value), 1);
-			negwords=[...negwords]
-		} else if (name=="importantPhrases") {
+			negwords = [...negwords];
+		} else if (name == 'importantPhrases') {
 			importantPhrases.splice(importantPhrases.indexOf(value), 1);
-			importantPhrases=[...importantPhrases]
+			importantPhrases = [...importantPhrases];
 		}
 	}
 
-
-	function refreshFeeds(){
-		invalidateAll();
-	}
 </script>
 
 <h1>Better RSS Reader</h1>
@@ -84,139 +81,143 @@
 	top.
 </h4>
 <button on:click={() => (showOptions = !showOptions)}>toggle options</button>
-<button on:click={() => {invalidateAll()}}>refresh feeds</button>
+<button
+	on:click={() => {
+		invalidateAll();
+	}}>refresh feeds</button
+>
 {#if showOptions}
-<div class="options">
-	<div class="my-feeds">
-		<h3>My feeds</h3>
-		{#each feeds as feed}
-			<div>
+	<div class="options">
+		<div class="my-feeds">
+			<h3>My feeds</h3>
+			{#each feeds as feed}
+				<div>
+					<button
+						class="deletebutton"
+						on:click={() => {
+							removeItem('feeds', feed);
+						}}>x</button
+					>
+					<a href={`/portfolio/RSSfeed/feed/${feed.title}?url=${feed.url}`}>{feed.title}</a>
+				</div>
+			{/each}
+		</div>
+
+		<div>
+			<input
+				type="url"
+				placeholder="Add an RSS link..."
+				bind:value={url}
+				on:input={() => {
+					if (url.length > 0) {
+						setTimeout(() => {
+							ready = true;
+						}, 250);
+					} else {
+						ready = false;
+					}
+				}}
+			/>
+			<p>{feedmessage}</p>
+			{#if ready}
+				{#await test_feed()}
+					<p>Gathering information... Please wait</p>
+				{/await}
+			{/if}
+			{#if showFeedButton}
+				<div>
+					<input bind:value={title} default={response.title} placeholder="Title" />
+				</div>
 				<button
-					class="deletebutton"
 					on:click={() => {
-						removeItem('feeds', feed);
-					}}>x</button
+						addItem('feeds', {
+							title: title || response.title,
+							url: url,
+							format: response.format
+						});
+					}}>Add to My Feeds</button
 				>
-				<a href={`/portfolio/RSSfeed/feed/${feed.title}?url=${feed.url}`}>{feed.title}</a>
+			{/if}
+		</div>
+
+		<div class="wordlists">
+			<div id="poswords" class="wordlist">
+				<h3>Words I'm looking for</h3>
+				{#each poswords as word}
+					<div>
+						<button
+							class="deletebutton"
+							on:click={() => {
+								removeItem('poswords', word);
+							}}>x</button
+						>{word}
+					</div>
+				{/each}
+
+				<input
+					type="string"
+					placeholder="enter desired word"
+					bind:value={posword}
+					on:input={() => {}}
+				/>
+				<button
+					on:click={() => {
+						addItem('poswords', posword);
+					}}>Add</button
+				>
 			</div>
-		{/each}
-	</div>
+			<div class="wordlist">
+				<h3>Words I'm not interested in</h3>
+				{#each negwords as word}
+					<div>
+						<button
+							class="deletebutton"
+							on:click={() => {
+								removeItem('negwords', word);
+							}}>x</button
+						>{word}
+					</div>
+				{/each}
 
-	<div>
-		<input
-			type="url"
-			placeholder="Add an RSS link..."
-			bind:value={url}
-			on:input={() => {
-				if (url.length > 0) {
-					setTimeout(() => {
-						ready = true;
-					}, 250);
-				} else {
-					ready = false;
-				}
-			}}
-		/>
-		<p>{feedmessage}</p>
-		{#if ready}
-			{#await test_feed()}
-				<p>Gathering information... Please wait</p>
-			{/await}
-		{/if}
-		{#if showFeedButton}
-			<div>
-				<input bind:value={title} default={response.title} placeholder="Title" />
+				<input
+					type="string"
+					placeholder="enter undesired word"
+					bind:value={negword}
+					on:input={() => {}}
+				/>
+				<button
+					on:click={() => {
+						addItem('negwords', negword);
+					}}>Add</button
+				>
 			</div>
-			<button
-				on:click={() => { 
-					addItem('feeds', {
-						title: title || response.title,
-						url: url,
-						format: response.format
-					});
-				}}>Add to My Feeds</button
-			>
-		{/if}
-	</div>
+			<div class="wordlist">
+				<h3>Pull to subtitle phrases starting with... (experimental)</h3>
+				{#each importantPhrases as phrase}
+					<div>
+						<button
+							class="deletebutton"
+							on:click={() => {
+								removeItem('importantPhrases', phrase);
+							}}>x</button
+						>{phrase}
+					</div>
+				{/each}
 
-	<div class="wordlists">
-		<div id="poswords" class="wordlist">
-			<h3>Words I'm looking for</h3>
-			{#each poswords as word}
-				<div>
-					<button
-						class="deletebutton"
-						on:click={() => {
-							removeItem('poswords', word);
-						}}>x</button
-					>{word}
-				</div>
-			{/each}
-
-			<input
-				type="string"
-				placeholder="enter desired word"
-				bind:value={posword}
-				on:input={() => {}}
-			/>
-			<button
-				on:click={() => {
-					addItem('poswords', posword);
-				}}>Add</button
-			>
-		</div>
-		<div class="wordlist">
-			<h3>Words I'm not interested in</h3>
-			{#each negwords as word}
-				<div>
-					<button
-						class="deletebutton"
-						on:click={() => {
-							removeItem('negwords', word);
-						}}>x</button
-					>{word}
-				</div>
-			{/each}
-
-			<input
-				type="string"
-				placeholder="enter undesired word"
-				bind:value={negword}
-				on:input={() => {}}
-			/>
-			<button
-				on:click={() => {
-					addItem('negwords', negword);
-				}}>Add</button
-			>
-		</div>
-		<div class="wordlist">
-			<h3>Pull to subtitle phrases starting with... (experimental)</h3>
-			{#each importantPhrases as phrase}
-				<div>
-					<button
-						class="deletebutton"
-						on:click={() => {
-							removeItem('importantPhrases', phrase);
-						}}>x</button
-					>{phrase}
-				</div>
-			{/each}
-
-			<input
-				type="string"
-				placeholder="important phrase"
-				bind:value={importantPhrase}
-				on:input={() => {}}
-			/>
-			<button
-				on:click={() => {
-					addItem('importantPhrases', importantPhrase);
-				}}>Add</button
-			>
+				<input
+					type="string"
+					placeholder="important phrase"
+					bind:value={importantPhrase}
+					on:input={() => {}}
+				/>
+				<button
+					on:click={() => {
+						addItem('importantPhrases', importantPhrase);
+					}}>Add</button
+				>
+			</div>
 		</div>
 	</div>
-</div>
 {/if}
 {#if jobs}
 	{#each jobs as job}

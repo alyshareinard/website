@@ -2,17 +2,15 @@
 	import { analyticsStore } from '$lib/stores/analyticsStore';
 
 	const new_event = {
-		id: "any-random-id",
+		id: 'any-random-id',
 		data: {}, //anything you want to send to GA,
-		event: "name-of-your-event",
-		type: "event",
-	}
-	analyticsStore.update(existing_events => [ ...existing_events, new_event ]) 
+		event: 'name-of-your-event',
+		type: 'event'
+	};
+	analyticsStore.update((existing_events) => [...existing_events, new_event]);
 	import { enhance } from '$app/forms';
 	import MultiSelect from 'svelte-multiselect';
 	export let data;
-	console.log(data);
-	console.log(data.user_name);
 
 	let playlist_choices = [];
 	if (data.playlists) {
@@ -20,8 +18,8 @@
 			playlist_choices.push({ label: data.playlists[i].name, value: data.playlists[i].id });
 		}
 	} else {
-        playlist_choices = [{label:"Nothing here -- contact admin"}]
-    }
+		playlist_choices = [{ label: 'Nothing here -- contact admin' }];
+	}
 
 	let chosen_playlists = [];
 	let avoid_playlists = [];
@@ -31,10 +29,9 @@
 	$: if (todays_playlist && todays_playlist.length > 0) {
 		let todays_playlist0 = todays_playlist[0];
 		todays_playlist_label = todays_playlist0.label;
-		console.log('Todays Playlist:', todays_playlist_label);
+
 	}
 </script>
-
 
 <p>
 	Hello {data.user_name}
@@ -81,9 +78,7 @@
 
 	<div style="margin-top:20px" />
 	<label for="todays_playlist">
-		<strong
-			>And which playlist will be used for this mix (existing songs will be replaced)?</strong
-		>
+		<strong>And which playlist will be used for this mix (existing songs will be replaced)?</strong>
 	</label>
 	<MultiSelect
 		--sms-options-bg="#333"
@@ -123,8 +118,8 @@
 		</div>
 
 		<h4>
-			Your new mix will be created in (ALL songs currently in this playlist will be removed): <span style="color:var(--accent)"
-				>{todays_playlist_label}</span
+			Your new mix will be created in (ALL songs currently in this playlist will be removed): <span
+				style="color:var(--accent)">{todays_playlist_label}</span
 			>
 		</h4>
 	{/if}

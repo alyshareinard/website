@@ -1,6 +1,4 @@
-<script>
-    const paperFolder="$lib/papers";
-</script>
+
 <h3>
 Education
 </h3>

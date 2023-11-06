@@ -1,7 +1,7 @@
 // spring lets you animate between values with a spring physics model
 import { spring } from "svelte/motion"
 
-export default function drag(node, params) {
+export default function drag(node) {
   let x
   let y
 

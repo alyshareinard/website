@@ -1,11 +1,8 @@
 <script>
-    import { scale, fly } from 'svelte/transition';
-	let how2play = [
-		'Drag masculine nouns into the blue box and feminine nouns into the pink box.',
-	]
-    console.log("in how to play!")
-    export let toggleHowtoPlay
-
+	import { scale, fly } from 'svelte/transition';
+	let how2play = ['Drag masculine nouns into the blue box and feminine nouns into the pink box.'];
+	console.log('in how to play!');
+	export let toggleHowtoPlay;
 </script>
 
 <div class="modal">
@@ -14,23 +11,21 @@
 			<ul>
 				<li><button on:click={toggleHowtoPlay}> Close </button></li>
 			</ul>
-		</nav>	
+		</nav>
 
-            {#each how2play as how}
-                <h4>{how}</h4>
-            {/each}
+		{#each how2play as how}
+			<h4>{how}</h4>
+		{/each}
 
-
-
-
-        <div on:click={toggleHowtoPlay} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
-    </div>
+		<div
+			on:click={toggleHowtoPlay}
+			transition:scale={{ start: 1.5, duration: 1000 }}
+			class="background"
+		/>
+	</div>
 </div>
 
 <style>
-
-
-
 	.modal {
 		position: fixed;
 		display: flex;
@@ -42,23 +37,20 @@
 		justify-content: center;
 	}
 
-    h4 {
-        color:aliceblue
-    }
+	h4 {
+		color: aliceblue;
+	}
 
 	.modalEnvelope {
 		position: fixed;
-        left:5%;
-        top:5%;
+		left: 5%;
+		top: 5%;
 		text-align: center;
-		background:grey;
+		background: grey;
 		border-radius: 10px;
-        width:30%;
-        height:fit-content;
-        
+		width: 30%;
+		height: fit-content;
 	}
-
-
 
 	nav {
 		display: flex;

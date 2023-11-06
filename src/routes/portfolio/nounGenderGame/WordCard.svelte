@@ -20,7 +20,6 @@
 			flipped = !flipped;
 		}
 	}
-
 </script>
 
 <div
@@ -29,23 +28,20 @@
 	role="cell"
 	on:click={handleClick}
 	on:keypress={handleClick}
-	
 >
 	<div class="card">
 		{#if !flipped}
-
-				<div style:background-color={backgroundColor} class="front">
-					<div style={parent_style}>
-						<h2
-							style="line-height:100%; vertical-align:middle"
-							use:fit={{ min_size: 12, max_size: 32 }}
-							class="frontText"
-						>
-							<slot name="frontContent" />
-						</h2>
-					</div>
+			<div style:background-color={backgroundColor} class="front">
+				<div style={parent_style}>
+					<h2
+						style="line-height:100%; vertical-align:middle"
+						use:fit={{ min_size: 12, max_size: 32 }}
+						class="frontText"
+					>
+						<slot name="frontContent" />
+					</h2>
 				</div>
-
+			</div>
 		{:else}
 			<div class="back" transition:flip>
 				<div style={parent_style}>
@@ -96,7 +92,7 @@
 		border-color: darkgrey;
 		border-style: solid;
 		border-width: 5px;
-		background-color:grey;
+		background-color: grey;
 	}
 
 	.back {

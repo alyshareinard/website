@@ -1,13 +1,12 @@
 <script>
-    import { scale, fly } from 'svelte/transition';
+	import { scale, fly } from 'svelte/transition';
 	let hints = [
 		'Usually nouns ending "-e" or "-ion" are feminine, nouns ending in anything else are masculine.',
-		'Except that the endings "-age", "-ège" and "-isme" are usually masculine.', 
-		'And, of course, there are other exceptions.',
-	]
-    console.log("in hints!")
-    export let toggleHints
-
+		'Except that the endings "-age", "-ège" and "-isme" are usually masculine.',
+		'And, of course, there are other exceptions.'
+	];
+	console.log('in hints!');
+	export let toggleHints;
 </script>
 
 <div class="modal">
@@ -16,23 +15,21 @@
 			<ul>
 				<li><button on:click={toggleHints}> Close </button></li>
 			</ul>
-		</nav>	
+		</nav>
 
-            {#each hints as hint}
-                <h4>{hint}</h4>
-            {/each}
+		{#each hints as hint}
+			<h4>{hint}</h4>
+		{/each}
 
-
-
-
-        <div on:click={toggleHints} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
-    </div>
+		<div
+			on:click={toggleHints}
+			transition:scale={{ start: 1.5, duration: 1000 }}
+			class="background"
+		/>
+	</div>
 </div>
 
 <style>
-
-
-
 	.modal {
 		position: fixed;
 		display: flex;
@@ -44,23 +41,20 @@
 		justify-content: center;
 	}
 
-    h4 {
-        color:aliceblue
-    }
+	h4 {
+		color: aliceblue;
+	}
 
 	.modalEnvelope {
 		position: fixed;
-        left:5%;
-        top:5%;
+		left: 5%;
+		top: 5%;
 		text-align: center;
-		background:grey;
+		background: grey;
 		border-radius: 10px;
-        width:30%;
-        height:fit-content;
-        
+		width: 30%;
+		height: fit-content;
 	}
-
-
 
 	nav {
 		display: flex;
