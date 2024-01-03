@@ -1,6 +1,16 @@
 <script>
 	import { analyticsStore } from '$lib/stores/analyticsStore';
+	import { enhance } from '$app/forms';
+	import MultiSelect from 'svelte-multiselect';
+	export let data;
+	let playlist_choices = [];
+	let chosen_playlists = [];
+	let avoid_playlists = [];
+	let todays_playlist;
+	export let form;
+	let todays_playlist_label;
 
+	
 	const new_event = {
 		id: 'any-random-id',
 		data: {}, //anything you want to send to GA,
@@ -8,11 +18,9 @@
 		type: 'event'
 	};
 	analyticsStore.update((existing_events) => [...existing_events, new_event]);
-	import { enhance } from '$app/forms';
-	import MultiSelect from 'svelte-multiselect';
-	export let data;
 
-	let playlist_choices = [];
+
+
 	if (data.playlists) {
 		for (let i = 0; i < data.playlists.length; i++) {
 			playlist_choices.push({ label: data.playlists[i].name, value: data.playlists[i].id });
@@ -21,15 +29,10 @@
 		playlist_choices = [{ label: 'Nothing here -- contact admin' }];
 	}
 
-	let chosen_playlists = [];
-	let avoid_playlists = [];
-	let todays_playlist;
-	export let form;
-	let todays_playlist_label;
+
 	$: if (todays_playlist && todays_playlist.length > 0) {
 		let todays_playlist0 = todays_playlist[0];
 		todays_playlist_label = todays_playlist0.label;
-
 	}
 </script>
 
