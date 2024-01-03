@@ -28,14 +28,14 @@ async function generateCodeChallenge(codeVerifier) {
 
 }
 async function get_code(event) {
-	event.cookies.delete('refresh_token')
+	/* @migration task: add path argument */ event.cookies.delete('refresh_token')
 
 	
 	let codeVerifier = await generateRandomString(128);
 
 	const challenge = await generateCodeChallenge(codeVerifier);
 
-	event.cookies.set('code_verifier', codeVerifier)
+	/* @migration task: add path argument */ event.cookies.set('code_verifier', codeVerifier)
 	let state = generateRandomString(16);
 	let scope = 'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played'
 

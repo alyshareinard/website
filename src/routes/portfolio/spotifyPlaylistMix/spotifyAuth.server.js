@@ -26,7 +26,7 @@ export async function refresh_token(cookies) {
 		cookies.delete('refresh_token');
 		console.log('Houston, we have a problem ');
 		console.log(response);
-		throw redirect(303, spotifyRedirectURL + 'login');
+		redirect(303, spotifyRedirectURL + 'login');
 	}
 
 	return access_token;
@@ -58,6 +58,6 @@ export async function get_token(url) {
 	} else {
 		console.log('Houston, we have a problem ');
 		console.log(response);
-		throw redirect(303, url.url.href + '/login');
+		redirect(303, url.url.href + '/login');
 	}
 }

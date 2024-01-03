@@ -27,11 +27,11 @@ export async function load(url) {
 
 	if (url.url.searchParams.has('code')) {
 		const code = url.url.searchParams.get('code');
-		url.cookies.set('code', code);
+		/* @migration task: add path argument */ url.cookies.set('code', code);
 		url.url.searchParams.set('code', null);
 		const new_url = url.url.pathname;
 
-		throw redirect(303, new_url);
+		redirect(303, new_url);
 	} else if (
 		cookieExistsAndHasValue('refresh_token', url) &&
 		!cookieExistsAndHasValue('access_token', url)
@@ -49,11 +49,11 @@ export async function load(url) {
 			playlists = await get_playlists(url.cookies, playlists);
 		} catch (error) {
 			console.log('Error causing redirect: ', error);
-			throw redirect(303, url.url.href + '/login');
+			redirect(303, url.url.href + '/login');
 		}
 	} else {
 		console.log('no code, sending to login page');
-		throw redirect(303, url.url.href + '/login');
+		redirect(303, url.url.href + '/login');
 	}
 
 	return {
