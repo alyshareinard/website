@@ -2,7 +2,6 @@
 	import { PUBLIC_CANONICAL_ORIGIN } from '$env/static/public';
 	import { page } from '$app/stores';
 	import  decorate  from '$lib/utils/decorate';
-
 	
 	export let data;
 </script>

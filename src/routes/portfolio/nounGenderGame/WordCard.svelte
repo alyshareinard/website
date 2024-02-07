@@ -35,7 +35,7 @@
 				<div style={parent_style}>
 					<h2
 						style="line-height:100%; vertical-align:middle"
-						use:fit={{ min_size: 12, max_size: 32 }}
+						use:fit={{ min_size: 12, max_size: 24 }}
 						class="frontText"
 					>
 						<slot name="frontContent" />
