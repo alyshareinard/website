@@ -50,6 +50,7 @@
 	</div>
 </div>
 
+
 <style>
 	.backText {
 		color: var(--mainTheme);
@@ -94,4 +95,4 @@
 	h2 {
 		color: #fff;
 	}
-</script>
+</style>

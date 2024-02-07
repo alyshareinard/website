@@ -23,7 +23,8 @@
 	let nextCardVis = true;
 	$: backgroundColor = 'purple';
 	let wrongAnswer = false;
-
+	const showImage = false;
+	let seenWords = [];
 	let ansMasVis = false;
 	let ansFemVis = false;
 	let makeConfetti = false;
@@ -31,6 +32,14 @@
 	$: mybackground = 'lightgray';
 	let nextWord = randomWord();
 	let currentWord = nextWord;
+
+	const images = import.meta.glob('$lib/nounImages/*.webp', { eager: true, as: 'url' });
+	const imagekeys = Object.keys(images).map((key) => images[key].default);
+//	console.log(images);
+
+	function getImgUrl(fileName) {
+		return imagekeys.find((key) => key.includes(fileName));
+	}
 
 	function refresh() {
 		unique = {};
@@ -40,6 +49,14 @@
 	function randomWord() {
 		let random = Math.floor(Math.random() * words.length);
 		let nextWord = words[random];
+		while (seenWords.includes(nextWord)) {
+			
+			random = Math.floor(Math.random() * words.length);
+			nextWord = words[random];
+		}
+
+		seenWords.push(nextWord);
+
 		return nextWord;
 	}
 
@@ -87,7 +104,6 @@
 	}
 
 	async function handleDragStop(e) {
-
 		let mascBound = mascBox.getBoundingClientRect();
 		let femBound = femBox.getBoundingClientRect();
 
@@ -146,7 +162,7 @@
 		scoreStore.set(correctWords.length);
 		if (correctWords.length + wrongWords.length > 0) {
 			percCorrectStore.set(
-				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
+				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length)),
 			);
 		}
 
@@ -173,7 +189,7 @@
 			duration: 200,
 			delay: 100,
 
-			css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`
+			css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`,
 		};
 	}
 	function outAnimation() {
@@ -183,20 +199,22 @@
 				duration: 200,
 				delay: 100,
 
-				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`
+				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`,
 			};
 		} else {
 			return {
 				duration: 200,
 				delay: 100,
 
-				css: (t) => `transform: fade(${t});`
+				css: (t) => `transform: fade(${t});`,
 			};
 		}
 	}
 	function resetGame() {
 		showSummary = false;
 		wrongWords = [];
+		wrongWordsDisplay = [];
+		seenWords = [];
 		correctWords = [];
 		scoreStore.set(0);
 		percCorrectStore.set(0);
@@ -207,15 +225,15 @@
 	<div class="modalEnvelope" transition:fly={{ y: 40 }}>
 		<nav>
 			<ul>
-				<li><button on:click={toggleHowtoPlay}> How to play </button></li>
-				<li><button on:click={toggleHints}> Hints </button></li>
-				<li><button on:click={toggleGame}> Close </button></li>
+				<li><button on:click={toggleHowtoPlay}>How to play</button></li>
+				<li><button on:click={toggleHints}>Hints</button></li>
+				<li><button on:click={toggleGame}>Close</button></li>
 			</ul>
 		</nav>
 		{#if showSummary}
-			{#if percCorrectStore > 80}
+			{#if $percCorrectStore > 80.0}
 				<h2>Great job!</h2>
-			{:else if percCorrectStore > 50}
+			{:else if $percCorrectStore > 50.0}
 				<h2>Not bad!</h2>
 			{:else}
 				<h2>Better luck next time</h2>
@@ -223,6 +241,8 @@
 			<h4>You got {correctWords.length} out of {numWords}</h4>
 			<h4>{$percCorrectStore}% correct</h4>
 			<button on:click={resetGame}>Play again?</button>
+		{:else if showImage}
+			<img src="$lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
 		{:else}
 			<div bind:this={mascBox} class="answerBoxMasc">
 				<div class="helpWordsMasc uncss">Un</div>
@@ -244,12 +264,8 @@
 			<div bind:this={femBox} class="answerBoxFem">
 				<div class="helpWordsFem unecss">Une</div>
 				<div class="helpWordsFem lacss">La</div>
-				<div class="helpWordsFem alacss">
-					à la
-				</div>
-				<div class="helpWordsFem delacss">
-					de la
-				</div>
+				<div class="helpWordsFem alacss">à la</div>
+				<div class="helpWordsFem delacss">de la</div>
 				{#if ansFemVis}
 					<div class="answerCardFem" out:outAnimation>
 						<WordCard backgroundColor={mybackground}>
@@ -280,7 +296,17 @@
 					>
 						<WordCard backgroundColor={word.gender == 'M' ? 'lightblue' : 'pink'}>
 							<div slot="frontContent">
-								{word.FR}
+								<div class="wordImageContainer">
+									<div class="top">
+									{word.FR}
+									</div>
+									<div class="bottom">
+										<img
+											src="/src/lib/nounImages/{word.imageFile}"
+											alt={word.FR}
+										/>
+									</div>
+								</div>
 							</div>
 
 							<div slot="backContent">
@@ -314,7 +340,7 @@
 							force: 0.5,
 							stageWidth: window.innerWidth,
 							stageHeight: window.innerHeight,
-							colors: [confettiColor]
+							colors: [confettiColor],
 						}}
 					/>
 				{/if}
@@ -327,14 +353,18 @@
 							force: 0.9,
 							stageWidth: window.innerWidth,
 							stageHeight: window.innerHeight,
-							colors: ['pink', 'lightblue']
+							colors: ['pink', 'lightblue'],
 						}}
 					/>
 				{/if}
 			</div>
 		{/if}
 	</div>
-	<div on:click={toggleGame} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
+	<div
+		on:click={toggleGame}
+		transition:scale={{ start: 1.5, duration: 1000 }}
+		class="background"
+	/>
 </div>
 
 <style>
@@ -345,8 +375,6 @@
 		justify-content: center;
 		align-items: center;
 	}
-
-
 
 	.answerCardFem,
 	.answerCardMasc {
@@ -364,14 +392,15 @@
 	}
 
 	.wrongWordsBox {
+	
 		width: 60%;
-		height: 20%;
+		aspect-ratio:2.5;
 		margin-left: 1%;
 		margin-right: 1%;
 		background: grey;
 		position: absolute;
 		left: 20%;
-		bottom: 10%;
+		bottom: 20px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -392,18 +421,34 @@
 
 	.wordContainer {
 		width: 20%;
-		height: 10%;
+		aspect-ratio:4;
 		position: absolute;
+		align-items:center;
+		justify-items:center;
 		top: 15%;
 		left: 40%;
 	}
+	.wordImageContainer {
+		width: 100%;
+		height: 100%;
+	}
+
 	.flexWordContainer {
-		width: 29%;
-		height: 80%;
+		width:29%;
 		margin-right: 3%;
 		margin-left: 1%;
 		margin-top: 1%;
 		position: relative;
+	}
+	.bottom {
+		position: absolute;
+		bottom: 0;
+		z-index:3;
+	}
+	.top {
+		position: absolute;
+		top: 0;
+		z-index:4;
 	}
 
 	.modalEnvelope {
@@ -447,32 +492,43 @@
 		position: relative;
 	}
 	.uncss {
-		top:10px; transform:rotate(13deg)
+		top: 10px;
+		transform: rotate(13deg);
 	}
 	.aucss {
-		top:0%; left:20%; transform:rotate(41deg)
+		top: 0%;
+		left: 20%;
+		transform: rotate(41deg);
 	}
 	.lecss {
-		top:30%; right:20%; transform:rotate(-26deg)
+		top: 30%;
+		right: 20%;
+		transform: rotate(-26deg);
 	}
 	.ducss {
-		top:25%; left:-5px; transform:rotate(-40deg)
+		top: 25%;
+		left: -5px;
+		transform: rotate(-40deg);
 	}
 
 	.lacss {
-		top:30%; right:20%; transform:rotate(26deg)
+		top: 30%;
+		right: 20%;
+		transform: rotate(26deg);
 	}
 	.alacss {
-		top:10%; left:20%; transform:rotate(21deg)
-		
+		top: 10%;
+		left: 20%;
+		transform: rotate(21deg);
 	}
 	.delacss {
-		top:25%; left:-5px; transform:rotate(-20deg)
-		
+		top: 25%;
+		left: -5px;
+		transform: rotate(-20deg);
 	}
 	.unecss {
-		
-		top:10%;  transform:rotate(-40deg)
+		top: 10%;
+		transform: rotate(-40deg);
 	}
 	.helpWordsFem {
 		color: rgb(249, 90, 117);
@@ -514,25 +570,27 @@
 		height: 100%;
 		margin: 2px;
 	}
+	img {
+		
+		width: 90%;
 
-	@media (max-width: 700px) or (max-height:700px) {
+		
+		
+	}
 
-
+	@media (max-width: 700px) or (max-height: 700px) {
 		.modalEnvelope {
-		height: 100%;
-		width: 100%;
-		overflow: hidden;
+			height: 100%;
+			width: 100%;
+			overflow: hidden;
+		}
 	}
-	
-	}
-	@media (max-width: 400px) or (max-height:400px)  {
+	@media (max-width: 400px) or (max-height: 400px) {
 		.helpWordsFem {
-		font-size: 1.5em;
+			font-size: 1.5em;
 		}
 		.helpWordsMasc {
-		font-size: 1.5em;
+			font-size: 1.5em;
 		}
-
-	
 	}
 </style>

@@ -11,7 +11,7 @@
 			css: (t, u) => `
 				transform: rotateY(${1 - u * 180}deg);
 				opacity: ${1 - u};
-			`
+			`,
 		};
 	}
 
@@ -35,7 +35,7 @@
 				<div style={parent_style}>
 					<h2
 						style="line-height:100%; vertical-align:middle"
-						use:fit={{ min_size: 12, max_size: 24 }}
+						use:fit={{ min_size: 12, max_size: 20 }}
 						class="frontText"
 					>
 						<slot name="frontContent" />
@@ -47,7 +47,7 @@
 				<div style={parent_style}>
 					<h2
 						style="line-height:100%; vertical-align:middle"
-						use:fit={{ min_size: 12, max_size: 32 }}
+						use:fit={{ min_size: 12, max_size: 24 }}
 						class="backText"
 					>
 						<slot name="backContent" />
@@ -66,7 +66,7 @@
 	}
 	.frontText {
 		color: black;
-		margin: 5%;
+		margin: 0%;
 	}
 	.card-container {
 		width: 100%;
@@ -82,7 +82,7 @@
 	.back {
 		position: absolute;
 		width: 100%;
-		height: 100%;
+		height: 90%;
 		-webkit-backface-visibility: hidden; /* Safari */
 		backface-visibility: hidden;
 		box-shadow: -1px 1px 3px black;
