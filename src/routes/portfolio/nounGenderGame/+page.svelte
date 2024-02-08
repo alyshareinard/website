@@ -1,8 +1,8 @@
 <script>
 	import GameModal from './gameModal.svelte';
 	
-	import leChat from '/static/nounImages/leChat.webp';
-	import uneHorlage from '/static/nounImages/uneHorlage.webp';
+	import leChat from '$lib/nounImages/leChat.webp';
+	import uneHorlage from '$lib/nounImages/uneHorlage.webp';
 	import Hints from './hints.svelte';
 	import HowtoPlay from './howToPlay.svelte';
 
@@ -101,8 +101,7 @@
 	.pinkborder {
 		float: left;
 		border: 5px solid pink;
-		width: 15%;
-		height: 15%;
+		width: 25%;
 		max-width: 170px;
 		margin-right: 10px;
 	}

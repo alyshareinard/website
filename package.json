@@ -39,6 +39,7 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"@sendgrid/mail": "^8.1.0",
 		"@sentry/sveltekit": "^7.91.0",
+		"@vercel/blob": "^0.21.0",
 		"cookie": "^0.5.0",
 		"d3-interpolate": "^3.0.1",
 		"dotenv": "^16.3.1",

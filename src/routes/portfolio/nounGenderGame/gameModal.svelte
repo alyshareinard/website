@@ -33,9 +33,14 @@
 	let nextWord = randomWord();
 	let currentWord = nextWord;
 
-	const images = import.meta.glob('/static/nounImages/*.webp', { eager: true, as: 'url' });
+	const images = import.meta.glob('$lib/nounImages/*.webp', {
+		eager: true,
+		query: {
+			enhanced: true
+		}
+	});
 	const imagekeys = Object.keys(images).map((key) => images[key].default);
-//	console.log(images);
+	//	console.log(images);
 
 	function getImgUrl(fileName) {
 		return imagekeys.find((key) => key.includes(fileName));
@@ -50,7 +55,6 @@
 		let random = Math.floor(Math.random() * words.length);
 		let nextWord = words[random];
 		while (seenWords.includes(nextWord)) {
-			
 			random = Math.floor(Math.random() * words.length);
 			nextWord = words[random];
 		}
@@ -162,7 +166,7 @@
 		scoreStore.set(correctWords.length);
 		if (correctWords.length + wrongWords.length > 0) {
 			percCorrectStore.set(
-				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length)),
+				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
 			);
 		}
 
@@ -189,7 +193,7 @@
 			duration: 200,
 			delay: 100,
 
-			css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`,
+			css: (u) => `transform: scale(${u}) rotate(${u * degrees}deg);`
 		};
 	}
 	function outAnimation() {
@@ -199,14 +203,14 @@
 				duration: 200,
 				delay: 100,
 
-				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`,
+				css: (t) => `transform: scale(${t}) rotate(${t * degrees}deg);`
 			};
 		} else {
 			return {
 				duration: 200,
 				delay: 100,
 
-				css: (t) => `transform: fade(${t});`,
+				css: (t) => `transform: fade(${t});`
 			};
 		}
 	}
@@ -242,7 +246,7 @@
 			<h4>{$percCorrectStore}% correct</h4>
 			<button on:click={resetGame}>Play again?</button>
 		{:else if showImage}
-			<img src="/static/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
+			<img src="/src/lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
 		{:else}
 			<div bind:this={mascBox} class="answerBoxMasc">
 				<div class="helpWordsMasc uncss">Un</div>
@@ -298,13 +302,10 @@
 							<div slot="frontContent">
 								<div class="wordImageContainer">
 									<div class="top">
-									{word.FR}
+										{word.FR}
 									</div>
 									<div class="bottom">
-										<img
-											src="/static/nounImages/{word.imageFile}"
-											alt={word.FR}
-										/>
+										<img src="/src/lib/nounImages/{word.imageFile}" alt={word.FR} />
 									</div>
 								</div>
 							</div>
@@ -340,7 +341,7 @@
 							force: 0.5,
 							stageWidth: window.innerWidth,
 							stageHeight: window.innerHeight,
-							colors: [confettiColor],
+							colors: [confettiColor]
 						}}
 					/>
 				{/if}
@@ -353,18 +354,14 @@
 							force: 0.9,
 							stageWidth: window.innerWidth,
 							stageHeight: window.innerHeight,
-							colors: ['pink', 'lightblue'],
+							colors: ['pink', 'lightblue']
 						}}
 					/>
 				{/if}
 			</div>
 		{/if}
 	</div>
-	<div
-		on:click={toggleGame}
-		transition:scale={{ start: 1.5, duration: 1000 }}
-		class="background"
-	/>
+	<div on:click={toggleGame} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
 </div>
 
 <style>
@@ -392,9 +389,8 @@
 	}
 
 	.wrongWordsBox {
-	
 		width: 60%;
-		aspect-ratio:2.5;
+		aspect-ratio: 2.5;
 		margin-left: 1%;
 		margin-right: 1%;
 		background: grey;
@@ -421,10 +417,10 @@
 
 	.wordContainer {
 		width: 20%;
-		aspect-ratio:4;
+		aspect-ratio: 4;
 		position: absolute;
-		align-items:center;
-		justify-items:center;
+		align-items: center;
+		justify-items: center;
 		top: 15%;
 		left: 40%;
 	}
@@ -434,7 +430,7 @@
 	}
 
 	.flexWordContainer {
-		width:29%;
+		width: 29%;
 		margin-right: 3%;
 		margin-left: 1%;
 		margin-top: 1%;
@@ -443,12 +439,12 @@
 	.bottom {
 		position: absolute;
 		bottom: 0;
-		z-index:3;
+		z-index: 3;
 	}
 	.top {
 		position: absolute;
 		top: 0;
-		z-index:4;
+		z-index: 4;
 	}
 
 	.modalEnvelope {
@@ -571,11 +567,7 @@
 		margin: 2px;
 	}
 	img {
-		
 		width: 90%;
-
-		
-		
 	}
 
 	@media (max-width: 700px) or (max-height: 700px) {
