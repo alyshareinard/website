@@ -96,6 +96,8 @@
 		}, 100);
 		await tick();
 		currentWord.image = imagekeys.find((key) => key.includes(currentWord.imageFile));
+		console.log("current imageFile", currentWord.imageFile)
+		console.log("current imageFile", currentWord.image)
 		await tick();
 		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
