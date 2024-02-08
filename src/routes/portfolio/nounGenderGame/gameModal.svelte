@@ -36,9 +36,7 @@
 
 	const images = import.meta.glob('$lib/nounImages/*.webp', {
 		eager: true,
-		query: {
-			enhanced: true
-		}
+		as: 'url'
 	});
 	let imagekeys=[]
 	console.log(images)
