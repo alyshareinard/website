@@ -33,7 +33,7 @@
 	let nextWord = randomWord();
 	let currentWord = nextWord;
 
-	const images = import.meta.glob('$lib/nounImages/*.webp', { eager: true, as: 'url' });
+	const images = import.meta.glob('/static/nounImages/*.webp', { eager: true, as: 'url' });
 	const imagekeys = Object.keys(images).map((key) => images[key].default);
 //	console.log(images);
 
@@ -242,7 +242,7 @@
 			<h4>{$percCorrectStore}% correct</h4>
 			<button on:click={resetGame}>Play again?</button>
 		{:else if showImage}
-			<img src="$lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
+			<img src="/static/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
 		{:else}
 			<div bind:this={mascBox} class="answerBoxMasc">
 				<div class="helpWordsMasc uncss">Un</div>
@@ -302,7 +302,7 @@
 									</div>
 									<div class="bottom">
 										<img
-											src="/src/lib/nounImages/{word.imageFile}"
+											src="/static/nounImages/{word.imageFile}"
 											alt={word.FR}
 										/>
 									</div>
