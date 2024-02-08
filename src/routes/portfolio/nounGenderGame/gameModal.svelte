@@ -95,9 +95,11 @@
 			revealColor('lightgray', backgroundColor);
 		}, 100);
 		await tick();
-		currentWord.image = imagekeys.find((key) => key.includes(currentWord.imageFile));
+		currentWord.fileName = (currentWord.imageFile).split()[0]
+		console.log("currentword file name", currentWord.fileName)
+		currentWord.image = imagekeys.find((key) => key.includes(currentWord.fileName));
 		console.log("current imageFile", currentWord.imageFile)
-		console.log("current imageFile", currentWord.image)
+		console.log("current image", currentWord.image)
 		await tick();
 		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
