@@ -8,6 +8,7 @@
 	import { flip } from 'svelte/animate';
 	import WordCard from './WordCard.svelte';
 	import { words } from '$lib/db/words';
+
 	let numWords = 10;
 	let unique = {};
 	export let toggleGame;
@@ -39,12 +40,22 @@
 			enhanced: true
 		}
 	});
-	const imagekeys = Object.keys(images).map((key) => images[key].default);
-	//	console.log(images);
-
-	function getImgUrl(fileName) {
-		return imagekeys.find((key) => key.includes(fileName));
+	let imagekeys=[]
+	console.log(images)
+	if (images) {
+		imagekeys = Object.keys(images).map((key) => images[key].default);
 	}
+	console.log(imagekeys)
+/*
+	function getImageURL(fileName){
+		
+		if (imagekeys.length>0){
+			console.log('in getimageurl, filename is ', fileName);
+		return imagekeys.find((key) => key.includes(fileName));
+		} else {
+			return null;
+		}
+	};*/
 
 	function refresh() {
 		unique = {};
@@ -58,7 +69,6 @@
 			random = Math.floor(Math.random() * words.length);
 			nextWord = words[random];
 		}
-
 		seenWords.push(nextWord);
 
 		return nextWord;
@@ -85,7 +95,7 @@
 			revealColor('lightgray', backgroundColor);
 		}, 100);
 		await tick();
-
+		currentWord.image = imagekeys.find((key) => key.includes(currentWord.imageFile));
 		await tick();
 		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
@@ -305,7 +315,7 @@
 										{word.FR}
 									</div>
 									<div class="bottom">
-										<enhanced:img src="/src/lib/nounImages/{word.imageFile}" alt={word.FR} />
+										<img src="{word.image}" alt={word.FR} />
 									</div>
 								</div>
 							</div>
