@@ -95,7 +95,7 @@
 			revealColor('lightgray', backgroundColor);
 		}, 100);
 		await tick();
-		currentWord.fileName = (currentWord.imageFile).split()[0]
+		currentWord.fileName = (currentWord.imageFile).split('.')[0]
 		console.log("currentword file name", currentWord.fileName)
 		currentWord.image = imagekeys.find((key) => key.includes(currentWord.fileName));
 		console.log("current imageFile", currentWord.imageFile)
