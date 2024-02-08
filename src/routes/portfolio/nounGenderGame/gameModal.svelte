@@ -246,7 +246,7 @@
 			<h4>{$percCorrectStore}% correct</h4>
 			<button on:click={resetGame}>Play again?</button>
 		{:else if showImage}
-			<img src="/src/lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
+			<enhanced:img src="/src/lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
 		{:else}
 			<div bind:this={mascBox} class="answerBoxMasc">
 				<div class="helpWordsMasc uncss">Un</div>
@@ -305,7 +305,7 @@
 										{word.FR}
 									</div>
 									<div class="bottom">
-										<img src="/src/lib/nounImages/{word.imageFile}" alt={word.FR} />
+										<enhanced:img src="/src/lib/nounImages/{word.imageFile}" alt={word.FR} />
 									</div>
 								</div>
 							</div>
