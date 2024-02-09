@@ -410,7 +410,7 @@
 		background: grey;
 		position: absolute;
 		left: 20%;
-		bottom: 20px;
+		bottom: 10px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -420,13 +420,14 @@
 	.modal {
 		position: fixed;
 		display: flex;
+		aspect-ratio:1.5;
 		width: 100%;
-		height: 100%;
 		left: 0;
 		top: 0;
 		align-items: center;
 		justify-content: center;
 		overscroll-behavior: none;
+
 	}
 
 	.wordContainer {
@@ -485,7 +486,7 @@
 	.answerBoxMasc,
 	.answerBoxFem {
 		width: 30%;
-		height: 50%;
+		height: 40%;
 		margin-left: 10px;
 		margin-right: 10px;
 		position: absolute;
@@ -501,51 +502,51 @@
 	}
 	.helpWordsMasc {
 		color: rgb(12, 150, 196);
-		font-size: 2rem;
+		font-size: 1.8rem;
 		position: relative;
 	}
 	.uncss {
-		top: 10px;
+		top: 8px;
 		transform: rotate(13deg);
 	}
 	.aucss {
-		top: 0%;
-		left: 20%;
+		top: -4%;
+		left: 25%;
 		transform: rotate(41deg);
 	}
 	.lecss {
-		top: 30%;
+		top: 25%;
 		right: 20%;
 		transform: rotate(-26deg);
 	}
 	.ducss {
-		top: 25%;
+		top: 15%;
 		left: -5px;
 		transform: rotate(-40deg);
 	}
 
 	.lacss {
-		top: 30%;
+		top: 25%;
 		right: 20%;
 		transform: rotate(26deg);
 	}
 	.alacss {
-		top: 10%;
+		top: 0%;
 		left: 20%;
 		transform: rotate(21deg);
 	}
 	.delacss {
-		top: 25%;
+		top: 10%;
 		left: -5px;
 		transform: rotate(-20deg);
 	}
 	.unecss {
-		top: 10%;
+		top: 8%;
 		transform: rotate(-40deg);
 	}
 	.helpWordsFem {
 		color: rgb(249, 90, 117);
-		font-size: 2em;
+		font-size: 1.8em;
 		position: relative;
 	}
 	.scoreBox {
@@ -587,7 +588,7 @@
 		width: 90%;
 	}
 
-	@media (max-width: 700px) {
+	@media (max-width: 1000px) {
 		.modalEnvelope {
 			height: 100%;
 			width: 100%;
