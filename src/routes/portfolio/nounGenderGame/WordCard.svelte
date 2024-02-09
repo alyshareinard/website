@@ -83,7 +83,7 @@
 	.back {
 		position: absolute;
 		width: 100%;
-		height: 90%;
+		height: 95%;
 		-webkit-backface-visibility: hidden; /* Safari */
 		backface-visibility: hidden;
 		box-shadow: -1px 1px 3px black;

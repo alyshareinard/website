@@ -37,8 +37,6 @@
 	let currentWord = null;
 	//load the next two lines after the page loads
 	onMount(() => {
-
-
 		const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, as: 'url' });
 
 		//	console.log(images)
@@ -176,18 +174,22 @@
 			nextCardVis = true;
 		}, 1200);
 		await tick();
-
-		scoreStore.set(correctWords.length);
-		if (correctWords.length + wrongWords.length > 0) {
-			percCorrectStore.set(
-				Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
-			);
-		}
-
+		setTimeout(() => {
+			scoreStore.set(correctWords.length);
+			if (correctWords.length + wrongWords.length > 0) {
+				percCorrectStore.set(
+					Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
+				);
+			}
+		}, 500);
 		if (correctWords.length + wrongWords.length >= numWords) {
-			confettiColor = ['lightblue', 'pink'];
-			makeConfetti = true;
-			showSummary = true;
+			//delay 3 seconds
+			setTimeout(() => {
+				nextCardVis = false;
+				confettiColor = ['lightblue', 'pink'];
+				makeConfetti = true;
+				showSummary = true;
+			}, '3000');
 		} else {
 			refresh();
 		}
@@ -418,16 +420,17 @@
 	}
 
 	.modal {
+		overflow-y: hidden;
+		overflow-x: hidden;
 		position: fixed;
 		display: flex;
-		aspect-ratio:1.5;
+		aspect-ratio: 16/9;
 		width: 100%;
 		left: 0;
 		top: 0;
 		align-items: center;
 		justify-content: center;
 		overscroll-behavior: none;
-
 	}
 
 	.wordContainer {
@@ -445,8 +448,8 @@
 	}
 
 	.flexWordContainer {
-		width: 29%;
-		margin-right: 3%;
+		width: 30.8%;
+		margin-right: 1%;
 		margin-left: 1%;
 		margin-top: 1%;
 		position: relative;
@@ -459,10 +462,10 @@
 	.top {
 		position: absolute;
 		top: 0;
-		width:100%;
+		width: 100%;
 		z-index: 4;
-		justify-items:center;
-		align-items:center;
+		justify-items: center;
+		align-items: center;
 	}
 
 	.modalEnvelope {
@@ -588,14 +591,18 @@
 		width: 90%;
 	}
 
-	@media (max-width: 1000px) {
+	@media (max-width: 1200px) {
+		.modal {
+			aspect-ratio: unset;
+			height: 100%;
+		}
 		.modalEnvelope {
 			height: 100%;
 			width: 100%;
 			overflow: hidden;
 		}
 	}
-	@media (max-width: 400px)  {
+	@media (max-width: 400px) {
 		.helpWordsFem {
 			font-size: 1.5em;
 		}
