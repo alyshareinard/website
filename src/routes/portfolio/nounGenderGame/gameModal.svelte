@@ -587,14 +587,14 @@
 		width: 90%;
 	}
 
-	@media (max-width: 700px) or (max-height: 700px) {
+	@media (max-width: 700px) {
 		.modalEnvelope {
 			height: 100%;
 			width: 100%;
 			overflow: hidden;
 		}
 	}
-	@media (max-width: 400px) or (max-height: 400px) {
+	@media (max-width: 400px)  {
 		.helpWordsFem {
 			font-size: 1.5em;
 		}
