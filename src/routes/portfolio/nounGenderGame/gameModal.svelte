@@ -34,18 +34,21 @@
 	let nextWord = randomWord();
 	let currentWord = nextWord;
 
-	const images = import.meta.glob('$lib/nounImages/*.webp', {
-		eager: true,
-		query: {
-			enhanced: true
-		}
-	});
+	const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, as: 'url' });
+	console.log("IMAGES", images)
+
+	//		eager: true,
+//		query: {
+//			enhanced: true
+//		}
+//		as:url
+//	});
 	let imagekeys=[]
-	console.log(images)
+//	console.log(images)
 	if (images) {
-		imagekeys = Object.keys(images).map((key) => images[key].default);
+		imagekeys = Object.keys(images).map((key) => images[key]);
 	}
-	console.log(imagekeys)
+	console.log("IMAGE KEYS", imagekeys)
 /*
 	function getImageURL(fileName){
 		
@@ -96,7 +99,7 @@
 		}, 100);
 		await tick();
 		currentWord.fileName = (currentWord.imageFile).split('.')[0]
-		console.log("currentword file name", currentWord.fileName)
+
 		currentWord.image = imagekeys.find((key) => key.includes(currentWord.fileName));
 		console.log("current imageFile", currentWord.imageFile)
 		console.log("current image", currentWord.image)
