@@ -458,7 +458,10 @@
 	.top {
 		position: absolute;
 		top: 0;
+		width:100%;
 		z-index: 4;
+		justify-items:center;
+		align-items:center;
 	}
 
 	.modalEnvelope {

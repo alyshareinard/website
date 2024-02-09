@@ -34,7 +34,6 @@
 			<div style:background-color={backgroundColor} class="front">
 				<div style={parent_style}>
 					<h2
-						style="line-height:100%; vertical-align:middle; text-align: center;"
 						use:fit={{ min_size: 12, max_size: 20 }}
 						class="frontText"
 					>
@@ -65,8 +64,10 @@
 		color: black;
 	}
 	.frontText {
+		align-self:center;
 		color: black;
 		margin: 0%;
+
 	}
 	.card-container {
 		width: 100%;
@@ -86,6 +87,7 @@
 		-webkit-backface-visibility: hidden; /* Safari */
 		backface-visibility: hidden;
 		box-shadow: -1px 1px 3px black;
+		align-items: center;
 	}
 	.front {
 		color: black;
