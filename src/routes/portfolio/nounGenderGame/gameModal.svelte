@@ -71,7 +71,11 @@
 			nextWord = words[random];
 		}
 		seenWords.push(nextWord);
+		nextWord.fileName = nextWord.imageFile.split('.')[0];
 
+		nextWord.image = imagekeys.find((key) => key.includes(nextWord.fileName));
+		console.log('next imageFile', nextWord.imageFile);
+		console.log('next image', nextWord.image);
 		return nextWord;
 	}
 
@@ -95,12 +99,7 @@
 		setTimeout(() => {
 			revealColor('lightgray', backgroundColor);
 		}, 100);
-		await tick();
-		currentWord.fileName = currentWord.imageFile.split('.')[0];
 
-		currentWord.image = imagekeys.find((key) => key.includes(currentWord.fileName));
-		console.log('current imageFile', currentWord.imageFile);
-		console.log('current image', currentWord.image);
 		await tick();
 		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
