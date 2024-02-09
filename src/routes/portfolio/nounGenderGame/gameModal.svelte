@@ -8,6 +8,7 @@
 	import { flip } from 'svelte/animate';
 	import WordCard from './WordCard.svelte';
 	import { words } from '$lib/db/words';
+	import { onMount } from 'svelte';
 
 	let numWords = 10;
 	let unique = {};
@@ -21,7 +22,7 @@
 	let wrongWordsDisplay = [];
 	let scoreStore = writable(0);
 	let percCorrectStore = writable(0);
-	let nextCardVis = true;
+	let nextCardVis = false;
 	$: backgroundColor = 'purple';
 	let wrongAnswer = false;
 	const showImage = false;
@@ -31,34 +32,31 @@
 	let makeConfetti = false;
 	let confettiColor = 'purple';
 	$: mybackground = 'lightgray';
-	let nextWord = randomWord();
-	let currentWord = nextWord;
+	let imagekeys = [];
+	let nextWord = null;
+	let currentWord = null;
+	//load the next two lines after the page loads
+	onMount(() => {
 
-	const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, as: 'url' });
-	console.log("IMAGES", images)
+
+		const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, as: 'url' });
+
+		//	console.log(images)
+		if (images) {
+			imagekeys = Object.keys(images).map((key) => images[key]);
+		}
+
+		nextWord = randomWord();
+		currentWord = nextWord;
+		nextCardVis = true;
+	});
 
 	//		eager: true,
-//		query: {
-//			enhanced: true
-//		}
-//		as:url
-//	});
-	let imagekeys=[]
-//	console.log(images)
-	if (images) {
-		imagekeys = Object.keys(images).map((key) => images[key]);
-	}
-	console.log("IMAGE KEYS", imagekeys)
-/*
-	function getImageURL(fileName){
-		
-		if (imagekeys.length>0){
-			console.log('in getimageurl, filename is ', fileName);
-		return imagekeys.find((key) => key.includes(fileName));
-		} else {
-			return null;
-		}
-	};*/
+	//		query: {
+	//			enhanced: true
+	//		}
+	//		as:url
+	//	});
 
 	function refresh() {
 		unique = {};
@@ -98,11 +96,11 @@
 			revealColor('lightgray', backgroundColor);
 		}, 100);
 		await tick();
-		currentWord.fileName = (currentWord.imageFile).split('.')[0]
+		currentWord.fileName = currentWord.imageFile.split('.')[0];
 
 		currentWord.image = imagekeys.find((key) => key.includes(currentWord.fileName));
-		console.log("current imageFile", currentWord.imageFile)
-		console.log("current image", currentWord.image)
+		console.log('current imageFile', currentWord.imageFile);
+		console.log('current image', currentWord.image);
 		await tick();
 		currentWord.id = wrongWords.length + 1;
 		wrongWords.push(currentWord);
@@ -322,7 +320,7 @@
 										{word.FR}
 									</div>
 									<div class="bottom">
-										<img src="{word.image}" alt={word.FR} />
+										<img src={word.image} alt={word.FR} />
 									</div>
 								</div>
 							</div>
