@@ -34,7 +34,7 @@
 			<div style:background-color={backgroundColor} class="front">
 				<div style={parent_style}>
 					<h2
-						style="line-height:100%; vertical-align:middle"
+						style="line-height:100%; vertical-align:middle; text-align: center;"
 						use:fit={{ min_size: 12, max_size: 20 }}
 						class="frontText"
 					>
