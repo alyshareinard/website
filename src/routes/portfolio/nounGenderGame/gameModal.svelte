@@ -523,7 +523,7 @@
 		transform: rotate(-26deg);
 	}
 	.ducss {
-		top: 15%;
+		top: 10%;
 		left: -5px;
 		transform: rotate(-40deg);
 	}
@@ -554,7 +554,7 @@
 	}
 	.scoreBox {
 		position: absolute;
-		top: 40%;
+		top: 35%;
 		left: 38%;
 		width: 24%;
 		height: fit-content;
@@ -602,7 +602,11 @@
 			overflow: hidden;
 		}
 	}
-	@media (max-width: 400px) {
+	@media (max-width: 700px) {
+		.answerBoxMasc,
+		.answerBoxFem {
+			height: 35%;
+		}
 		.helpWordsFem {
 			font-size: 1.5em;
 		}
