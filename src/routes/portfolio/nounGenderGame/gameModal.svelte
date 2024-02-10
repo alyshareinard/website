@@ -554,7 +554,7 @@
 	}
 	.scoreBox {
 		position: absolute;
-		top: 35%;
+		top: 32%;
 		left: 38%;
 		width: 24%;
 		height: fit-content;
@@ -602,6 +602,13 @@
 			overflow: hidden;
 		}
 	}
+	@media (max-width:900px){
+		.wrongWordsBox {
+		width: 50%;
+		aspect-ratio: 2.5;
+		left: 25%;
+	}
+}
 	@media (max-width: 700px) {
 		.answerBoxMasc,
 		.answerBoxFem {
