@@ -182,8 +182,11 @@
 				);
 			}
 		}, 500);
-		if (correctWords.length + wrongWords.length >= numWords) {
+		if (correctWords.length + wrongWords.length >= numWords-1) {
 			//delay 3 seconds
+			console.log("Correct words: ", correctWords.length, correctWords);
+			console.log("Wrong words: ", wrongWords.length, wrongWords);
+			console.log("this should delay")
 			setTimeout(() => {
 				nextCardVis = false;
 				confettiColor = ['lightblue', 'pink'];

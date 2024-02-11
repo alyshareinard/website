@@ -286,7 +286,7 @@ export const words = [
 	{ FrWO: 'paix', FR: 'la paix', EngWO: 'peace', gender: 'F', imageFile: 'laPaix.webp' },
 	{ FrWO: 'panique', FR: 'une panique', EngWO: 'panic', gender: 'F', imageFile: 'laPanique2.webp' },
 	{ FrWO: 'piscine', FR: 'une piscine', EngWO: 'pool', gender: 'F', imageFile: 'unePicine.webp' },
-	{ FrWO: 'piste', FR: 'une piste', EngWO: 'track', gender: 'F', imageFile: 'unePizza.webp' },
+	{ FrWO: 'pizza', FR: 'une pizza', EngWO: 'pizza', gender: 'F', imageFile: 'unePizza.webp' },
 	{ FrWO: 'pomme', FR: 'une pomme', EngWO: 'apple', gender: 'F', imageFile: 'unePomme.webp' },
 	{
 		FrWO: 'poubelle',
