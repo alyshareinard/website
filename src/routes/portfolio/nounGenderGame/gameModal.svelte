@@ -233,7 +233,8 @@
 			};
 		}
 	}
-	function resetGame() {
+	async function resetGame() {
+		console.log("RESETTING GAME");
 		showSummary = false;
 		wrongWords = [];
 		wrongWordsDisplay = [];
@@ -241,6 +242,7 @@
 		correctWords = [];
 		scoreStore.set(0);
 		percCorrectStore.set(0);
+		nextCardVis=true;
 	}
 </script>
 

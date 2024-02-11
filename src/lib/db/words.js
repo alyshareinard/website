@@ -267,7 +267,6 @@ export const words = [
 	{ FrWO: 'échec', FR: 'un échec', EngWO: 'failure', gender: 'M', imageFile: 'unEchec.webp' },
 	{ FrWO: 'été', FR: 'un été', EngWO: 'summer', gender: 'M', imageFile: 'unEte.webp' },
 	{ FrWO: 'évier', FR: 'un évier', EngWO: 'sink', gender: 'M', imageFile: 'unEvier.webp' },
-	{ FrWO: 'insecte', FR: 'un insecte', EngWO: 'insect', gender: 'M', imageFile: 'unInsecte.webp' },
 	{
 		FrWO: 'inspection',
 		FR: 'une inspection',
