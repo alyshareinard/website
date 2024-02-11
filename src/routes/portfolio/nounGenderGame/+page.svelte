@@ -57,7 +57,7 @@
 	</p>
 </div>
 
-<div class="center"><button on:click={toggleGame}>start game</button></div>
+<div class="centerStartButton"><button on:click={toggleGame}>start game</button></div>
 
 {#if isGameOpen}
 	<GameModal {toggleGame} {toggleHints} {toggleHowtoPlay} />
@@ -72,12 +72,12 @@
 {/if}
 
 <style>
-	.center {
-		display: flex;
-		margin: auto;
-		width: 50%;
+	.centerStartButton {
+		display:flex;
+		width:100%;
+		justify-content:center;
 		padding: 10px;
-		justify-content: center;
+
 	}
 	.container {
 		display: relative;

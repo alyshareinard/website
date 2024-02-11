@@ -169,24 +169,11 @@
 			}, 500);
 		}
 		await tick();
-
-		setTimeout(() => {
-			nextCardVis = true;
-		}, 1200);
-		await tick();
-		setTimeout(() => {
-			scoreStore.set(correctWords.length);
-			if (correctWords.length + wrongWords.length > 0) {
-				percCorrectStore.set(
-					Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
-				);
-			}
-		}, 500);
-		if (correctWords.length + wrongWords.length >= numWords-1) {
+		if (correctWords.length + wrongWords.length >= numWords) {
 			//delay 3 seconds
-			console.log("Correct words: ", correctWords.length, correctWords);
-			console.log("Wrong words: ", wrongWords.length, wrongWords);
-			console.log("this should delay")
+			console.log('Correct words: ', correctWords.length, correctWords);
+			console.log('Wrong words: ', wrongWords.length, wrongWords);
+			console.log('this should delay');
 			setTimeout(() => {
 				nextCardVis = false;
 				confettiColor = ['lightblue', 'pink'];
@@ -194,6 +181,18 @@
 				showSummary = true;
 			}, '3000');
 		} else {
+			setTimeout(() => {
+				nextCardVis = true;
+			}, 1200);
+			await tick();
+			setTimeout(() => {
+				scoreStore.set(correctWords.length);
+				if (correctWords.length + wrongWords.length > 0) {
+					percCorrectStore.set(
+						Math.round((100 * correctWords.length) / (correctWords.length + wrongWords.length))
+					);
+				}
+			}, 500);
 			refresh();
 		}
 	}
@@ -234,7 +233,7 @@
 		}
 	}
 	async function resetGame() {
-		console.log("RESETTING GAME");
+		console.log('RESETTING GAME');
 		showSummary = false;
 		wrongWords = [];
 		wrongWordsDisplay = [];
@@ -242,7 +241,9 @@
 		correctWords = [];
 		scoreStore.set(0);
 		percCorrectStore.set(0);
-		nextCardVis=true;
+		nextWord = randomWord();
+		currentWord = nextWord;
+		nextCardVis = true;
 	}
 </script>
 
@@ -607,13 +608,13 @@
 			overflow: hidden;
 		}
 	}
-	@media (max-width:900px){
+	@media (max-width: 900px) {
 		.wrongWordsBox {
-		width: 50%;
-		aspect-ratio: 2.5;
-		left: 25%;
+			width: 50%;
+			aspect-ratio: 2.5;
+			left: 25%;
+		}
 	}
-}
 	@media (max-width: 700px) {
 		.answerBoxMasc,
 		.answerBoxFem {
