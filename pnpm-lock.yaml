@@ -109,6 +109,9 @@ devDependencies:
   svelte-toolbox:
     specifier: ^0.6.1
     version: 0.6.1
+  svelte-turnstile:
+    specifier: ^0.5.0
+    version: 0.5.0(svelte@4.2.8)
   sveltekit-superforms:
     specifier: ^1.13.1
     version: 1.13.1(@sveltejs/kit@2.0.6)(svelte@4.2.8)(zod@3.22.4)
@@ -3104,6 +3107,15 @@ packages:
       '@material/textfield': 3.1.0
     dev: true
 
+  /svelte-turnstile@0.5.0(svelte@4.2.8):
+    resolution: {integrity: sha512-FD/XOfyN2gOr7csfThLyrS/sSsRd2zgVfm5pwE1KvpWQHJYqx1HL/PQ92WEw8peL+SPqoKYx2619aZ65uPUsxg==}
+    peerDependencies:
+      svelte: ^3.58.0 || ^4.0.0
+    dependencies:
+      svelte: 4.2.8
+      turnstile-types: 1.2.1
+    dev: true
+
   /svelte@4.2.8:
     resolution: {integrity: sha512-hU6dh1MPl8gh6klQZwK/n73GiAHiR95IkFsesLPbMeEZi36ydaXL/ZAb4g9sayT0MXzpxyZjR28yderJHxcmYA==}
     engines: {node: '>=16'}
@@ -3236,6 +3248,10 @@ packages:
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: false
+
+  /turnstile-types@1.2.1:
+    resolution: {integrity: sha512-PZFcUDFvPvmmwb885JA/N+8Pg5xNWw/UGMABRb/vI9P8cZ4pLDCpBDzgw7oKQ67DYvboTxNhfTAu93gjX4uNbQ==}
+    dev: true
 
   /type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}

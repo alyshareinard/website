@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-
+	import { Turnstile } from 'svelte-turnstile';
+	import {PUBLIC_CLOUDFLARE_SITE_KEY} from '$env/static/public';
 	import { z } from 'zod';
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let data;
+	export let myform;
 	let wasSubmitted = false;
 	let submission_status = '';
 	const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
@@ -80,7 +82,12 @@
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
+
+			{#if myform?.error}
+				<p>{myform?.error}</p>
+			{/if}
 			<form method="POST" use:enhance>
+				<Turnstile siteKey={PUBLIC_CLOUDFLARE_SITE_KEY} theme="dark" />
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>
