@@ -56,13 +56,15 @@ async function validateToken(token: string, secret: string) {
 }
 
 export const actions = {
+
 	default: async (event) => {
 		const form = await superValidate(event, new_contact);
 		const token = form.data.turnstile // if you edited the formsField option change this
         const SECRET_KEY = CLOUDFLARE_SECRET_KEY // you should use $env module for secrets
-
+		console.log('checking token', token)
         const { success, error } = await validateToken(token, SECRET_KEY);
-
+		console.log('success', success)
+		console.log('error', error)
         if (!success)
             return {
                 error: error || 'Invalid CAPTCHA',
