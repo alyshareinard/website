@@ -1,25 +1,27 @@
-<script lang="ts">
+<script>
 	import { superForm } from 'sveltekit-superforms/client';
 	import { Turnstile } from 'svelte-turnstile';
-	import {PUBLIC_CLOUDFLARE_SITE_KEY} from '$env/static/public';
+	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	import { z } from 'zod';
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let data;
 	export let myform;
+	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
 	let wasSubmitted = false;
 	let submission_status = '';
-	const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
+	const serviceOptions = ['Webpage', 'App', 'Integration'];// as const;
 	const new_contact = z.object({
 		fname: z.string().min(2),
 		lname: z.string().min(2),
 		email: z.string().email(),
 		serviceTypes: z.enum(serviceOptions),
-		memo: z.string().min(10)
+		memo: z.string().min(10),
+		turnstile: z.string(),
 	});
 
 	const { form, message, errors, constraints, enhance } = superForm(data.form, {
-		validators: new_contact,
+		validators: new_contact, 
 		resetForm: false,
 		taintedMessage: null,
 
@@ -83,11 +85,15 @@
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 
+
 			{#if myform?.error}
 				<p>{myform?.error}</p>
 			{/if}
+
+			
+
 			<form method="POST" use:enhance>
-				<Turnstile siteKey={PUBLIC_CLOUDFLARE_SITE_KEY} theme="dark" />
+				
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>
@@ -162,7 +168,9 @@
 						{...$constraints.memo}
 					/>
 					{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
+					
 
+					<Turnstile siteKey={ turnstile_key } bind:value={$form.turnstile} theme="dark" />
 					<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
 						<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
 					</div>
