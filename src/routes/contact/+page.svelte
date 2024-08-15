@@ -39,6 +39,7 @@
 		},
 		delayMs: 500
 	});
+
 </script>
 
 <h1>What can I do for you?</h1>
@@ -74,7 +75,10 @@
 	that I can get started.
 </p>
 
+
 <div class="container">
+
+
 	<div class="contactbox divbox">
 		{#if submission_status === 'submitting'}
 			<h3>Submitting...</h3>
@@ -145,7 +149,7 @@
 					<label for="type" class="label-short">
 						<span class="label-text">Type of service</span>
 					</label>
-
+					<Turnstile siteKey="SITE_KEY" theme="dark" responseField="turnstile" />
 					<select name="serviceTypes" bind:value={$form.serviceTypes}>
 						{#each serviceOptions as serviceTypes, i}
 							<option value={serviceTypes}>{serviceTypes}</option>
@@ -170,7 +174,7 @@
 					{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
 					
 
-					<Turnstile siteKey={ turnstile_key } bind:value={$form.turnstile} theme="dark" />
+					
 					<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
 						<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
 					</div>

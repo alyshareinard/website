@@ -1,4 +1,4 @@
-import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
+import { AIRTABLE_BASE_ID, contactForm_api }from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
@@ -57,9 +57,15 @@ async function validateToken(token: string, secret: string) {
 
 export const actions = {
 
+
 	default: async (event) => {
 		const form = await superValidate(event, new_contact);
-		const token = form.data.turnstile // if you edited the formsField option change this
+
+		if (!form.valid) fail(400, { form });
+
+		const { fname, lname, email, serviceTypes, memo, turnstile } = form.data;
+
+		const token = turnstile // if you edited the formsField option change this
         const SECRET_KEY = CLOUDFLARE_SECRET_KEY // you should use $env module for secrets
 		console.log('checking token', token)
         const { success, error } = await validateToken(token, SECRET_KEY);
@@ -69,9 +75,6 @@ export const actions = {
             return {
                 error: error || 'Invalid CAPTCHA',
             };
-		if (!form.valid) fail(400, { form });
-
-		const { fname, lname, email, serviceTypes, memo, turnstile } = form.data;
 
 		const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
 
