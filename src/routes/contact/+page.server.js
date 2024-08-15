@@ -1,11 +1,11 @@
-import { AIRTABLE_BASE_ID, contactForm_api }from '$env/static/private';
+import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { superValidate } from 'sveltekit-superforms/server';
 import { z } from 'zod';
 import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
 //watch https://levelup.video/tutorials/sveltekit/custom-form-handlers to improve in future
 
-const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
+const serviceOptions = ['Webpage', 'App', 'Integration'];// as const;
 const new_contact = z.object({
 	fname: z.string(),
 	lname: z.string(),
@@ -14,13 +14,13 @@ const new_contact = z.object({
 	memo: z.string(),
 	turnstile: z.string()
 });
-
+/*
 interface TokenValidateResponse {
     'error-codes': string[];
     success: boolean;
     action: string;
     cdata: string;
-}
+}*/
 
 export const load = async (event) => {
 	const form = await superValidate(event, new_contact);
@@ -29,7 +29,7 @@ export const load = async (event) => {
 	};
 };
 
-async function validateToken(token: string, secret: string) {
+async function validateToken(token, secret) {
     const response = await fetch(
         'https://challenges.cloudflare.com/turnstile/v0/siteverify',
         {
@@ -44,7 +44,7 @@ async function validateToken(token: string, secret: string) {
         },
     );
 
-    const data: TokenValidateResponse = await response.json();
+    const data = await response.json();
 
     return {
         // Return the status
