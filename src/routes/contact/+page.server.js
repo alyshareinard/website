@@ -22,12 +22,15 @@ interface TokenValidateResponse {
     cdata: string;
 }*/
 
-export const load = async (event) => {
+/*export const load = async (event) => {
+
+
+
 	const form = await superValidate(event, new_contact);
 	return {
 		form
 	};
-};
+};*/
 
 async function validateToken(token, secret) {
     const response = await fetch(
@@ -42,23 +45,41 @@ async function validateToken(token, secret) {
                 secret: secret,
             }),
         },
+		console.log('response', response)
     );
 
     const data = await response.json();
 
     return {
         // Return the status
-        success: data.success,
+        turnstyleSuccess: data.success,
 
         // Return the first error if it exists
-        error: data['error-codes']?.length ? data['error-codes'][0] : null,
+        turnstyleError: data['error-codes']?.length ? data['error-codes'][0] : null,
     };
 }
 
 export const actions = {
+	default: async ({ request }) => {
+		console.log('checking token');
+        const data = await request.formData();
 
+        const token = data.get('cf-turnstile-response'); // if you edited the formsField option change this
+        const SECRET_KEY = CLOUDFLARE_SECRET_KEY; // you should use $env module for secrets
+		console.log(token)
+        const { success, error } = await validateToken(token, SECRET_KEY);
 
-	default: async (event) => {
+        if (!success)
+            return {
+                error: error || 'Invalid CAPTCHA',
+            };
+
+        // do something, the captcha is valid!
+		return {
+			success: true};
+    },
+
+	contactForm: async (event) => {
 		const form = await superValidate(event, new_contact);
 
 		if (!form.valid) fail(400, { form });
@@ -106,5 +127,6 @@ export const actions = {
 		return {
 			form
 		};
-	}
+	},
+
 };

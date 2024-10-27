@@ -57,7 +57,7 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 
 	todays_playlist = eval(todays_playlist);
 
-	const access_token = cookies.get('access_token');
+	const access_token = cookies.get('access_token', { path: '/' });
 	let chosen_songs = await get_all_songs(chosen, access_token);
 
 	let avoid_songs = await get_all_songs(avoid, access_token);
@@ -82,7 +82,12 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 		}
 	});
 
-	return 'All done!  Go check out your playlist in Spotify.';
+	if (response.statusText != 'OK') {
+
+		return 'All done!  Go check out your playlist in Spotify.';
+	} else {
+		return 'There was a problem.  Please try again.';
+	}
 }
 
 export async function get_playlists(cookies, playlists) {
@@ -90,8 +95,8 @@ export async function get_playlists(cookies, playlists) {
 		return playlists;
 	}
 
-	const user_id = cookies.get('user_id');
-	const access_token = cookies.get('access_token');
+	const user_id = cookies.get('user_id', { path: '/' });
+	const access_token = cookies.get('access_token', { path: '/' });
 	const url = `https://api.spotify.com/v1/users/${user_id}/playlists?limit=50`;
 
 	const response = await fetch(url, {
@@ -130,13 +135,13 @@ export async function get_profile(cookies, profile) {
 
 	const response = await fetch('https://api.spotify.com/v1/me', {
 		headers: {
-			Authorization: 'Bearer ' + cookies.get('access_token')
+			Authorization: 'Bearer ' + cookies.get('access_token', { path: '/' })
 		}
 	});
 
 	const data = await response.json();
 	console.log('in get profile');
 	//	console.log(data)
-	cookies.set('user_id', data.id);
+	cookies.set('user_id', data.id, { path: '/' });
 	return data.display_name;
 }

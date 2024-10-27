@@ -5,7 +5,7 @@ import { create_playlist, get_playlists, get_profile } from './spotifyCode.serve
 /** @type {import('./$types').PageServerLoad} */
 
 function cookieExistsAndHasValue(value, url) {
-	let cookieValue = url.cookies.get(value);
+	let cookieValue = url.cookies.get(value, { path: '/' });
 	console.log('in cookies exist');
 	console.log(value);
 
@@ -27,7 +27,7 @@ export async function load(url) {
 
 	if (url.url.searchParams.has('code')) {
 		const code = url.url.searchParams.get('code');
-		/* @migration task: add path argument */ url.cookies.set('code', code);
+		/* @migration task: add path argument */ url.cookies.set('code', code, { path: '/' });
 		url.url.searchParams.set('code', null);
 		const new_url = url.url.pathname;
 
@@ -52,7 +52,7 @@ export async function load(url) {
 			redirect(303, url.url.href + '/login');
 		}
 	} else {
-		console.log('no code, sending to login page');
+		console.log('no code, sending to login page' + url.url.href);
 		redirect(303, url.url.href + '/login');
 	}
 

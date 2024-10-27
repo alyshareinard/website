@@ -28,14 +28,21 @@ async function generateCodeChallenge(codeVerifier) {
 
 }
 async function get_code(event) {
-	/* @migration task: add path argument */ event.cookies.delete('refresh_token')
+
+
+	//if cookie exists delete it
+	if (event.cookies.get('access_token', { path: '/' })) {
+		event.cookies.delete('access_token', { path: '/' })
+	}
+	if (event.cookies.get('refresh_token', { path: '/' })) {
+		event.cookies.delete('refresh_token', { path: '/' })
+	}
 
 	
 	let codeVerifier = await generateRandomString(128);
 
 	const challenge = await generateCodeChallenge(codeVerifier);
-
-	/* @migration task: add path argument */ event.cookies.set('code_verifier', codeVerifier)
+	event.cookies.set('code_verifier', codeVerifier, { path: '/' })
 	let state = generateRandomString(16);
 	let scope = 'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played'
 
@@ -55,8 +62,9 @@ async function get_code(event) {
 /** @type {import('./$types').Actions} */
 export const actions = {
     default: async (event) => {
-		console.log(event)
+		console.log(' IN LOGIN ACTIONS', event)
         let url = await get_code(event);
+		console.log('url: ', url)
 
         throw(redirect(303, url))
 
