@@ -27,8 +27,8 @@ export async function load(url) {
 
 	if (url.url.searchParams.has('code')) {
 		const code = url.url.searchParams.get('code');
-		/* @migration task: add path argument */ url.cookies.set('code', code, { path: '/' });
-		url.url.searchParams.set('code', null);
+		url.cookies.set('code', code, { path: '/' });
+//		url.url.searchParams.set('code', null);
 		const new_url = url.url.pathname;
 
 		redirect(303, new_url);
