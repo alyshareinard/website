@@ -50,17 +50,54 @@ async function get_all_songs(playlist, access_token) {
 	return songs;
 }
 
-export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
+async function get_all_liked(access_token) {
+	console.log('Get all liked');
+
+	let songs = [];
+
+	let more = true;
+	let url = `https://api.spotify.com/v1/me/tracks?limit=50&fields=items(track(uri))`;
+	while (more) {
+		let items = await get_songs(url, access_token);
+		console.log('received these items from get_songs: ', items);
+		for (let i = 0; i < items.length; i++) {
+			songs.push(items[i].track.uri);
+		}
+		if (items.next) {
+			url = items.next;
+		} else {
+			more = false;
+		}
+	}
+
+	return songs;
+}
+
+export async function create_playlist(liked_songs, chosen, avoid, todays_playlist, cookies) {
 	let tracks = [];
 	chosen = eval(chosen);
 	avoid = eval(avoid);
 
 	todays_playlist = eval(todays_playlist);
 
+	console.log('xxxxxxxxxxxxxx -------------------- liked_songs: ', liked_songs);
+
+
 	const access_token = cookies.get('access_token', { path: '/' });
-	let chosen_songs = await get_all_songs(chosen, access_token);
+    let chosen_songs = [];
+	if (liked_songs) {
+		console.log('getting liked songs');
+		chosen_songs = await get_all_liked(access_token);
+		console.log('chosen songs: ', chosen_songs.length);
+	} else {
+		chosen_songs = await get_all_songs(chosen, access_token);
+	}
+
+	
 
 	let avoid_songs = await get_all_songs(avoid, access_token);
+
+
 
 	tracks = chosen_songs.filter((item) => !avoid_songs.includes(item));
 
@@ -86,7 +123,8 @@ export async function create_playlist(chosen, avoid, todays_playlist, cookies) {
 
 		return 'All done!  Go check out your playlist in Spotify.';
 	} else {
-		return 'There was a problem.  Please try again.';
+		console.log('response.statusText: ', response.statusText);
+		return 'There was a problem.  Please try again.' + response.statusText;
 	}
 }
 

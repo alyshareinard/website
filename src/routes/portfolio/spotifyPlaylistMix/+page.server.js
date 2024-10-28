@@ -65,14 +65,17 @@ export async function load(url) {
 /** @type {import('./$types').Actions} */
 export const actions = {
 	default: async ({ cookies, request }) => {
-		console.log('IN LOAD ACTIONS');
+		
 		const data = await request.formData();
+		const liked_songs = data.get('liked_songs');
+		console.log('liked songs is in actions: ', liked_songs);
 		const chosen_playlists = data.get('chosen_playlists');
 		const avoid_playlists = data.get('avoid_playlists');
 		const todays_playlist = data.get('todays_playlist');
 		console.log("Today's list in actions is: ", todays_playlist);
 		console.log('action triggered');
 		let complete = await create_playlist(
+			liked_songs,
 			chosen_playlists,
 			avoid_playlists,
 			todays_playlist,

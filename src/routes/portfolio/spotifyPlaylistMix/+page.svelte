@@ -9,7 +9,7 @@
 	let todays_playlist;
 	export let form;
 	let todays_playlist_label;
-
+	let liked_songs = false;
 	
 	const new_event = {
 		id: 'any-random-id',
@@ -26,7 +26,7 @@
 			playlist_choices.push({ label: data.playlists[i].name, value: data.playlists[i].id });
 		}
 	} else {
-		playlist_choices = [{ label: 'Nothing here -- contact admin' }];
+		playlist_choices = [{ label: 'No playlists found' }];
 	}
 
 
@@ -43,9 +43,22 @@
 <h4>What do you want to hear?</h4>
 
 <form use:enhance method="POST">
+
+	
+	
+	<label>
+		<input type="checkbox" name="liked_songs" bind:checked={liked_songs}/>
+		All liked songs
+	</label>
+
+	<div style="margin-top:20px" />
+
 	<label for="chosen_playlists">
 		<strong>Which playlists do you want to combine?</strong>
 	</label>
+
+	
+	
 	<MultiSelect
 		--sms-options-bg="#333"
 		--sms-text-color="var(--mainTheme)"
