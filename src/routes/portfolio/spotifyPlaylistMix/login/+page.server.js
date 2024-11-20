@@ -29,7 +29,7 @@ async function generateCodeChallenge(codeVerifier) {
 }
 async function get_code(event) {
 
-
+ 
 	//if cookie exists delete it
 	if (event.cookies.get('access_token', { path: '/' })) {
 		event.cookies.delete('access_token', { path: '/' })
