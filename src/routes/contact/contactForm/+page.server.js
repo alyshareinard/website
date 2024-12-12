@@ -79,7 +79,7 @@ export const actions = {
 			success: true};
     },*/
 
-	contactForm: async (event) => {
+	default: async (event) => {
 		console.log('do I get here?');
 		const form = await superValidate(event, new_contact);
 

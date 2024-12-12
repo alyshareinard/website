@@ -32,7 +32,7 @@
 	});
 </script>
 
-<form method="POST" action="./contactForm" use:enhance>
+<form method="POST" action="/contactForm" use:enhance>
 	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
 	<div class="myform">
 		<label for="fname" class="label-short">
