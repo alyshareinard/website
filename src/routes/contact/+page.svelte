@@ -9,7 +9,7 @@
 	export let form;
 	export let data;
 
-	console.log("captchaSuccess is: ", captchaSuccess);
+
 	//	export let myform;
 
 	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
