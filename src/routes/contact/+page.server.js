@@ -60,7 +60,7 @@ async function validateToken(token, secret) {
 }
 
 export const actions = {
-	default: async ({ request }) => {
+	/*default: async ({ request }) => {
 		console.log('In page.server.js, checking token');
         const data = await request.formData();
 
@@ -77,9 +77,10 @@ export const actions = {
         // do something, the captcha is valid!
 		return {
 			success: true};
-    },
+    },*/
 
 	contactForm: async (event) => {
+		console.log('do I get here?');
 		const form = await superValidate(event, new_contact);
 
 		if (!form.valid) fail(400, { form });
