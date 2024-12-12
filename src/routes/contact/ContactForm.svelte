@@ -8,6 +8,7 @@
 	export let data: SuperValidated<ContactFormSchema>;
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	export let wasSubmitted = false;
+    export let formError = '';
 	export let submission_status = '';
 
 	const { form, message, errors, constraints, enhance } = superForm(data, {

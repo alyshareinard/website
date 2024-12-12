@@ -8,13 +8,14 @@
 
 	export let form;
 	export let data;
-	const captchaSuccess = data.success;
+
 	console.log("captchaSuccess is: ", captchaSuccess);
 	//	export let myform;
 
 	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
 	let wasSubmitted = false;
 	let submission_status = '';
+	let formError = '';
 	const serviceOptions = ['Webpage', 'App', 'Integration']; // as const;
 
 	/*
@@ -65,7 +66,7 @@
 </p>
 
 <hr />
-<h2 id="contactFormitem">Contact me</h2>
+<h2 id="contactFormitem">Contact me -- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES</h2>
 <p class="darkBackground">
 	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to
 	discuss your project. After that I'll write up a statement of work and a quote. Once we agree to
@@ -84,11 +85,11 @@
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 		{/if}
 
-		{#if form?.error}
-			<p>{form?.error}</p>
+		{#if formError}
+			<p>{formError}</p>
 		{/if}
 
-		<ContactForm {submission_status} />
+		
 
 
 	</div>
