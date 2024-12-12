@@ -92,8 +92,9 @@
 			<Turnstile siteKey={turnstile_key} theme="dark" />
 		</form>
 
+		<p>Form.success is {form?.success}</p>
 		
-		{#if captchaSuccess}
+		{#if form?.success}
 			<ContactForm data={form.ContactForm} />
 		{:else if form?.error}
 			<p>{form.error}</p>
