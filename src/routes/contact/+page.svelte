@@ -86,10 +86,10 @@
 		{/if}
 
 		{#if formError}
-			<p>{formError}</p>
+			<p>{formError.message}</p>
 		{/if}
 
-		
+		<ContactForm {submission_status} {formError} />
 
 
 	</div>
