@@ -7,6 +7,8 @@
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
 	export let form;
+	export let data;
+	const captchaSuccess = data.success;
 	//	export let myform;
 
 	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
@@ -90,7 +92,7 @@
 		</form>
 
 		
-		{#if form?.success}
+		{#if captchaSuccess}
 			<ContactForm data={form.ContactForm} />
 		{:else if form?.error}
 			<p>{form.error}</p>
