@@ -84,6 +84,7 @@ export const actions = {
 
 		if (!form.valid) fail(400, { form });
 
+		
 		const { fname, lname, email, serviceTypes, memo, turnstile } = form.data;
 
 		const token = turnstile // if you edited the formsField option change this

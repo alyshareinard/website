@@ -65,7 +65,7 @@
 </p>
 
 <hr />
-<h2 id="contactForm">Contact me</h2>
+<h2 id="contactFormitem">Contact me</h2>
 <p class="darkBackground">
 	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to
 	discuss your project. After that I'll write up a statement of work and a quote. Once we agree to
@@ -88,16 +88,8 @@
 			<p>{form?.error}</p>
 		{/if}
 
-		<form method="POST">
-			<Turnstile siteKey={turnstile_key} theme="dark" />
-		</form>
+		<ContactForm {submission_status} />
 
-		<p>Form.success is {form?.success}</p>
-		
-		{#if form?.success}
-			<ContactForm data={form.ContactForm} />
-		{:else if form?.error}
-			<p>{form.error}</p>
-		{/if}
+
 	</div>
 </div>
