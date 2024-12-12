@@ -90,7 +90,7 @@
 		{/if}
 
 		
-
+		<ContactForm {submission_status} {formError} />
 
 	</div>
 </div>
