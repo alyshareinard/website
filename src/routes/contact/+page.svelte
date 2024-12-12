@@ -6,8 +6,8 @@
 	import ContactForm from './ContactForm.svelte';
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
-	export let form;
-	export let data;
+//	export let form;
+//	export let data;
 
 
 	//	export let myform;
@@ -66,7 +66,7 @@
 </p>
 
 <hr />
-<h2 id="contactFormitem">Contact me -- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES</h2>
+<h2 id="contactFormitem">Contact me  </h2>
 <p class="darkBackground">
 	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to
 	discuss your project. After that I'll write up a statement of work and a quote. Once we agree to
@@ -82,14 +82,14 @@
 		{:else if submission_status === 'success'}
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
-			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
+			<h2 style="margin-left:10%; margin-top:5%">Contact me-- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES</h2>
 		{/if}
 
 		{#if formError}
 			<p>{formError.message}</p>
 		{/if}
 
-		<ContactForm {submission_status} {formError} />
+		
 
 
 	</div>
