@@ -6,7 +6,6 @@ https://svelte.dev/e/legacy_export_invalid -->
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	import { onMount } from 'svelte';
 	import SuperDebug from 'sveltekit-superforms';
-	import { z } from 'zod';
 	import ContactForm from './ContactForm.svelte';
 
 //	import {formSchema} from "./schema.ts";
