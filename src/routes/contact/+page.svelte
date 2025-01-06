@@ -1,21 +1,10 @@
-<!-- @migration-task Error while migrating Svelte code: Cannot use `export let` in runes mode — use `$props()` instead
-https://svelte.dev/e/legacy_export_invalid -->
+
 <script lang="ts">
-	import { superForm, type JSONSchema } from 'sveltekit-superforms';
 	import { Turnstile } from 'svelte-turnstile';
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
-	import { onMount } from 'svelte';
-	import SuperDebug from 'sveltekit-superforms';
 	import ContactForm from './ContactForm.svelte';
 
-	//	import {formSchema} from "./schema.ts";
 
-	//	import ContactForm from './ContactForm.svelte';
-	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
-
-	//	export let form;
-
-	//	export let data;
 	let { data } = $props();
 	console.log('in page.svelte: ', data);
 	// Client API:
@@ -39,7 +28,12 @@ https://svelte.dev/e/legacy_export_invalid -->
 	let submission_status = $state('');
 	let formError = '';
 	const serviceOptions = ['Webpage', 'App', 'Integration']; // as const;
-	const { form, message, errors, constraints, enhance } = superForm(data.form);
+	//const { form, message, errors, constraints, enhance } = superForm(data.form, {
+		//action returns success or failure message, update it here
+//		onSubmit: (event) => {
+
+//		}
+//	});
 	/*	
 const { form, message, errors, constraints, enhance } = superForm(data.form, {
 		//validators: new_contact, 
@@ -107,10 +101,11 @@ const { form, message, errors, constraints, enhance } = superForm(data.form, {
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
 		{/if}
 
-		{#if errors}
-			<p>Captcha failed</p>
+		{#if data.form?.success}
+		<ContactForm {data} {wasSubmitted} {submission_status} />
+			
 		{:else}
-			<ContactForm {data} {wasSubmitted} {submission_status} />
+		<p>Captcha failed</p>
 		{/if}
 
 		<form method="POST">

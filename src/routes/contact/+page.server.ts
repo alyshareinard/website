@@ -1,8 +1,6 @@
-//import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 
 import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
-import { superValidate, type JSONSchema } from 'sveltekit-superforms';
-import { schemasafe } from 'sveltekit-superforms/adapters';
+
 
 interface TokenValidateResponse {
 	'error-codes': string[];
@@ -11,7 +9,7 @@ interface TokenValidateResponse {
 	cdata: string;
 }
 
-const schema = {
+/*const schema = {
 	type: 'object',
 	properties: {
 		token: { type: 'string', minLength: 2 }
@@ -20,13 +18,14 @@ const schema = {
 	additionalProperties: false,
 	$schema: 'http://json-schema.org/draft-07/schema#'
 } as const satisfies JSONSchema; // Define as const to get type inference
-
+*/
+/*
 export const load = async () => {
 	const form = await superValidate(schemasafe(schema));
 	console.log('in load form is ', form);
 	// Always return { form } in load functions
 	return { form };
-};
+};*/
 
 async function validateToken(token: string, secret: string) {
 	const response = await fetch(
