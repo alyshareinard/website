@@ -4,7 +4,7 @@
 
 	import { analyticsStore } from '$lib/stores/analyticsStore';
 	import { enhance } from '$app/forms';
-	import MultiSelect from 'svelte-multiselect';
+//	import MultiSelect from 'svelte-multiselect';
 	let playlist_choices = $state([]);
 	let chosen_playlists = $state([]);
 	let avoid_playlists = $state([]);
