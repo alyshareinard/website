@@ -1,4 +1,5 @@
 <script>
+	//work with pageWerrors to upgrade to svelte5
 	import { run } from 'svelte/legacy';
 
 	import { analyticsStore } from '$lib/stores/analyticsStore';
@@ -40,109 +41,11 @@
 	Hello {data.user_name}
 </p>
 
+<h2> We are upgrading to Svelte5, this app is currently unavailable</h2>
+
 <h4>What do you want to hear?</h4>
 
-<form use:enhance method="POST">
-	<label>
-		<input type="checkbox" name="liked_songs" bind:checked={liked_songs} />
-		All liked songs
-	</label>
 
-	<div style="margin-top:20px"></div>
-
-	<label for="chosen_playlists">
-		<strong>Which playlists do you want to combine?</strong>
-	</label>
-
-	<MultiSelect
-		--sms-options-bg="#333"
-		--sms-text-color="var(--mainTheme)"
-		options={playlist_choices}
-		placeholder="Pick one or more playlist"
-		name="chosen_playlists"
-		required
-		bind:selected={chosen_playlists}
-	>
-		{#snippet children({ idx, option })}
-			{option.label}
-		{/snippet}
-	</MultiSelect>
-
-	<div style="margin-top:20px"></div>
-
-	<label for="avoid_playlists">
-		<strong>Which playlists contain songs you want to avoid (optional)?</strong>
-	</label>
-	<MultiSelect
-		--sms-options-bg="#333"
-		--sms-text-color="var(--mainTheme)"
-		options={playlist_choices}
-		placeholder="E.g. 'Christmas Songs', 'Sad Songs', etc."
-		name="avoid_playlists"
-		bind:selected={avoid_playlists}
-		allowEmpty={true}
-	>
-		{#snippet children({ idx, option })}
-			{option.label}
-		{/snippet}
-	</MultiSelect>
-
-	<div style="margin-top:20px"></div>
-	<label for="todays_playlist">
-		<strong>And which playlist will be used for this mix (existing songs will be replaced)?</strong>
-	</label>
-	<MultiSelect
-		--sms-options-bg="#333"
-		--sms-text-color="var(--mainTheme)"
-		options={playlist_choices}
-		maxSelect={1}
-		placeholder="e.g. Today's Mix!"
-		name="todays_playlist"
-		bind:selected={todays_playlist}
-		allowEmpty={true}
-	>
-		{#snippet children({ idx, option })}
-			{option.label}
-		{/snippet}
-	</MultiSelect>
-
-	<div style="margin-top:30px"></div>
-
-	{#if chosen_playlists.length > 0 && todays_playlist.length > 0}
-		<h3>Summary:</h3>
-		<h4>Add a mix of songs from:</h4>
-		<div class="mylist">
-			{#each chosen_playlists as chosen}
-				<div class="myitem">
-					{chosen.label}
-				</div>
-			{/each}
-		</div>
-
-		<h4>But no songs that are also in:</h4>
-		<div class="mylist">
-			{#each avoid_playlists as avoid}
-				<div class="myitem">
-					{avoid.label}
-				</div>
-			{/each}
-		</div>
-
-		<h4>
-			Your new mix will be created in (ALL songs currently in this playlist will be removed): <span
-				style="color:var(--accent)">{todays_playlist_label}</span
-			>
-		</h4>
-	{/if}
-	<button> Create Today's Mix! </button>
-</form>
-
-{#if form?.message}
-	<p>
-		{form.message}
-	</p>
-{/if}
-<div style="margin-top:20px"></div>
 
 <style>
 	.mylist {

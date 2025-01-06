@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { run, preventDefault } from 'svelte/legacy';
 
 	import addToLocalStorage, {
@@ -10,22 +10,12 @@
 	import { Accordion } from '$lib/components/Accordion';
 	import { tick } from 'svelte';
 
-	let feeds;
-	run(() => {
-		feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
-	});
-	let poswords;
-	run(() => {
-		poswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
-	});
-	let negwords;
-	run(() => {
-		negwords = JSON.parse(window.localStorage.getItem('negwords')) || [];
-	});
-	let importantPhrases;
-	run(() => {
-		importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
-	});
+	let feeds = $state(JSON.parse(window.localStorage.getItem('feeds')) || []);
+	let poswords = $state(JSON.parse(window.localStorage.getItem('poswords')) || []);
+	let negwords = $state(JSON.parse(window.localStorage.getItem('negwords')) || []);
+	let importantPhrases = $state(JSON.parse(window.localStorage.getItem('importantPhrases')) || []);
+
+
 	let url = $state(),
 		ready = $state();
 	let feedmessage = $state('');
