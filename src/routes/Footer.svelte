@@ -17,7 +17,7 @@
 		</a>
 	</div>
 	<a href="/contact#contactForm">Contact me</a>
-	<p class="darkBackground">© 2024 Tech-Aly</p>
+	<p class="darkBackground">© 2025 Tech-Aly</p>
 </footer>
 
 <style>

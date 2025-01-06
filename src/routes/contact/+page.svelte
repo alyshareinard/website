@@ -108,10 +108,10 @@ const { form, message, errors, constraints, enhance } = superForm(data.form, {
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">
-				Contact me-- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES
+				Contact me
 			</h2>
 		{/if}
-
+		<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
 
 			<ContactForm {data} {wasSubmitted} {submission_status}/>
 

@@ -24,7 +24,8 @@ export const load = async () => {
 	const form = await superValidate(schemasafe(schema));
 	console.log("in load form is ", form);
 	// Always return { form } in load functions
-	return { form };
+	return { form,
+	};
 };
 
 
