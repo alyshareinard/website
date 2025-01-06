@@ -10,7 +10,9 @@
 	//export let data: SuperValidated<ContactFormSchema>;
 
     let formError = '';
-	let { data, wasSubmitted, submission_status } = $props();
+	let { data } = $props();
+	let wasSubmitted = $state(false);
+	let submission_status = $state('');
 	
 	const { form, message, errors, constraints, enhance } = superForm(data.form , {
 //		        validators: ContactFormSchema,

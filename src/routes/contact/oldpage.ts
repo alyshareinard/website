@@ -1,5 +1,6 @@
-export function load() {
+export function load( { data }) {
 	return {
+		data,
 		title: "Hire me to develop your webapp or desktop app.",
 		description:
 			"I can help you with your app. Whether it's a simple inventory tracker, a complex dashboard for your project management or "
