@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-	export let data;
 	import { loginSchema } from './login-schema';
-	let wasSubmitted = false;
+	let { data } = $props();
+	let wasSubmitted = $state(false);
 	let submission_status = '';
 
 	const { form, message, errors, constraints, enhance } = superForm(data.form, {

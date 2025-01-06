@@ -1,5 +1,5 @@
 <script>
-	import { Card } from '$lib/components/Card';
+	import Card  from '$component/Card/Card.svelte';
 	const portHeight = 150;
 	const portWidth = 225;
 
@@ -50,12 +50,16 @@
 		<div class="card">
 			<a href={card['link']}>
 				<Card cardHeight={portHeight} cardWidth={portWidth}>
-					<div slot="content">
-						{card['front']}
-					</div>
-					<div slot="backContent">
-						{card['back']}
-					</div>
+					{#snippet content()}
+						<div>
+							{card['front']}
+						</div>
+					{/snippet}
+					{#snippet backContent()}
+						<div>
+							{card['back']}
+						</div>
+					{/snippet}
 				</Card>
 			</a>
 		</div>

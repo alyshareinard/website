@@ -1,3 +1,13 @@
+<script>
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
+</script>
+
 <div>
 	<h1>Today's playlist</h1>
 	<h3>
@@ -17,5 +27,5 @@
 		>
 	</h3>
 	<h3>This app will only work if you have a Spotify premium account.</h3>
-	<slot />
+	{@render children?.()}
 </div>

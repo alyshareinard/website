@@ -1,14 +1,14 @@
 <script>
 	import GameModal from './gameModal.svelte';
-	
+
 	import leChat from '$lib/nounImages/leChat.webp';
 	import uneHorlage from '$lib/nounImages/uneHorlage.webp';
 	import Hints from './hints.svelte';
 	import HowtoPlay from './howToPlay.svelte';
 
-	let isGameOpen = false;
-	let showHints = false;
-	let showHowtoPlay = false;
+	let isGameOpen = $state(false);
+	let showHints = $state(false);
+	let showHowtoPlay = $state(false);
 
 	function toggleGame() {
 		isGameOpen = !isGameOpen;
@@ -31,9 +31,9 @@
 	<img class="blueborder" src={leChat} alt="cat with beret and mustache" />
 
 	<p class="darkBackground" style="width:75%">
-		As a native English speaker, learning French as an adult has not been easy -- One thing I
-		find particularly difficult is noun gender. A table has a gender? Un chat (a cat) is
-		masculine, but une horloge (a clock) is feminine? What madness is this?
+		As a native English speaker, learning French as an adult has not been easy -- One thing I find
+		particularly difficult is noun gender. A table has a gender? Un chat (a cat) is masculine, but
+		une horloge (a clock) is feminine? What madness is this?
 	</p>
 	<br />
 	<br />
@@ -52,12 +52,12 @@
 	<br />
 	<br />
 	<p class="darkBackground" style="width:75%">
-		So I created this game with pink and blue boxes for the "boy" nouns and the "girl" nouns.
-		Just drag the words to the correct box and see how you do.
+		So I created this game with pink and blue boxes for the "boy" nouns and the "girl" nouns. Just
+		drag the words to the correct box and see how you do.
 	</p>
 </div>
 
-<div class="centerStartButton"><button on:click={toggleGame}>start game</button></div>
+<div class="centerStartButton"><button onclick={toggleGame}>start game</button></div>
 
 {#if isGameOpen}
 	<GameModal {toggleGame} {toggleHints} {toggleHowtoPlay} />
@@ -73,11 +73,10 @@
 
 <style>
 	.centerStartButton {
-		display:flex;
-		width:100%;
-		justify-content:center;
+		display: flex;
+		width: 100%;
+		justify-content: center;
 		padding: 10px;
-
 	}
 	.container {
 		display: relative;

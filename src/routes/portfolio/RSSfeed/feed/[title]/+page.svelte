@@ -1,6 +1,6 @@
 <script>
 	import moment from 'moment';
-	export let data;
+	let { data } = $props();
 </script>
 
 <h1>

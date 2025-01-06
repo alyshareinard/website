@@ -1,9 +1,25 @@
 <script>
 	import { quadInOut } from 'svelte/easing';
 	import { slide } from './Slide';
-	export let isOpen = false;
-	export let lethover = true;
-	export let startOpen = false;
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [isOpen]
+	 * @property {boolean} [lethover]
+	 * @property {boolean} [startOpen]
+	 * @property {import('svelte').Snippet} [head]
+	 * @property {import('svelte').Snippet} [subtitle]
+	 * @property {import('svelte').Snippet} [details]
+	 */
+
+	/** @type {Props} */
+	let {
+		isOpen = $bindable(false),
+		lethover = true,
+		startOpen = false,
+		head,
+		subtitle,
+		details
+	} = $props();
 	if (startOpen) {
 		isOpen = true;
 	}
@@ -27,26 +43,26 @@
 
 <div class="container">
 	<div
-		on:mouseenter={openDescription}
-		on:mouseleave={closeDescription}
+		onmouseenter={openDescription}
+		onmouseleave={closeDescription}
 		class="accordion"
 		role="button"
 		tabindex="0"
 	>
 		<div class="header">
-			<button aria-label="toggle description" on:click={toggleDescription}>
-				<span class={isOpen ? 'chevron right' : 'chevron down'} />
+			<button aria-label="toggle description" onclick={toggleDescription}>
+				<span class={isOpen ? 'chevron right' : 'chevron down'}></span>
 			</button>
 
 			<div class="text">
-				<slot name="head" />
+				{@render head?.()}
 			</div>
 		</div>
 		<div class="subtitle">
-			<slot name="subtitle" />
+			{@render subtitle?.()}
 		</div>
 		<div class="details" use:slide={isOpen}>
-			<slot name="details" />
+			{@render details?.()}
 		</div>
 	</div>
 </div>
@@ -76,9 +92,9 @@
 		color: var(--mainThemeDark);
 	}
 	div.subtitle {
-		margin-top:-20px;
-		margin-bottom:15px;
-		padding-left:80px;
+		margin-top: -20px;
+		margin-bottom: 15px;
+		padding-left: 80px;
 	}
 	.container {
 		padding: 10px;

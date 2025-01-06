@@ -1,24 +1,45 @@
 <script>
-	import addToLocalStorage, { removeFromLocalStorage, updateLocalStorage } from '$lib/rssLocalStorage';
+	import { run, preventDefault } from 'svelte/legacy';
+
+	import addToLocalStorage, {
+		removeFromLocalStorage,
+		updateLocalStorage
+	} from '$lib/rssLocalStorage';
 	import rssReader, { testFeed } from './rssReader';
 	import { invalidateAll } from '$app/navigation';
 	import { Accordion } from '$lib/components/Accordion';
 	import { tick } from 'svelte';
 
-	$: feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
-	$: poswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
-	$: negwords = JSON.parse(window.localStorage.getItem('negwords')) || [];
-	$: importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
-	let url, ready;
-	let feedmessage = '';
-	let showFeedButton = false;
-	let title, posword, negword, importantPhrase;
-	
-	export let data;
+	let feeds;
+	run(() => {
+		feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
+	});
+	let poswords;
+	run(() => {
+		poswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
+	});
+	let negwords;
+	run(() => {
+		negwords = JSON.parse(window.localStorage.getItem('negwords')) || [];
+	});
+	let importantPhrases;
+	run(() => {
+		importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
+	});
+	let url = $state(),
+		ready = $state();
+	let feedmessage = $state('');
+	let showFeedButton = $state(false);
+	let title = $state(),
+		posword = $state(),
+		negword = $state(),
+		importantPhrase = $state();
+
+	let { data } = $props();
 	let { jobs } = data;
-	
-	let response;
-	let showOptions = true;
+
+	let response = $state();
+	let showOptions = $state(true);
 
 	async function test_feed() {
 		response = await testFeed(url);
@@ -37,8 +58,8 @@
 	}
 
 	function toggleActive(feed) {
-		let myfeed = {...feed}
-		myfeed.active = !myfeed.active
+		let myfeed = { ...feed };
+		myfeed.active = !myfeed.active;
 		updateLocalStorage('feeds', feed, myfeed);
 	}
 	function addItem(name, value) {
@@ -73,7 +94,6 @@
 			importantPhrases = [...importantPhrases];
 		}
 	}
-
 </script>
 
 <h1>Better RSS Reader</h1>
@@ -85,9 +105,9 @@
 	-- combining Upwork, Fiverr, and other sites into one list with the most relevant postings at the
 	top.
 </h4>
-<button on:click={() => (showOptions = !showOptions)}>toggle options</button>
+<button onclick={() => (showOptions = !showOptions)}>toggle options</button>
 <button
-	on:click={() => {
+	onclick={() => {
 		invalidateAll();
 	}}>refresh feeds</button
 >
@@ -97,10 +117,14 @@
 			<h3>My feeds</h3>
 			{#each feeds as feed}
 				<div>
-					<input type="checkbox" checked={feed.active} on:click|preventDefault={toggleActive(feed)}/>
+					<input
+						type="checkbox"
+						checked={feed.active}
+						onclick={preventDefault(toggleActive(feed))}
+					/>
 					<button
 						class="deletebutton"
-						on:click={() => {
+						onclick={() => {
 							removeItem('feeds', feed);
 						}}>x</button
 					>
@@ -114,7 +138,7 @@
 				type="url"
 				placeholder="Add an RSS link..."
 				bind:value={url}
-				on:input={() => {
+				oninput={() => {
 					if (url.length > 0) {
 						setTimeout(() => {
 							ready = true;
@@ -135,7 +159,7 @@
 					<input bind:value={title} default={response.title} placeholder="Title" />
 				</div>
 				<button
-					on:click={() => {
+					onclick={() => {
 						addItem('feeds', {
 							title: title || response.title,
 							url: url,
@@ -154,7 +178,7 @@
 					<div>
 						<button
 							class="deletebutton"
-							on:click={() => {
+							onclick={() => {
 								removeItem('poswords', word);
 							}}>x</button
 						>{word}
@@ -165,10 +189,10 @@
 					type="string"
 					placeholder="enter desired word"
 					bind:value={posword}
-					on:input={() => {}}
+					oninput={() => {}}
 				/>
 				<button
-					on:click={() => {
+					onclick={() => {
 						addItem('poswords', posword);
 					}}>Add</button
 				>
@@ -179,7 +203,7 @@
 					<div>
 						<button
 							class="deletebutton"
-							on:click={() => {
+							onclick={() => {
 								removeItem('negwords', word);
 							}}>x</button
 						>{word}
@@ -190,10 +214,10 @@
 					type="string"
 					placeholder="enter undesired word"
 					bind:value={negword}
-					on:input={() => {}}
+					oninput={() => {}}
 				/>
 				<button
-					on:click={() => {
+					onclick={() => {
 						addItem('negwords', negword);
 					}}>Add</button
 				>
@@ -204,7 +228,7 @@
 					<div>
 						<button
 							class="deletebutton"
-							on:click={() => {
+							onclick={() => {
 								removeItem('importantPhrases', phrase);
 							}}>x</button
 						>{phrase}
@@ -215,10 +239,10 @@
 					type="string"
 					placeholder="important phrase"
 					bind:value={importantPhrase}
-					on:input={() => {}}
+					oninput={() => {}}
 				/>
 				<button
-					on:click={() => {
+					onclick={() => {
 						addItem('importantPhrases', importantPhrase);
 					}}>Add</button
 				>
@@ -229,15 +253,21 @@
 {#if jobs}
 	{#each jobs as job}
 		<Accordion lethover="false">
-			<span slot="head">
-				Score: {job.score} <a href={job.link} target="_blank"> {job.title}</a>
-			</span>
+			{#snippet head()}
+				<span>
+					Score: {job.score} <a href={job.link} target="_blank"> {job.title}</a>
+				</span>
+			{/snippet}
 
-			<div slot="subtitle">{@html job.subtitle}</div>
+			{#snippet subtitle()}
+				<div>{@html job.subtitle}</div>
+			{/snippet}
 
-			<div slot="details">
-				{@html job.description}
-			</div>
+			{#snippet details()}
+				<div>
+					{@html job.description}
+				</div>
+			{/snippet}
 		</Accordion>
 	{/each}
 {/if}

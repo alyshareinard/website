@@ -1,13 +1,17 @@
 <script>
 	import { enhance } from '$app/forms';
 	import PapaParse from 'papaparse';
-	let message = '';
+	let message = $state('');
 	const maxFileSize = 1000000;
-	let myfile, csvOutput, href, keys, columns;
-	let downloadReady = false;
+	let myfile = $state(),
+		csvOutput = $state(),
+		href = $state(),
+		keys = $state(),
+		columns = $state();
+	let downloadReady = $state(false);
 	let initialcsv = [];
-	let renamed = false;
-	let transformation = false;
+	let renamed = $state(false);
+	let transformation = $state(false);
 	let selected = false;
 
 	function uploadFile(myfile) {
@@ -94,7 +98,7 @@
 
 			newcsv.push(newdata);
 		}
-		console.log("newcsv", newcsv)
+		console.log('newcsv', newcsv);
 		csvOutput = PapaParse.unparse({
 			data: newcsv,
 			fields: fields
@@ -103,8 +107,6 @@
 		href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
 		message = 'Your CSV ready to download.';
 		downloadReady = true;
-		
-		
 
 		return message, href;
 	}
@@ -151,7 +153,7 @@
 		name="myfile"
 		bind:this={myfile}
 		accept=".csv"
-		on:change={() => uploadFile(myfile)}
+		onchange={() => uploadFile(myfile)}
 	/>
 </div>
 
@@ -174,13 +176,13 @@
 						<input
 							bind:checked={column.status}
 							type="checkbox"
-							on:click={() => toggleSelect(column)}
+							onclick={() => toggleSelect(column)}
 						/>
 					</div>
 					<input
 						bind:checked={column.rename}
 						type="checkbox"
-						on:click={() => toggleRename(column)}
+						onclick={() => toggleRename(column)}
 					/>
 					<span class:checked={column.status}>{column.text}</span>
 					{#if column.status}
@@ -196,7 +198,7 @@
 					{/if}
 				{/each}
 			</div>
-			<button on:click={() => create_output()}> Process </button>
+			<button onclick={() => create_output()}> Process </button>
 		</div>
 	</div>
 {/if}
@@ -204,7 +206,7 @@
 	<p>{message}</p>
 {/if}
 {#if downloadReady}
-	<button on:click={csvOutput}><a {href} download="output.csv">Download</a></button>
+	<button onclick={csvOutput}><a {href} download="output.csv">Download</a></button>
 {/if}
 
 <style>

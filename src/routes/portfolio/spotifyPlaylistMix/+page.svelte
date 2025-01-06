@@ -1,16 +1,17 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { analyticsStore } from '$lib/stores/analyticsStore';
 	import { enhance } from '$app/forms';
 	import MultiSelect from 'svelte-multiselect';
-	export let data;
-	let playlist_choices = [];
-	let chosen_playlists = [];
-	let avoid_playlists = [];
-	let todays_playlist;
-	export let form;
-	let todays_playlist_label;
-	let liked_songs = false;
-	
+	let playlist_choices = $state([]);
+	let chosen_playlists = $state([]);
+	let avoid_playlists = $state([]);
+	let todays_playlist = $state();
+	let { data, form } = $props();
+	let todays_playlist_label = $state();
+	let liked_songs = $state(false);
+
 	const new_event = {
 		id: 'any-random-id',
 		data: {}, //anything you want to send to GA,
@@ -18,8 +19,6 @@
 		type: 'event'
 	};
 	analyticsStore.update((existing_events) => [...existing_events, new_event]);
-
-
 
 	if (data.playlists) {
 		for (let i = 0; i < data.playlists.length; i++) {
@@ -29,11 +28,12 @@
 		playlist_choices = [{ label: 'No playlists found' }];
 	}
 
-
-	$: if (todays_playlist && todays_playlist.length > 0) {
-		let todays_playlist0 = todays_playlist[0];
-		todays_playlist_label = todays_playlist0.label;
-	}
+	run(() => {
+		if (todays_playlist && todays_playlist.length > 0) {
+			let todays_playlist0 = todays_playlist[0];
+			todays_playlist_label = todays_playlist0.label;
+		}
+	});
 </script>
 
 <p>
@@ -43,22 +43,17 @@
 <h4>What do you want to hear?</h4>
 
 <form use:enhance method="POST">
-
-	
-	
 	<label>
-		<input type="checkbox" name="liked_songs" bind:checked={liked_songs}/>
+		<input type="checkbox" name="liked_songs" bind:checked={liked_songs} />
 		All liked songs
 	</label>
 
-	<div style="margin-top:20px" />
+	<div style="margin-top:20px"></div>
 
 	<label for="chosen_playlists">
 		<strong>Which playlists do you want to combine?</strong>
 	</label>
 
-	
-	
 	<MultiSelect
 		--sms-options-bg="#333"
 		--sms-text-color="var(--mainTheme)"
@@ -67,13 +62,13 @@
 		name="chosen_playlists"
 		required
 		bind:selected={chosen_playlists}
-		let:idx
-		let:option
 	>
-		{option.label}
+		{#snippet children({ idx, option })}
+			{option.label}
+		{/snippet}
 	</MultiSelect>
 
-	<div style="margin-top:20px" />
+	<div style="margin-top:20px"></div>
 
 	<label for="avoid_playlists">
 		<strong>Which playlists contain songs you want to avoid (optional)?</strong>
@@ -86,13 +81,13 @@
 		name="avoid_playlists"
 		bind:selected={avoid_playlists}
 		allowEmpty={true}
-		let:idx
-		let:option
 	>
-		{option.label}
+		{#snippet children({ idx, option })}
+			{option.label}
+		{/snippet}
 	</MultiSelect>
 
-	<div style="margin-top:20px" />
+	<div style="margin-top:20px"></div>
 	<label for="todays_playlist">
 		<strong>And which playlist will be used for this mix (existing songs will be replaced)?</strong>
 	</label>
@@ -105,13 +100,13 @@
 		name="todays_playlist"
 		bind:selected={todays_playlist}
 		allowEmpty={true}
-		let:idx
-		let:option
 	>
-		{option.label}
+		{#snippet children({ idx, option })}
+			{option.label}
+		{/snippet}
 	</MultiSelect>
 
-	<div style="margin-top:30px" />
+	<div style="margin-top:30px"></div>
 
 	{#if chosen_playlists.length > 0 && todays_playlist.length > 0}
 		<h3>Summary:</h3>
@@ -147,7 +142,7 @@
 		{form.message}
 	</p>
 {/if}
-<div style="margin-top:20px" />
+<div style="margin-top:20px"></div>
 
 <style>
 	.mylist {

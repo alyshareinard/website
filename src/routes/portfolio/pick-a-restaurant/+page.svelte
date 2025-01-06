@@ -9,7 +9,7 @@
 	});
 
 	console.log(google);
-	let coffeeShops = [];
+	let coffeeShops = $state([]);
 
 	onMount(() => {
 		const latitude = 14.33702; // Example latitude
@@ -40,7 +40,7 @@
 
 <main>
 	<h1>Nearby Cafe</h1>
-	<div id="map" style="height: 400px;" />
+	<div id="map" style="height: 400px;"></div>
 
 	{#if coffeeShops.length > 0}
 		<ul>

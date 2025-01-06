@@ -1,19 +1,28 @@
 import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
-import { superValidate } from 'sveltekit-superforms/server';
-import { z } from 'zod';
-import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
+import { superValidate, type JSONSchema } from 'sveltekit-superforms';
+import { schemasafe } from 'sveltekit-superforms/adapters';
+import { message } from 'sveltekit-superforms';
+
+//import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
+
 //watch https://levelup.video/tutorials/sveltekit/custom-form-handlers to improve in future
 
-const serviceOptions = ['Webpage', 'App', 'Integration'];// as const;
-const new_contact = z.object({
-	fname: z.string(),
-	lname: z.string(),
-	email: z.string().email(),
-	serviceTypes: z.enum(serviceOptions),
-	memo: z.string(),
-	turnstile: z.string()
-});
+
+
+const schema = {
+	type: 'object',
+	properties: {
+	  fname: { type: 'string', minLength: 2 },
+	  lname: { type: 'string', minLength: 2 },
+	  email: { type: 'string', format: 'email' },
+	  serviceTypes: { type: 'string', enum: ['Webpage', 'App', 'Integration'] },
+	  memo: { type: 'string', minLength: 10 },
+	},
+	required: ['fname', 'lname', 'email', 'serviceTypes', 'memo'],
+	additionalProperties: false,
+	$schema: 'http://json-schema.org/draft-07/schema#'
+  } as const satisfies JSONSchema; // Define as const to get type inference
 /*
 interface TokenValidateResponse {
     'error-codes': string[];
@@ -45,7 +54,7 @@ async function validateToken(token, secret) {
                 secret: secret,
             }),
         },
-		console.log('response', response)
+		//console.log('response '+ response)
     );
 
     const data = await response.json();
@@ -58,6 +67,11 @@ async function validateToken(token, secret) {
         turnstyleError: data['error-codes']?.length ? data['error-codes'][0] : null,
     };
 }
+
+
+
+
+
 
 export const actions = {
 	/*default: async ({ request }) => {
@@ -79,29 +93,35 @@ export const actions = {
 			success: true};
     },*/
 
-	default: async (event) => {
+    default: async ({ request }) => {
 		console.log('do I get here?');
-		const form = await superValidate(event, new_contact);
+        const formData = await request.formData();
+        const form = await superValidate(formData, schemasafe(schema));
 
 		if (!form.valid) fail(400, { form });
 
 		
-		const { fname, lname, email, serviceTypes, memo, turnstile } = form.data;
+		const { fname, lname, email, serviceTypes, memo } = form.data;
 
-		const token = turnstile // if you edited the formsField option change this
-        const SECRET_KEY = CLOUDFLARE_SECRET_KEY // you should use $env module for secrets
-		console.log('checking token', token)
-        const { success, error } = await validateToken(token, SECRET_KEY);
-		console.log('success', success)
-		console.log('error', error)
-        if (!success)
-            return {
-                error: error || 'Invalid CAPTCHA',
-            };
+
+            //const turnstile = formData.get('extra');
+            // Do something with the extra data
+
+
+		//const token = turnstile // if you edited the formsField option change this
+        //const SECRET_KEY = CLOUDFLARE_SECRET_KEY // you should use $env module for secrets
+		//console.log('checking token', token)
+        //const { turnstyleSuccess, turnstyleError } = await validateToken(token, SECRET_KEY);
+		//console.log('success', turnstyleSuccess)
+		//console.log('error',   turnstyleError)
+        //if (!turnstyleSuccess)
+        //    return {
+        //        error: turnstyleError || 'Invalid CAPTCHA',
+        //    };
 
 		const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
 
-		let data = {
+		const data = {
 			records: [
 				{
 					fields: {
@@ -110,7 +130,7 @@ export const actions = {
 						email,
 						serviceTypes,
 						memo,
-						turnstile
+//						turnstile
 					}
 				}
 			]
@@ -126,9 +146,8 @@ export const actions = {
 		});
 		console.log('response', response);
 
-		return {
-			form
-		};
+        return message(form, 'Form posted successfully!');
+
 	},
 
 };

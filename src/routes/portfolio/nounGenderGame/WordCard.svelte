@@ -1,8 +1,16 @@
 <script>
 	import { fit, parent_style } from '@leveluptuts/svelte-fit';
 
-	export let backgroundColor;
-	export let flipped = false;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} backgroundColor
+	 * @property {boolean} [flipped]
+	 * @property {import('svelte').Snippet} [backContent]
+	 * @property {import('svelte').Snippet} [frontContent]
+	 */
+
+	/** @type {Props} */
+	let { backgroundColor, flipped = $bindable(false), backContent, frontContent } = $props();
 
 	function flip(node, { delay = 0, duration = 1000 }) {
 		return {
@@ -11,33 +19,24 @@
 			css: (t, u) => `
 				transform: rotateY(${1 - u * 180}deg);
 				opacity: ${1 - u};
-			`,
+			`
 		};
 	}
 
 	function handleClick() {
-		if ($$slots.backContent) {
+		if (backContent) {
 			flipped = !flipped;
 		}
 	}
 </script>
 
-<div
-	class="card-container"
-	tabindex="0"
-	role="cell"
-	on:click={handleClick}
-	on:keypress={handleClick}
->
+<div class="card-container" tabindex="0" role="cell" onclick={handleClick} onkeypress={handleClick}>
 	<div class="card">
 		{#if !flipped}
 			<div style:background-color={backgroundColor} class="front">
 				<div style={parent_style}>
-					<h2
-						use:fit={{ min_size: 12, max_size: 20 }}
-						class="frontText"
-					>
-						<slot name="frontContent" />
+					<h2 use:fit={{ min_size: 12, max_size: 20 }} class="frontText">
+						{@render frontContent?.()}
 					</h2>
 				</div>
 			</div>
@@ -49,7 +48,7 @@
 						use:fit={{ min_size: 12, max_size: 24 }}
 						class="backText"
 					>
-						<slot name="backContent" />
+						{@render backContent?.()}
 					</h2>
 				</div>
 			</div>
@@ -64,10 +63,9 @@
 		color: black;
 	}
 	.frontText {
-		align-self:center;
+		align-self: center;
 		color: black;
 		margin: 0%;
-
 	}
 	.card-container {
 		width: 100%;

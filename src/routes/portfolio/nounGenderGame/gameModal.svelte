@@ -11,33 +11,33 @@
 	import { onMount } from 'svelte';
 
 	let numWords = 10;
-	let unique = {};
-	export let toggleGame;
-	export let toggleHints;
-	export let toggleHowtoPlay;
-	export let showSummary;
-	let mascBox, femBox;
-	let correctWords = [];
+	let unique = $state({});
+	let { toggleGame, toggleHints, toggleHowtoPlay, showSummary = $bindable() } = $props();
+	let mascBox = $state(),
+		femBox = $state();
+	let correctWords = $state([]);
 	let wrongWords = [];
-	let wrongWordsDisplay = [];
+	let wrongWordsDisplay = $state([]);
 	let scoreStore = writable(0);
 	let percCorrectStore = writable(0);
-	let nextCardVis = false;
-	$: backgroundColor = 'purple';
+	let nextCardVis = $state(false);
+	let backgroundColor = $state('purple');
+
 	let wrongAnswer = false;
 	const showImage = false;
 	let seenWords = [];
-	let ansMasVis = false;
-	let ansFemVis = false;
-	let makeConfetti = false;
-	let confettiColor = 'purple';
-	$: mybackground = 'lightgray';
+	let ansMasVis = $state(false);
+	let ansFemVis = $state(false);
+	let makeConfetti = $state(false);
+	let confettiColor = $state('purple');
+	let mybackground = $state('lightgray');
+
 	let imagekeys = [];
-	let nextWord = null;
-	let currentWord = null;
+	let nextWord = $state(null);
+	let currentWord = $state(null);
 	//load the next two lines after the page loads
 	onMount(() => {
-		const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, as: 'url' });
+		const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, query: '?url', import: 'default' });
 
 		//	console.log(images)
 		if (images) {
@@ -49,12 +49,7 @@
 		nextCardVis = true;
 	});
 
-	//		eager: true,
-	//		query: {
-	//			enhanced: true
-	//		}
-	//		as:url
-	//	});
+
 
 	function refresh() {
 		unique = {};
@@ -251,9 +246,9 @@
 	<div class="modalEnvelope" transition:fly={{ y: 40 }}>
 		<nav>
 			<ul>
-				<li><button on:click={toggleHowtoPlay}>How to play</button></li>
-				<li><button on:click={toggleHints}>Hints</button></li>
-				<li><button on:click={toggleGame}>Close</button></li>
+				<li><button onclick={toggleHowtoPlay}>How to play</button></li>
+				<li><button onclick={toggleHints}>Hints</button></li>
+				<li><button onclick={toggleGame}>Close</button></li>
 			</ul>
 		</nav>
 		{#if showSummary}
@@ -266,7 +261,7 @@
 			{/if}
 			<h4>You got {correctWords.length} out of {numWords}</h4>
 			<h4>{$percCorrectStore}% correct</h4>
-			<button on:click={resetGame}>Play again?</button>
+			<button onclick={resetGame}>Play again?</button>
 		{:else if showImage}
 			<enhanced:img src="/src/lib/nounImages/{currentWord.imageFile}" alt={currentWord.ENG} />
 		{:else}
@@ -278,11 +273,15 @@
 				{#if ansMasVis}
 					<div class="answerCardMasc" out:outAnimation>
 						<WordCard backgroundColor={mybackground}>
-							<div slot="frontContent">
-								{currentWord.FR}
-							</div>
+							{#snippet frontContent()}
+								<div>
+									{currentWord.FR}
+								</div>
+							{/snippet}
 
-							<div slot="backContent" />
+							{#snippet backContent()}
+								<div></div>
+							{/snippet}
 						</WordCard>
 					</div>
 				{/if}
@@ -295,9 +294,11 @@
 				{#if ansFemVis}
 					<div class="answerCardFem" out:outAnimation>
 						<WordCard backgroundColor={mybackground}>
-							<div slot="frontContent">
-								{currentWord.FR}
-							</div>
+							{#snippet frontContent()}
+								<div>
+									{currentWord.FR}
+								</div>
+							{/snippet}
 						</WordCard>
 					</div>
 				{/if}
@@ -321,34 +322,42 @@
 						out:slide={{ duration: 200, axis: '-x' }}
 					>
 						<WordCard backgroundColor={word.gender == 'M' ? 'lightblue' : 'pink'}>
-							<div slot="frontContent">
-								<div class="wordImageContainer">
-									<div class="top">
-										{word.FR}
-									</div>
-									<div class="bottom">
-										<img src={word.image} alt={word.FR} />
+							{#snippet frontContent()}
+								<div>
+									<div class="wordImageContainer">
+										<div class="top">
+											{word.FR}
+										</div>
+										<div class="bottom">
+											<img src={word.image} alt={word.FR} />
+										</div>
 									</div>
 								</div>
-							</div>
+							{/snippet}
 
-							<div slot="backContent">
-								{word.EngWO}
-							</div>
+							{#snippet backContent()}
+								<div>
+									{word.EngWO}
+								</div>
+							{/snippet}
 						</WordCard>
 					</div>
 				{/each}
 			</div>
 			{#if nextCardVis}
 				{#key unique}
-					<div class="wordContainer" use:drag on:dragStop={handleDragStop}>
+					<div class="wordContainer" use:drag ondragStop={handleDragStop}>
 						<WordCard backgroundColor="lightgray">
-							<div slot="frontContent">
-								{nextWord.FrWO}
-							</div>
-							<div slot="backContent">
-								{nextWord.EngWO}
-							</div>
+							{#snippet frontContent()}
+								<div>
+									{nextWord.FrWO}
+								</div>
+							{/snippet}
+							{#snippet backContent()}
+								<div>
+									{nextWord.EngWO}
+								</div>
+							{/snippet}
 						</WordCard>
 					</div>
 				{/key}
@@ -357,7 +366,7 @@
 			<div class="centered">
 				{#if makeConfetti}
 					<div
-						on:animationend={resetConfetti}
+						onanimationend={resetConfetti}
 						style="position: absolute; left: 50%; top: 30%"
 						use:confetti={{
 							force: 0.5,
@@ -365,12 +374,12 @@
 							stageHeight: window.innerHeight,
 							colors: [confettiColor]
 						}}
-					/>
+					></div>
 				{/if}
 
 				{#if correctWords.length === 15}
 					<div
-						on:animationstart={resetWordList}
+						onanimationstart={resetWordList}
 						style="position: absolute; left: 50%; top: 30%"
 						use:confetti={{
 							force: 0.9,
@@ -378,12 +387,16 @@
 							stageHeight: window.innerHeight,
 							colors: ['pink', 'lightblue']
 						}}
-					/>
+					></div>
 				{/if}
 			</div>
 		{/if}
 	</div>
-	<div on:click={toggleGame} transition:scale={{ start: 1.5, duration: 1000 }} class="background" />
+	<div
+		onclick={toggleGame}
+		transition:scale={{ start: 1.5, duration: 1000 }}
+		class="background"
+	></div>
 </div>
 
 <style>

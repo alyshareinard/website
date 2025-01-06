@@ -1,24 +1,26 @@
 <script lang="ts">
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import { Turnstile } from 'svelte-turnstile';
+	import type { SuperValidated} from 'sveltekit-superforms';
+//	import { Turnstile } from 'svelte-turnstile';
+//	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	//import type { Infer } from 'sveltekit-superforms/';
+
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { ContactFormSchema } from '$lib/schemas';
 	const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
-	export let data: SuperValidated<ContactFormSchema>;
-	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
-	export let wasSubmitted = false;
-    export let formError = '';
-	export let submission_status = '';
+	//export let data: SuperValidated<ContactFormSchema>;
 
-	const { form, message, errors, constraints, enhance } = superForm(data, {
-		//        validators: ContactFormSchema,
+    let formError = '';
+	let { data, wasSubmitted, submission_status } = $props();
+	
+	const { form, message, errors, constraints, enhance } = superForm(data.form , {
+//		        validators: ContactFormSchema,
 		resetForm: false,
 		taintedMessage: null,
 
 		onSubmit: (event: any) => {
 			wasSubmitted = true;
 			submission_status = 'submitting';
+
 		},
 		onUpdated: ({ form }) => {
 			if (form.valid) {
@@ -28,12 +30,17 @@
 				console.log(form);
 			}
 		},
+        onError(event) {
+            console.log(event);
+            formError = (event.result.error).toString();
+        },
 		delayMs: 500
 	});
+    //<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
 </script>
 
 <form method="POST" action="/contact/contactForm" use:enhance>
-	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
+	
 	<div class="myform">
 		<label for="fname" class="label-short">
 			<span class="label-text">First name</span>
@@ -65,6 +72,8 @@
 			{...$constraints.lname}
 		/>
 		{#if wasSubmitted && $errors.lname}<span class="invalid">{$errors.lname}</span>{/if}
+
+
 
 		<label for="email" class="label-short">
 			<span class="label-text">Email</span>
@@ -106,7 +115,7 @@
 			rows="3"
 			autocomplete="off"
 			{...$constraints.memo}
-		/>
+		></textarea>
 		{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
 
 		<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">

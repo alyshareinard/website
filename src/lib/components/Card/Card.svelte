@@ -1,14 +1,22 @@
-<script>
-	export let cardHeight = 200;
-	export let cardWidth = 300;
+<script lang="ts">
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [cardHeight]
+	 * @property {number} [cardWidth]
+	 * @property {import('svelte').Snippet} [content]
+	 * @property {import('svelte').Snippet} [backContent]
+	 */
 
-	let flipped = false;
+	/** @type {Props} */
+	let { cardHeight = 200, cardWidth = 300, content, backContent } = $props();
 
-	function flip(node, { delay = 0, duration = 1000 }) {
+	let flipped = $state(false);
+
+	function flip(node: HTMLElement, { delay = 0, duration = 1000 }) {
 		return {
 			delay,
 			duration,
-			css: (t, u) => `
+			css: (t: number, u: number) => `
 				transform: rotateY(${1 - u * 180}deg);
 				opacity: ${1 - u};
 			`
@@ -28,28 +36,33 @@
 	style="position:relative; width: {cardWidth}px; height:{cardHeight}px"
 	tabindex="0"
 	role="menuitem"
-	on:mouseover={handleMouseOver}
-	on:focus={handleMouseOver}
-	on:mouseout={handleMouseOut}
-	on:blur={handleMouseOut}
+	onmouseover={handleMouseOver}
+	onfocus={handleMouseOver}
+	onmouseout={handleMouseOut}
+	onblur={handleMouseOut}
 >
 	<div class="card">
 		{#if !flipped}
 			<div class="side" transition:flip>
 				<h2 class="frontText">
-					<slot name="content">Unknown content</slot>
+					{#if content}
+					{@render content()}
+					{:else}
+					Unknown content
+					{/if}
 				</h2>
 			</div>
 		{:else}
 			<div class="side back" transition:flip>
 				<h2 class="backText">
-					<slot name="backContent">Unknown back content</slot>
+					{#if backContent}
+					{@render backContent()}
+					{:else}Unknown back content{/if}
 				</h2>
 			</div>
 		{/if}
 	</div>
 </div>
-
 
 <style>
 	.backText {

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Card } from '$lib/components/Card';
+	import  Card  from '$component/Card/Card.svelte';
 	import Carousel from 'svelte-carousel';
 	import { onMount } from 'svelte';
 	import PorfolioCards from './portfolioCards.svelte';
 
-	let showTestimonials = false;
+	let showTestimonials = $state(false);
 	const mainHeight = 200;
 	const mainWidth = 300;
 	onMount(() => {
@@ -97,17 +97,21 @@
 
 <main>
 	<div role="menu" class="mainNav">
-		{#each main_cards as card}
+		{#each main_cards as mycard}
 			<div class="card">
-				{#if card['link']}
-					<a href={card['link']}>
+				{#if mycard['link']}
+					<a href={mycard['link']}>
 						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
-							<div slot="content">
-								{card['front']}
-							</div>
-							<div slot="backContent">
-								{card['back']}
-							</div>
+							{#snippet content()}
+								<div>
+									{mycard['front']}
+								</div>
+							{/snippet}
+							{#snippet backContent()}
+								<div>
+									{mycard['back']}
+								</div>
+							{/snippet}
 						</Card>
 					</a>
 				{/if}

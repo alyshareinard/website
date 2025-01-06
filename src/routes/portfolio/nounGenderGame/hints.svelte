@@ -6,14 +6,14 @@
 		'And, of course, there are other exceptions.'
 	];
 	console.log('in hints!');
-	export let toggleHints;
+	let { toggleHints } = $props();
 </script>
 
 <div class="modal">
 	<div class="modalEnvelope" transition:fly={{ y: 40 }}>
 		<nav>
 			<ul>
-				<li><button on:click={toggleHints}> Close </button></li>
+				<li><button onclick={toggleHints}> Close </button></li>
 			</ul>
 		</nav>
 
@@ -22,10 +22,10 @@
 		{/each}
 
 		<div
-			on:click={toggleHints}
+			onclick={toggleHints}
 			transition:scale={{ start: 1.5, duration: 1000 }}
 			class="background"
-		/>
+		></div>
 	</div>
 </div>
 

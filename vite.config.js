@@ -8,5 +8,8 @@ export default defineConfig({
             org: "tech-aly",
             project: "tech-aly-website"
         }
-    }), sveltekit()]
+    }), sveltekit()], 
+    optimizeDeps: {
+        include: ['@exodus/schemasafe'] // Add this to make client-side validation work
+      }
 });

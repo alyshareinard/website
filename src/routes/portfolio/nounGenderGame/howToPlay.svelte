@@ -2,14 +2,14 @@
 	import { scale, fly } from 'svelte/transition';
 	let how2play = ['Drag masculine nouns into the blue box and feminine nouns into the pink box.'];
 	console.log('in how to play!');
-	export let toggleHowtoPlay;
+	let { toggleHowtoPlay } = $props();
 </script>
 
 <div class="modal">
 	<div class="modalEnvelope" transition:fly={{ y: 40 }}>
 		<nav>
 			<ul>
-				<li><button on:click={toggleHowtoPlay}> Close </button></li>
+				<li><button onclick={toggleHowtoPlay}> Close </button></li>
 			</ul>
 		</nav>
 
@@ -18,10 +18,10 @@
 		{/each}
 
 		<div
-			on:click={toggleHowtoPlay}
+			onclick={toggleHowtoPlay}
 			transition:scale={{ start: 1.5, duration: 1000 }}
 			class="background"
-		/>
+		></div>
 	</div>
 </div>
 

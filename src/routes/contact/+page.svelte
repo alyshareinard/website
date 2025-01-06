@@ -1,26 +1,51 @@
-<script>
-	import { superForm } from 'sveltekit-superforms/client';
+<!-- @migration-task Error while migrating Svelte code: Cannot use `export let` in runes mode — use `$props()` instead
+https://svelte.dev/e/legacy_export_invalid -->
+<script lang="ts">
+	import { superForm, type JSONSchema } from 'sveltekit-superforms';	
 	import { Turnstile } from 'svelte-turnstile';
 	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
+	import { onMount } from 'svelte';
+	import SuperDebug from 'sveltekit-superforms';
 	import { z } from 'zod';
 	import ContactForm from './ContactForm.svelte';
+
+//	import {formSchema} from "./schema.ts";
+
+	//	import ContactForm from './ContactForm.svelte';
 	//adapted from https://scottspence.com/posts/sveltekit-contact-form-example-with-airtable
 
-//	export let form;
-//	export let data;
+	//	export let form;
 
+//	export let data;
+let { data } = $props();
+console.log('in page.svelte: ', data);
+// Client API:
+//const { form, errors, constraints, message, enhance } = superForm(data.form);
+//let form = superForm(data.form, {
+//	validators: zodClient(formSchema)
+//});
+	
+
+//	onMount(() => {
+//		console.log("data: ", data.form);		
+//	})
+
+	//	let form = $state();
+	//let form  = $state(superForm(data.form));
+	//$effect(() => {let form  = $state(superForm(data.form));});
+	
 
 	//	export let myform;
 
 	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
-	let wasSubmitted = false;
-	let submission_status = '';
+	let wasSubmitted = $state(false);
+	let submission_status = $state('');
 	let formError = '';
 	const serviceOptions = ['Webpage', 'App', 'Integration']; // as const;
 
-	/*
-	const { form, message, errors, constraints, enhance } = superForm(data.form, {
-		validators: new_contact, 
+	
+const { form, message, errors, constraints, enhance } = superForm(data.form, {
+		//validators: new_contact, 
 		resetForm: false,
 		taintedMessage: null,
 
@@ -37,7 +62,7 @@
 			}
 		},
 		delayMs: 500
-	}); */
+	}); 
 </script>
 
 <h1>What can I do for you?</h1>
@@ -66,7 +91,7 @@
 </p>
 
 <hr />
-<h2 id="contactFormitem">Contact me  </h2>
+<h2 id="contactFormitem">Contact me</h2>
 <p class="darkBackground">
 	Fill out the form below and I'll get back to you with my calendar link so we can set up a call to
 	discuss your project. After that I'll write up a statement of work and a quote. Once we agree to
@@ -82,15 +107,19 @@
 		{:else if submission_status === 'success'}
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
-			<h2 style="margin-left:10%; margin-top:5%">Contact me-- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES</h2>
+			<h2 style="margin-left:10%; margin-top:5%">
+				Contact me-- UNDER CONSTRUCTION, TRY BACK IN A FEW MINUTES
+			</h2>
 		{/if}
 
-		{#if formError}
-			<p>{formError.message}</p>
-		{/if}
 
-		
-		<ContactForm {submission_status} {formError} />
+			<ContactForm {data} {wasSubmitted} {submission_status}/>
+
+
 
 	</div>
 </div>
+
+<style>
+
+  </style>

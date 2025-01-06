@@ -1,7 +1,5 @@
 <script>
-	
-
-	let container;
+	let container = $state();
 	let map;
 	let zoom = 8;
 	let center = { lat: -34.397, lng: 150.644 };
@@ -17,7 +15,7 @@
 	});
 </script>
 
-<div class="full-screen" bind:this={container} />
+<div class="full-screen" bind:this={container}></div>
 
 <style>
 	.full-screen {
