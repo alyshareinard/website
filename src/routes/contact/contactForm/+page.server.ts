@@ -95,10 +95,6 @@ export const actions = {
 		const { fname, lname, email, serviceTypes, memo } = form.data;
 
 
-            //const turnstile = formData.get('extra');
-            // Do something with the extra data
-
-
 		//const token = turnstile // if you edited the formsField option change this
         //const SECRET_KEY = CLOUDFLARE_SECRET_KEY // you should use $env module for secrets
 		//console.log('checking token', token)

@@ -47,7 +47,7 @@ const { form, message, errors, constraints, enhance } = superForm(data.form, {
 		onUpdated: ({ form }) => {
 			if (form.valid) {
 				submission_status = 'success';
-			} else {
+			} else if (form.message) {
 				submission_status = form.message;
 				console.log(form);
 			}
@@ -176,15 +176,13 @@ const { form, message, errors, constraints, enhance } = superForm(data.form, {
 					autocomplete="off"
 					{...$constraints.memo}
 				></textarea>
-				<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} />
+				<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY}  responseFieldName = "turnstile" />
 				{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
 
 				<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
 					<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
 				</div>
-				{#if form?.error}
-	<p>{form?.error}</p>
-{/if}
+
 			</div>
 		</form>
 	</div>
