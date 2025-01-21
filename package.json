@@ -43,8 +43,10 @@
 		"@neoconfetti/svelte": "^1.0.0",
 		"@rollup/plugin-terser": "^0.4.4",
 		"@sendgrid/mail": "^8.1.4",
-		"@sentry/sveltekit": "^8",
+		"@sentry/sveltekit": "^8.50.0",
+		"@sveltejs/adapter-cloudflare": "^5.0.1",
 		"@vercel/blob": "^0.21.0",
+		"cloudflare": "^4.0.0",
 		"cookie": "^0.5.0",
 		"d3-interpolate": "^3.0.1",
 		"dotenv": "^16.4.7",
@@ -53,6 +55,7 @@
 		"papaparse": "^5.4.1",
 		"rss-parser": "^3.13.0",
 		"svelte-carousel": "^1.0.25",
-		"tailwindcss": "^3.4.16"
+		"tailwindcss": "^3.4.16",
+		"wrangler": "^3.103.2"
 	}
 }
