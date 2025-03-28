@@ -10,35 +10,57 @@
 	import { Accordion } from '$lib/components/Accordion';
 	import { tick } from 'svelte';
 
-	let feeds = $state(JSON.parse(window.localStorage.getItem('feeds')) || []);
-	let poswords = $state(JSON.parse(window.localStorage.getItem('poswords')) || []);
-	let negwords = $state(JSON.parse(window.localStorage.getItem('negwords')) || []);
-	let importantPhrases = $state(JSON.parse(window.localStorage.getItem('importantPhrases')) || []);
+		interface Feed {
+		title: string;
+		url: string;
+		active?: boolean;
+	}
 
+	interface FeedItem {
+		title: string;
+		url: string;
+		active?: boolean;
+	}
 
-	let url = $state(),
-		ready = $state();
-	let feedmessage = $state('');
-	let showFeedButton = $state(false);
-	let title = $state(),
-		posword = $state(),
-		negword = $state(),
-		importantPhrase = $state();
+	interface FeedResponse {
+		format: 'invalid' | 'unknown' | 'rss' | 'atom';
+		title?: string;
+		url?: string;
+	}
 
-	let { data } = $props();
+	let feeds = $state<Feed[]>(JSON.parse(window.localStorage.getItem('feeds') || '[]'));
+	let poswords = $state<string[]>(JSON.parse(window.localStorage.getItem('poswords') || '[]'));
+	let negwords = $state<string[]>(JSON.parse(window.localStorage.getItem('negwords') || '[]'));
+	let importantPhrases = $state<string[]>(JSON.parse(window.localStorage.getItem('importantPhrases') || '[]'));
+
+	let url = $state<string>('');
+	let ready = $state<boolean>(false);
+	let feedmessage = $state<string>('');
+	let showFeedButton = $state<boolean>(false);
+	let title = $state<string>('');
+	let posword = $state<string>('');
+	let negword = $state<string>('');
+	let importantPhrase = $state<string>('');
+
+	interface PageData {
+		jobs: any[]; // Replace 'any' with the actual type of your jobs
+	}
+
+	let { data } = $props<{ data: PageData }>();
 	let { jobs } = data;
 
-	let response = $state();
+	let response: FeedResponse | null = $state(null);
 	let showOptions = $state(true);
 
 	async function test_feed() {
-		response = await testFeed(url);
+		if (!url) return;
+		response = await testFeed(url) as FeedResponse;
 		await tick();
 
-		if (response.format == 'invalid') {
+		if (response?.format === 'invalid') {
 			feedmessage = 'This does not seem to be an RSS feed...Check your URL and try again';
 			showFeedButton = false;
-		} else if (response.format == 'unknown') {
+		} else if (response?.format === 'unknown') {
 			feedmessage = 'Format unknown -- this app can only parse atom or rss feeds';
 			showFeedButton = false;
 		} else if (response.format == 'rss' || response.format == 'atom') {
@@ -110,7 +132,7 @@
 					<input
 						type="checkbox"
 						checked={feed.active}
-						onclick={preventDefault(toggleActive(feed))}
+						onclick={() => toggleActive(feed)}
 					/>
 					<button
 						class="deletebutton"
@@ -146,12 +168,12 @@
 			{/if}
 			{#if showFeedButton}
 				<div>
-					<input bind:value={title} default={response.title} placeholder="Title" />
+					<input type="text" bind:value={title} placeholder={response?.title || "Title"} />
 				</div>
 				<button
 					onclick={() => {
 						addItem('feeds', {
-							title: title || response.title,
+							title: title || response?.title,
 							url: url,
 							active: true,
 							format: response.format
@@ -284,9 +306,7 @@
 		margin: 2px;
 		background-color: black;
 	}
-	nav {
-		margin-top: 20px;
-	}
+
 	input {
 		padding: 15px;
 		font-size: 20px;
