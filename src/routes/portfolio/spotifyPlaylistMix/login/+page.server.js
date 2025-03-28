@@ -46,15 +46,17 @@ async function get_code(event) {
 	let state = generateRandomString(16);
 	let scope = 'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played'
 
+	// Ensure the redirect_uri maintains HTTPS by manually encoding it
+	const encodedRedirectUri = encodeURIComponent(spotifyRedirectURL);
 	let args = new URLSearchParams({
 		response_type: 'code',
 		client_id: spotifyClientId,
 		scope: scope,
-		redirect_uri: spotifyRedirectURL,
 		state: state,
 		code_challenge_method: 'S256',
 		code_challenge: challenge
 	});
+	args.append('redirect_uri', spotifyRedirectURL); // Add redirect_uri separately to maintain HTTPS
 	let url = 'https://accounts.spotify.com/authorize?' + args;
     return(url)
 }
