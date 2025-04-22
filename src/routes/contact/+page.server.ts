@@ -12,6 +12,7 @@ interface TokenValidateResponse {
 }
 
 async function validateToken(token: string, secret: string) {
+	console.log('Validating turnstile token...');
 	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
 		method: 'POST',
 		headers: {
@@ -73,9 +74,12 @@ async function verifyTurnstileToken(token: string) {
 
 export const actions = {
 	default: async ({ request }) => {
+		console.log('Form submission started...');
 		try {
 			const formData = await request.formData();
+			console.log('Form data received:', Object.fromEntries(formData));
 			const turnstileToken = formData.get('cf-turnstile-response');
+			console.log('Turnstile token present:', !!turnstileToken);
 
 			if (!turnstileToken || typeof turnstileToken !== 'string') {
 				return fail(400, { message: 'Turnstile verification failed' });
@@ -83,6 +87,7 @@ export const actions = {
 
 			// Validate the turnstile token
 			const { success, error } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY);
+			console.log('Turnstile validation result:', { success, error });
 			if (!success) {
 				console.error('Turnstile validation failed:', error);
 				return fail(400, { message: 'Turnstile verification failed' });
@@ -90,6 +95,7 @@ export const actions = {
 
 			// Validate the form data
 			const form = await superValidate(formData, schemasafe(schema));
+			console.log('Form validation result:', { valid: form.valid, errors: form.errors });
 			if (!form.valid) {
 				return fail(400, { form });
 			}
@@ -112,6 +118,7 @@ export const actions = {
 				]
 			};
 
+			console.log('Submitting to Airtable...');
 			const response = await fetch(AIRTABLE_URL, {
 				method: 'POST',
 				headers: {
@@ -123,10 +130,12 @@ export const actions = {
 
 			if (!response.ok) {
 				const errorData = await response.json();
+				console.log('Airtable error response:', errorData);
 				console.error('Airtable API error:', errorData);
 				return fail(500, { message: 'Failed to submit form' });
 			}
 
+			console.log('Form submission completed successfully');
 			return message(form, 'Form posted successfully!');
 		} catch (error) {
 			console.error('Form submission error:', error);

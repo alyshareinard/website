@@ -17,28 +17,36 @@
 
 	const { form, errors, enhance, constraints, reset } = superForm(data.form, {
 		onSubmit: ({ formData, cancel }) => {
+			console.log('Form submission starting...');
 			if (!turnstileResponse) {
+				console.log('No Turnstile response, canceling submission');
 				cancel();
 				submission_status = 'Please complete the CAPTCHA';
 				return;
 			}
+			console.log('Adding Turnstile response to form data');
 			formData.append('cf-turnstile-response', turnstileResponse);
+			console.log('Form data being submitted:', Object.fromEntries(formData));
 			wasSubmitted = true;
 			submission_status = 'submitting';
 		},
 		onResult: ({ result }) => {
+			console.log('Received form submission result:', result);
 			if (result.type === 'success') {
+				console.log('Form submission successful');
 				submission_status = 'success';
 				turnstileResponse = '';
 				wasSubmitted = false;
 				reset();
 			} else {
+				console.log('Form submission failed:', result);
 				submission_status = 'failed';
 			}
 		},
 		onError: (err) => {
+			console.log('Form submission error:', err);
 			submission_status = 'failed';
-			console.error('Form submission error:', err);
+			console.error('Form submission error details:', err);
 		}
 	});
 
