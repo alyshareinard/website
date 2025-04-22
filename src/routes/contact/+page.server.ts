@@ -1,4 +1,3 @@
-import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
 import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { TURNSTILE_SECRET_KEY } from '$env/static/private';
@@ -95,7 +94,7 @@ export const actions = {
 		const { fname, lname, email, serviceTypes, turnstile, memo } = form.data;
 
 		const token = turnstile; // if you edited the formsField option change this
-		const SECRET_KEY = CLOUDFLARE_SECRET_KEY; // you should use $env module for secrets
+		const SECRET_KEY = TURNSTILE_SECRET_KEY; // you should use $env module for secrets
 		console.log('checking token', token);
 		const { success, error } = await validateToken(token, SECRET_KEY);
 		console.log('success', success);
