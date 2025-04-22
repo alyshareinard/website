@@ -2,7 +2,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	// @ts-ignore
 	import { Turnstile } from 'svelte-turnstile';
-	import { onMount } from 'svelte/internal';
+	
 
 	interface ContactFormData extends Record<string, unknown> {
 		fname: string;
@@ -13,7 +13,7 @@
 		memo: string;
 	}
 
-	export let data: { form: ContactFormData };
+	const data = $props<{ form: ContactFormData }>();
 
 	const { form, errors, enhance, constraints, reset } = superForm(data.form, {
 		onSubmit: ({ formData, cancel }) => {
@@ -44,7 +44,7 @@
 
 	// Add Turnstile script to head
 	let turnstileScript: HTMLScriptElement;
-	onMount(() => {
+	$effect(() => {
 		turnstileScript = document.createElement('script');
 		turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
 		turnstileScript.async = true;
@@ -55,9 +55,9 @@
 		};
 	});
 
-	let turnstileResponse = '';
-	let wasSubmitted = false;
-	let submission_status = '';
+	let turnstileResponse = $state('');
+	let wasSubmitted = $state(false);
+	let submission_status = $state('');
 
 	const serviceOptions = ['Webpage', 'App', 'Integration'];
 
