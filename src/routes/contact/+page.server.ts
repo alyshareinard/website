@@ -41,10 +41,9 @@ const schema = {
 		lname: { type: 'string', minLength: 2 },
 		email: { type: 'string', format: 'email' },
 		serviceTypes: { type: 'string', enum: ['Webpage', 'App', 'Integration'] },
-		turnstile: { type: 'string' },
 		memo: { type: 'string', minLength: 10 }
 	},
-	required: ['fname', 'lname', 'email', 'serviceTypes', 'turnstile', 'memo'],
+	required: ['fname', 'lname', 'email', 'serviceTypes', 'memo'],
 	additionalProperties: false,
 	$schema: 'http://json-schema.org/draft-07/schema#'
 } as const satisfies JSONSchema; // Define as const to get type inference
@@ -74,70 +73,64 @@ async function verifyTurnstileToken(token: string) {
 
 export const actions = {
 	default: async ({ request }) => {
-		console.log('do I get here?');
-		const formData = await request.formData();
-		const turnstileToken = formData.get('cf-turnstile-response');
+		try {
+			const formData = await request.formData();
+			const turnstileToken = formData.get('cf-turnstile-response');
 
-		if (!turnstileToken || typeof turnstileToken !== 'string') {
-			return fail(400, { message: 'Turnstile verification failed' });
-		}
+			if (!turnstileToken || typeof turnstileToken !== 'string') {
+				return fail(400, { message: 'Turnstile verification failed' });
+			}
 
-		const isValid = await verifyTurnstileToken(turnstileToken);
-		if (!isValid) {
-			return fail(400, { message: 'Turnstile verification failed' });
-		}
+			// Validate the turnstile token
+			const { success, error } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY);
+			if (!success) {
+				console.error('Turnstile validation failed:', error);
+				return fail(400, { message: 'Turnstile verification failed' });
+			}
 
-		const form = await superValidate(formData, schemasafe(schema));
+			// Validate the form data
+			const form = await superValidate(formData, schemasafe(schema));
+			if (!form.valid) {
+				return fail(400, { form });
+			}
 
-		if (!form.valid) fail(400, { form });
+			const { fname, lname, email, serviceTypes, memo } = form.data;
 
-		const { fname, lname, email, serviceTypes, turnstile, memo } = form.data;
-
-		const token = turnstile; // if you edited the formsField option change this
-		const SECRET_KEY = TURNSTILE_SECRET_KEY; // you should use $env module for secrets
-		console.log('checking token', token);
-		const { success, error } = await validateToken(token, SECRET_KEY);
-		console.log('success', success);
-		console.log('error', error);
-		if (!success) {
-			console.log('this should return on invalid captcha');
-			return message(form, 'Invalid captcha');
-		}
-			//fail(400, { error: error || "Invalid CAPTCHA"});
-			
-		//		    return {
-		//				submission_status:'failed',
-		//				return message(form, 'Form posted successfully!');
-		//		        error: error || 'Invalid CAPTCHA',
-		//		    };
-
-		const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
-
-		const data = {
-			records: [
-				{
-					fields: {
-						fname,
-						lname,
-						email,
-						serviceTypes,
-						memo
-						//						turnstile
+			// Submit to Airtable
+			const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
+			const data = {
+				records: [
+					{
+						fields: {
+							fname,
+							lname,
+							email,
+							serviceTypes,
+							memo
+						}
 					}
-				}
-			]
-		};
-		console.log('sending', data.records[0].fields);
-		const response = await fetch(AIRTABLE_URL, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${contactForm_api}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-		});
-		console.log('response from airtable', response);
+				]
+			};
 
-		return message(form, 'Form posted successfully!');
+			const response = await fetch(AIRTABLE_URL, {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${contactForm_api}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				console.error('Airtable API error:', errorData);
+				return fail(500, { message: 'Failed to submit form' });
+			}
+
+			return message(form, 'Form posted successfully!');
+		} catch (error) {
+			console.error('Form submission error:', error);
+			return fail(500, { message: 'An unexpected error occurred' });
+		}
 	}
 };
