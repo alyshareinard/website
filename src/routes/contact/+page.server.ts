@@ -1,6 +1,7 @@
 import { CLOUDFLARE_SECRET_KEY } from '$env/static/private';
 import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
+import { TURNSTILE_SECRET_KEY } from '$env/static/private';
 import { superValidate, type JSONSchema } from 'sveltekit-superforms';
 import { schemasafe } from 'sveltekit-superforms/adapters';
 import { message } from 'sveltekit-superforms';
@@ -56,12 +57,37 @@ export const load = async () => {
 	return { form };
 };
 
+async function verifyTurnstileToken(token: string) {
+	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			secret: TURNSTILE_SECRET_KEY,
+			response: token
+		})
+	});
+
+	const data = await response.json();
+	return data.success;
+}
+
 export const actions = {
 	default: async ({ request }) => {
 		console.log('do I get here?');
 		const formData = await request.formData();
+		const turnstileToken = formData.get('cf-turnstile-response');
 
-		//const token = formData.get('cf-turnstile-response') as string;
+		if (!turnstileToken || typeof turnstileToken !== 'string') {
+			return fail(400, { message: 'Turnstile verification failed' });
+		}
+
+		const isValid = await verifyTurnstileToken(turnstileToken);
+		if (!isValid) {
+			return fail(400, { message: 'Turnstile verification failed' });
+		}
+
 		const form = await superValidate(formData, schemasafe(schema));
 
 		if (!form.valid) fail(400, { form });

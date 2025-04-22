@@ -1,59 +1,67 @@
 <script lang="ts">
-
-	import { Turnstile } from 'svelte-turnstile';
-	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
-	//import ContactForm from './ContactForm.svelte';
 	import { superForm } from 'sveltekit-superforms/client';
+	// @ts-ignore
+	import { Turnstile } from 'svelte-turnstile';
+	import { onMount } from 'svelte/internal';
 
-	let { data } = $props();
-	console.log('in page.svelte: ', data);
-	// Client API:
-	//const { form, errors, constraints, message, enhance } = superForm(data.form);
-	//let form = superForm(data.form, {
-	//	validators: zodClient(formSchema)
-	//});
+	interface ContactFormData extends Record<string, unknown> {
+		fname: string;
+		lname: string;
+		email: string;
+		serviceTypes: string;
+		turnstile?: string;
+		memo: string;
+	}
 
-	//	onMount(() => {
-	//		console.log("data: ", data.form);
-	//	})
+	export let data: { form: ContactFormData };
 
-	//	let form = $state();
-	//let form  = $state(superForm(data.form));
-	//$effect(() => {let form  = $state(superForm(data.form));});
-
-	//	export let myform;
-
-	const turnstile_key = PUBLIC_TURNSTILE_SITE_KEY;
-	let wasSubmitted = $state(false);
-	let submission_status = $state('');
-	let formError = '';
-	const serviceOptions = ['Webpage', 'App', 'Integration']; // as const;
-	//const { form, message, errors, constraints, enhance } = superForm(data.form, {
-	//action returns success or failure message, update it here
-	//		onSubmit: (event) => {
-
-	//		}
-	//	});
-	
-const { form, message, errors, constraints, enhance } = superForm(data.form, {
-		//validators: new_contact, 
-		resetForm: false,
-		taintedMessage: null,
-
-		onSubmit: (event) => {
+	const { form, errors, enhance, constraints, reset } = superForm(data.form, {
+		onSubmit: ({ formData, cancel }) => {
+			if (!turnstileResponse) {
+				cancel();
+				submission_status = 'Please complete the CAPTCHA';
+				return;
+			}
+			formData.append('cf-turnstile-response', turnstileResponse);
 			wasSubmitted = true;
 			submission_status = 'submitting';
 		},
-		onUpdated: ({ form }) => {
-			if (form.valid) {
+		onResult: ({ result }) => {
+			if (result.type === 'success') {
 				submission_status = 'success';
-			} else if (form.message) {
-				submission_status = form.message;
-				console.log(form);
+				turnstileResponse = '';
+				wasSubmitted = false;
+				reset();
+			} else {
+				submission_status = 'failed';
 			}
 		},
-		delayMs: 500
-	}); 
+		onError: (err) => {
+			submission_status = 'failed';
+			console.error('Form submission error:', err);
+		}
+	});
+
+	// Add Turnstile script to head
+	let turnstileScript: HTMLScriptElement;
+	onMount(() => {
+		turnstileScript = document.createElement('script');
+		turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+		turnstileScript.async = true;
+		document.head.appendChild(turnstileScript);
+
+		return () => {
+			turnstileScript?.remove();
+		};
+	});
+
+	let turnstileResponse = '';
+	let wasSubmitted = false;
+	let submission_status = '';
+
+	const serviceOptions = ['Webpage', 'App', 'Integration'];
+
+	console.log('in page.svelte: ', data);
 
 </script>
 
@@ -176,19 +184,38 @@ const { form, message, errors, constraints, enhance } = superForm(data.form, {
 					autocomplete="off"
 					{...$constraints.memo}
 				></textarea>
-				<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY}  responseFieldName = "turnstile" />
 				{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
 
-				<div style="margin-top:10%; margin-left:80%; margin-bottom:-10%">
-					<input type="submit" value="Submit" class="btn btn-primary w-full mt-10" />
+				<div class="turnstile-container">
+					<Turnstile
+						siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+						on:verify={(token) => turnstileResponse = token.detail}
+						on:error={() => turnstileResponse = ''}
+					/>
 				</div>
+
+				<button 
+					type="submit" 
+					class="submit-button" 
+					disabled={!turnstileResponse}
+				>
+					Submit
+				</button>
 
 			</div>
 		</form>
 	</div>
 </div>
 
+
+
 <style>
+
+.turnstile-container {
+		margin: 1rem 0;
+		display: flex;
+		justify-content: center;
+	}
 	.myform {
 		display: grid;
 		justify-content: start;
