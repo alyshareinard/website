@@ -207,8 +207,9 @@
 								turnstileResponse = '';
 							}}
 						/>
-					</div>
 
+					<input name="turnstileResponse" bind:value={turnstileResponse} />
+				</div>
 					<button 
 						type="submit" 
 						class="submit-button" 
