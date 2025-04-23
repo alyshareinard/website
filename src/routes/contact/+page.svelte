@@ -2,8 +2,6 @@
 	// @ts-ignore
 	import { Turnstile } from 'svelte-turnstile';
 
-	let { form } = $props();
-
 	let fname = $state('');
 	let lname = $state('');
 	let email = $state('');
@@ -28,6 +26,33 @@
 
 	let turnstileResponse = $state('');
 
+	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		submission_status = 'submitting';
+
+		try {
+			const formData = new FormData(event.target as HTMLFormElement);
+			formData.append('cf-turnstile-response', turnstileResponse);
+
+			const response = await fetch('?/default', {
+				method: 'POST',
+				body: formData
+			});
+
+			const result = await response.json();
+
+			if (response.ok && result.success) {
+				submission_status = 'success';
+				event.target.reset();
+			} else {
+				submission_status = 'failed';
+				console.error('Form submission failed:', result);
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			submission_status = 'failed';
+		}
+	}
 
 </script>
 
@@ -74,7 +99,7 @@
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
-			<form method="POST" >
+			<form method="POST" on:submit={handleSubmit}>
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>
