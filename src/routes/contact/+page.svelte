@@ -18,6 +18,7 @@
 			submission_status = 'Please complete the CAPTCHA';
 			return;
 		}
+		console.log(turnstileResponse);
 
 		const formData = new FormData();
 		formData.append('fname', fname);
@@ -208,12 +209,11 @@
 							}}
 						/>
 
-					<input name="turnstileResponse" bind:value={turnstileResponse} />
 				</div>
 					<button 
 						type="submit" 
 						class="submit-button" 
-						disabled={!turnstileResponse}
+						
 					>
 						Submit
 					</button>
