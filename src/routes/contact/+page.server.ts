@@ -1,6 +1,7 @@
 import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
-import { fail } from '@sveltejs/kit';
 import { TURNSTILE_SECRET_KEY } from '$env/static/private';
+import { fail, type RequestEvent } from '@sveltejs/kit';
+
 interface TokenValidateResponse {
 	'error-codes': string[];
 	success: boolean;
@@ -8,79 +9,94 @@ interface TokenValidateResponse {
 	cdata: string;
 }
 
-async function validateToken(token: string, secret: string) {
-	console.log('Validating turnstile token...');
-	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-		method: 'POST',
-		headers: {
-			'content-type': 'application/json'
-		},
-		body: JSON.stringify({
-			response: token,
-			secret: secret
-		})
-	});
-
-	const data: TokenValidateResponse = await response.json();
-
-	return {
-		// Return the status
-		success: data.success,
-
-		// Return the first error if it exists
-		error: data['error-codes']?.length ? data['error-codes'][0] : null
-	};
+interface ValidationResult {
+	success: boolean;
+	error?: string;
 }
 
+async function validateToken(token: string | null, secret: string): Promise<ValidationResult> {
+	if (!token) return { success: false, error: 'No token provided' };
 
+	console.log('Validating turnstile token...');
+	try {
+		const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				response: token,
+				secret
+			})
+		});
 
-async function verifyTurnstileToken(token: string) {
-	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({
-			secret: TURNSTILE_SECRET_KEY,
-			response: token
-		})
-	});
+		const data: TokenValidateResponse = await response.json();
+		console.log('Turnstile validation response:', data);
 
-	const data = await response.json();
-	return data.success;
+		if (!data.success) {
+			return { success: false, error: data['error-codes']?.join(', ') || 'Validation failed' };
+		}
+
+		return { success: true };
+	} catch (error) {
+		console.error('Error validating token:', error);
+		return { success: false, error: 'Failed to validate token' };
+	}
 }
 
 export const actions = {
-	default: async ({ request }) => {
-		console.log('Form submission started...');
+	default: async ({ request }: RequestEvent) => {
+		const formData = await request.formData();
+
+		// Get form data
+		const fname = formData.get('fname');
+		const lname = formData.get('lname');
+		const email = formData.get('email');
+		const serviceTypes = formData.get('serviceTypes');
+		const memo = formData.get('memo');
+		const token = formData.get('cf-turnstile-response');
+
+		// Basic validation
+		if (!fname || !lname || !email || !serviceTypes || !memo) {
+			return fail(400, { message: 'All fields are required' });
+		}
+
+		// Validate Turnstile token
+		const { success, error } = await validateToken(token?.toString() || null, TURNSTILE_SECRET_KEY);
+		if (!success) {
+			return fail(400, {
+				error: error || 'Invalid CAPTCHA'
+			});
+		}
+
+		// Submit to Airtable
 		try {
-			const formData = await request.formData();
-			console.log('Form data received:', Object.fromEntries(formData));
-			const turnstileToken = formData.get('cf-turnstile-response');
-			console.log('Turnstile token present:', !!turnstileToken);
+			const airtableResponse = await fetch(
+				`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Contact%20Form`,
+				{
+					method: 'POST',
+					headers: {
+						Authorization: `Bearer ${contactForm_api}`,
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						records: [
+							{
+								fields: {
+									fname: fname.toString(),
+									lname: lname.toString(),
+									email: email.toString(),
+									serviceTypes: serviceTypes.toString(),
+									memo: memo.toString()
+								}
+							}
+						]
+					})
+				}
+			);
 
-			if (!turnstileToken || typeof turnstileToken !== 'string') {
-				return fail(400, { message: 'Turnstile verification failed' });
-			}
-
-			// Validate the turnstile token
-			const { success, error } = await validateToken(turnstileToken, TURNSTILE_SECRET_KEY);
-			console.log('Turnstile validation result:', { success, error });
-			if (!success) {
-				console.error('Turnstile validation failed:', error);
-				return fail(400, { message: 'Turnstile verification failed' });
-			}
-
-			// Get form fields
-			const fname = formData.get('fname');
-			const lname = formData.get('lname');
-			const email = formData.get('email');
-			const serviceTypes = formData.get('serviceTypes');
-			const memo = formData.get('memo');
-
-			// Basic validation
-			if (!fname || !lname || !email || !serviceTypes || !memo) {
-				return fail(400, { message: 'All fields are required' });
+			if (!airtableResponse.ok) {
+				throw new Error('Failed to submit to Airtable');
 			}
 
 			// Submit to Airtable

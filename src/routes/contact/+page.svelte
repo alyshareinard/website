@@ -1,63 +1,17 @@
 <script lang="ts">
 	// @ts-ignore
 	import { Turnstile } from 'svelte-turnstile';
-	
+
+	let { form } = $props();
 
 	let fname = $state('');
 	let lname = $state('');
 	let email = $state('');
 	let serviceType = $state('Webpage');
 	let memo = $state('');
+	let submission_status = $state('');
 
-	async function handleSubmit(event: SubmitEvent) {
-		event.preventDefault();
-		console.log('Form submission starting...');
-
-		if (!turnstileResponse) {
-			console.log('No Turnstile response');
-			submission_status = 'Please complete the CAPTCHA';
-			return;
-		}
-		console.log(turnstileResponse);
-
-		const formData = new FormData();
-		formData.append('fname', fname);
-		formData.append('lname', lname);
-		formData.append('email', email);
-		formData.append('serviceTypes', serviceType);
-		formData.append('memo', memo);
-		formData.append('cf-turnstile-response', turnstileResponse);
-
-		console.log('Form data being submitted:', Object.fromEntries(formData));
-		submission_status = 'submitting';
-
-		try {
-			const response = await fetch('?/default', {
-				method: 'POST',
-				body: formData
-			});
-
-			const result = await response.json();
-
-			if (response.ok) {
-				console.log('Form submission successful');
-				submission_status = 'success';
-				turnstileResponse = '';
-				// Reset form
-				fname = '';
-				lname = '';
-				email = '';
-				serviceType = 'Webpage';
-				memo = '';
-			} else {
-				console.log('Form submission failed:', result);
-				submission_status = 'failed';
-			}
-		} catch (error) {
-			console.error('Form submission error:', error);
-			submission_status = 'failed';
-		}
-	}
+	const serviceOptions = ['Webpage', 'App', 'Integration'];
 
 	// Add Turnstile script to head
 	let turnstileScript: HTMLScriptElement;
@@ -124,7 +78,7 @@
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
-			<form method="POST" on:submit={handleSubmit}>
+			<form method="POST" action="?/default">
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>
@@ -194,22 +148,8 @@
 					/>
 
 					<div class="turnstile-container">
-						<Turnstile
-							siteKey="0x4AAAAAAA0eaGKPwZsEx6Q2"
-							on:turnstileSuccess={(e) => {
-								turnstileResponse = e.detail.token;
-							}}
-							on:turnstileError={(e) => {
-								console.error('Turnstile error:', e);
-								turnstileResponse = '';
-							}}
-							on:turnstileExpire={() => {
-								console.log('Turnstile expired');
-								turnstileResponse = '';
-							}}
-						/>
-
-				</div>
+						<Turnstile siteKey="0x4AAAAAAA0eaGKPwZsEx6Q2" />
+					</div>
 					<button 
 						type="submit" 
 						class="submit-button" 
