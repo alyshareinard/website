@@ -94,7 +94,7 @@ export const actions = {
 					})
 				}
 			);
-
+			console.log('Airtable response:', airtableResponse);
 			if (!airtableResponse.ok) {
 				throw new Error('Failed to submit to Airtable');
 			}
