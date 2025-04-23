@@ -27,10 +27,6 @@
 	});
 
 	let turnstileResponse = $state('');
-	let wasSubmitted = $state(false);
-	let submission_status = $state('');
-
-	const serviceOptions = ['Webpage', 'App', 'Integration'];
 
 
 </script>
