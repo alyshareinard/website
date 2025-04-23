@@ -34,7 +34,7 @@
 			const formData = new FormData(event.target as HTMLFormElement);
 			formData.append('cf-turnstile-response', turnstileResponse);
 
-			const response = await fetch('?/default', {
+			const response = await fetch('?/submit', {
 				method: 'POST',
 				body: formData
 			});
@@ -99,7 +99,7 @@
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
-			<form method="POST" on:submit={handleSubmit}>
+			<form method="POST" action="?/submit" on:submit={handleSubmit}>
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>

@@ -45,7 +45,7 @@ async function validateToken(token: string | null, secret: string): Promise<Vali
 }
 
 export const actions = {
-	default: async ({ request }: RequestEvent) => {
+	submit: async ({ request }: RequestEvent) => {
 		const formData = await request.formData();
 
 		// Get form data
