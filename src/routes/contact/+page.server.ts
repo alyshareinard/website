@@ -1,9 +1,6 @@
 import { AIRTABLE_BASE_ID, contactForm_api } from '$env/static/private';
 import { fail } from '@sveltejs/kit';
 import { TURNSTILE_SECRET_KEY } from '$env/static/private';
-import { superValidate, type JSONSchema } from 'sveltekit-superforms';
-import { schemasafe } from 'sveltekit-superforms/adapters';
-import { message } from 'sveltekit-superforms';
 interface TokenValidateResponse {
 	'error-codes': string[];
 	success: boolean;
@@ -35,26 +32,7 @@ async function validateToken(token: string, secret: string) {
 	};
 }
 
-const schema = {
-	type: 'object',
-	properties: {
-		fname: { type: 'string', minLength: 2 },
-		lname: { type: 'string', minLength: 2 },
-		email: { type: 'string', format: 'email' },
-		serviceTypes: { type: 'string', enum: ['Webpage', 'App', 'Integration'] },
-		memo: { type: 'string', minLength: 10 }
-	},
-	required: ['fname', 'lname', 'email', 'serviceTypes', 'memo'],
-	additionalProperties: false,
-	$schema: 'http://json-schema.org/draft-07/schema#'
-} as const satisfies JSONSchema; // Define as const to get type inference
 
-export const load = async () => {
-	const form = await superValidate(schemasafe(schema));
-	console.log('in load form is ', form);
-	// Always return { form } in load functions
-	return { form };
-};
 
 async function verifyTurnstileToken(token: string) {
 	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
@@ -93,14 +71,17 @@ export const actions = {
 				return fail(400, { message: 'Turnstile verification failed' });
 			}
 
-			// Validate the form data
-			const form = await superValidate(formData, schemasafe(schema));
-			console.log('Form validation result:', { valid: form.valid, errors: form.errors });
-			if (!form.valid) {
-				return fail(400, { form });
-			}
+			// Get form fields
+			const fname = formData.get('fname');
+			const lname = formData.get('lname');
+			const email = formData.get('email');
+			const serviceTypes = formData.get('serviceTypes');
+			const memo = formData.get('memo');
 
-			const { fname, lname, email, serviceTypes, memo } = form.data;
+			// Basic validation
+			if (!fname || !lname || !email || !serviceTypes || !memo) {
+				return fail(400, { message: 'All fields are required' });
+			}
 
 			// Submit to Airtable
 			const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
@@ -136,7 +117,7 @@ export const actions = {
 			}
 
 			console.log('Form submission completed successfully');
-			return message(form, 'Form posted successfully!');
+			return { success: true, message: 'Form posted successfully!' };
 		} catch (error) {
 			console.error('Form submission error:', error);
 			return fail(500, { message: 'An unexpected error occurred' });

@@ -1,54 +1,62 @@
 <script lang="ts">
-	import { superForm } from 'sveltekit-superforms/client';
 	// @ts-ignore
 	import { Turnstile } from 'svelte-turnstile';
 	
 
-	interface ContactFormData extends Record<string, unknown> {
-		fname: string;
-		lname: string;
-		email: string;
-		serviceTypes: string;
-		turnstile?: string;
-		memo: string;
-	}
+	let fname = $state('');
+	let lname = $state('');
+	let email = $state('');
+	let serviceType = $state('Webpage');
+	let memo = $state('');
 
-	const data = $props<{ form: ContactFormData }>();
+	async function handleSubmit(event: SubmitEvent) {
+		event.preventDefault();
+		console.log('Form submission starting...');
 
-	const { form, errors, enhance, constraints, reset } = superForm(data.form, {
-		onSubmit: ({ formData, cancel }) => {
-			console.log('Form submission starting...');
-			if (!turnstileResponse) {
-				console.log('No Turnstile response, canceling submission');
-				cancel();
-				submission_status = 'Please complete the CAPTCHA';
-				return;
-			}
-			console.log('Adding Turnstile response to form data');
-			formData.append('cf-turnstile-response', turnstileResponse);
-			console.log('Form data being submitted:', Object.fromEntries(formData));
-			wasSubmitted = true;
-			submission_status = 'submitting';
-		},
-		onResult: ({ result }) => {
-			console.log('Received form submission result:', result);
-			if (result.type === 'success') {
+		if (!turnstileResponse) {
+			console.log('No Turnstile response');
+			submission_status = 'Please complete the CAPTCHA';
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append('fname', fname);
+		formData.append('lname', lname);
+		formData.append('email', email);
+		formData.append('serviceTypes', serviceType);
+		formData.append('memo', memo);
+		formData.append('cf-turnstile-response', turnstileResponse);
+
+		console.log('Form data being submitted:', Object.fromEntries(formData));
+		submission_status = 'submitting';
+
+		try {
+			const response = await fetch('?/default', {
+				method: 'POST',
+				body: formData
+			});
+
+			const result = await response.json();
+
+			if (response.ok) {
 				console.log('Form submission successful');
 				submission_status = 'success';
 				turnstileResponse = '';
-				wasSubmitted = false;
-				reset();
+				// Reset form
+				fname = '';
+				lname = '';
+				email = '';
+				serviceType = 'Webpage';
+				memo = '';
 			} else {
 				console.log('Form submission failed:', result);
 				submission_status = 'failed';
 			}
-		},
-		onError: (err) => {
-			console.log('Form submission error:', err);
+		} catch (error) {
+			console.error('Form submission error:', error);
 			submission_status = 'failed';
-			console.error('Form submission error details:', err);
 		}
-	});
+	}
 
 	// Add Turnstile script to head
 	let turnstileScript: HTMLScriptElement;
@@ -69,7 +77,6 @@
 
 	const serviceOptions = ['Webpage', 'App', 'Integration'];
 
-	console.log('in page.svelte: ', data);
 
 </script>
 
@@ -111,110 +118,109 @@
 		{#if submission_status === 'submitting'}
 			<h3>Submitting...</h3>
 		{:else if submission_status === 'failed'}
-			<h3>Submission failed.</h3>
+			<h3>Failed to submit form. Please try again.</h3>
 		{:else if submission_status === 'success'}
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
-		{/if}
-
-		<form method="POST"  use:enhance>
-			<div class="myform">
-				<label for="fname" class="label-short">
-					<span class="label-text">First name</span>
-				</label>
-				<input
-					bind:value={$form.fname}
-					data-invalid={$errors.fname}
-					type="text"
-					name="fname"
-					aria-label="first name"
-					placeholder=""
-					required
-					{...$constraints.fname}
-				/>
-				{#if wasSubmitted && $errors.fname}<span class="invalid">{$errors.fname}</span>{/if}
-
-				<label for="lname" class="label-short">
-					<span class="label-text">Last name</span>
-				</label>
-				<input
-					bind:value={$form.lname}
-					data-invalid={$errors.lname}
-					type="text"
-					name="lname"
-					aria-label="last name"
-					placeholder=""
-					required
-					autocomplete="off"
-					{...$constraints.lname}
-				/>
-				{#if wasSubmitted && $errors.lname}<span class="invalid">{$errors.lname}</span>{/if}
-
-				<label for="email" class="label-short">
-					<span class="label-text">Email</span>
-				</label>
-				<input
-					bind:value={$form.email}
-					type="email"
-					name="email"
-					aria-label="email"
-					aria-invalid={$errors.email ? 'true' : undefined}
-					placeholder=""
-					required
-					autocomplete="off"
-					{...$constraints.email}
-				/>
-				{#if wasSubmitted && $errors.email}<span class="invalid">{$errors.email}</span>{/if}
-
-				<label for="type" class="label-short">
-					<span class="label-text">Type of service</span>
-				</label>
-
-				<select name="serviceTypes" bind:value={$form.serviceTypes}>
-					{#each serviceOptions as serviceTypes, i}
-						<option value={serviceTypes}>{serviceTypes}</option>
-					{/each}
-				</select>
-
-				{#if $errors.serviceTypes}<p>{$errors.serviceTypes}</p>{/if}
-
-				<label for="memo" class="label">
-					<span class="label-text">How can I help?</span>
-				</label>
-				<textarea
-					bind:value={$form.memo}
-					name="memo"
-					aria-label="How can I help?"
-					placeholder=""
-					required
-					rows="3"
-					autocomplete="off"
-					{...$constraints.memo}
-				></textarea>
-				{#if wasSubmitted && $errors.memo}<span class="invalid">{$errors.memo}</span>{/if}
-
-				<div class="turnstile-container">
-					<Turnstile
-						siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
-						on:verify={(token) => turnstileResponse = token.detail}
-						on:error={() => turnstileResponse = ''}
+			<form method="POST" on:submit={handleSubmit}>
+				<div class="myform">
+					<label for="fname" class="label-short">
+						<span class="label-text">First name</span>
+					</label>
+					<input
+						type="text"
+						id="fname"
+						name="fname"
+						bind:value={fname}
+						aria-label="first name"
+						placeholder=""
+						required
+						minlength="2"
 					/>
+
+					<label for="lname" class="label-short">
+						<span class="label-text">Last name</span>
+					</label>
+					<input
+						type="text"
+						id="lname"
+						name="lname"
+						bind:value={lname}
+						aria-label="last name"
+						placeholder=""
+						required
+						minlength="2"
+						autocomplete="off"
+					/>
+
+					<label for="email" class="label-short">
+						<span class="label-text">Email</span>
+					</label>
+					<input
+						type="email"
+						id="email"
+						name="email"
+						bind:value={email}
+						aria-label="email"
+						placeholder=""
+						required
+						autocomplete="off"
+					/>
+
+					<label for="type" class="label-short">
+						<span class="label-text">Type of service</span>
+					</label>
+					<select name="serviceTypes" bind:value={serviceType}>
+						{#each serviceOptions as option}
+							<option value={option}>{option}</option>
+						{/each}
+					</select>
+
+					<label for="memo" class="label">
+						<span class="label-text">How can I help?</span>
+					</label>
+					<textarea
+						id="memo"
+						name="memo"
+						bind:value={memo}
+						aria-label="How can I help?"
+						placeholder=""
+						required
+						minlength="10"
+						rows="3"
+						autocomplete="off"
+					/>
+
+					<div class="turnstile-container">
+						<Turnstile
+							siteKey="0x4AAAAAAA0eaGKPwZsEx6Q2"
+							on:turnstileSuccess={(e) => {
+								turnstileResponse = e.detail.token;
+							}}
+							on:turnstileError={(e) => {
+								console.error('Turnstile error:', e);
+								turnstileResponse = '';
+							}}
+							on:turnstileExpire={() => {
+								console.log('Turnstile expired');
+								turnstileResponse = '';
+							}}
+						/>
+					</div>
+
+					<button 
+						type="submit" 
+						class="submit-button" 
+						disabled={!turnstileResponse}
+					>
+						Submit
+					</button>
 				</div>
-
-				<button 
-					type="submit" 
-					class="submit-button" 
-					disabled={!turnstileResponse}
-				>
-					Submit
-				</button>
-
-			</div>
-		</form>
+			</form>
+		{/if}
 	</div>
 </div>
-
 
 
 <style>
