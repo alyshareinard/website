@@ -71,8 +71,19 @@ export const actions = {
 
 		// Submit to Airtable
 		try {
+			// Validate environment variables
+			if (!contactForm_api || !AIRTABLE_BASE_ID) {
+				console.error('Missing required environment variables:', {
+					hasApiKey: !!contactForm_api,
+					hasBaseId: !!AIRTABLE_BASE_ID
+				});
+				throw new Error('Missing required Airtable configuration');
+			}
+
+			console.log('Submitting to Airtable...');
+
 			const airtableResponse = await fetch(
-				`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Contact%20Form`,
+				`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/Submissions`,
 				{
 					method: 'POST',
 					headers: {
@@ -94,46 +105,23 @@ export const actions = {
 					})
 				}
 			);
-			console.log('Airtable response:', airtableResponse);
+
+			console.log('Airtable response status:', airtableResponse.status);
+			console.log('Airtable response status text:', airtableResponse.statusText);
+
 			if (!airtableResponse.ok) {
-				throw new Error('Failed to submit to Airtable');
+				const errorData = await airtableResponse.text();
+				console.error('Airtable error response:', errorData);
+				throw new Error(`Failed to submit to Airtable: ${airtableResponse.status} ${airtableResponse.statusText}`);
 			}
 
-			// Submit to Airtable
-			const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/submissions`;
-			const data = {
-				records: [
-					{
-						fields: {
-							fname,
-							lname,
-							email,
-							serviceTypes,
-							memo
-						}
-					}
-				]
+			// Parse response to confirm success
+			const responseData = await airtableResponse.json();
+			console.log('Airtable success response:', responseData);
+
+			return {
+				success: true
 			};
-
-			console.log('Submitting to Airtable...');
-			const response = await fetch(AIRTABLE_URL, {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer ${contactForm_api}`,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(data)
-			});
-
-			if (!response.ok) {
-				const errorData = await response.json();
-				console.log('Airtable error response:', errorData);
-				console.error('Airtable API error:', errorData);
-				return fail(500, { message: 'Failed to submit form' });
-			}
-
-			console.log('Form submission completed successfully');
-			return { success: true, message: 'Form posted successfully!' };
 		} catch (error) {
 			console.error('Form submission error:', error);
 			return fail(500, { message: 'An unexpected error occurred' });
