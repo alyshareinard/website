@@ -40,10 +40,13 @@
 			});
 
 			const result = await response.json();
+			console.log('Form submission response:', result);
 
-			if (response.ok && result.success) {
+			if (response.ok && (result.success || result.type === 'success')) {
 				submission_status = 'success';
 				event.target.reset();
+				// Reset Turnstile
+				turnstileResponse = '';
 			} else {
 				submission_status = 'failed';
 				console.error('Form submission failed:', result);
