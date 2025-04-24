@@ -44,34 +44,32 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
 
         const user = JSON.stringify(await response.json());
 
-        const headers = new Headers();
-        
-        // Set cookies
-        const cookieHeaders = [
-            serialize('accessToken', access_token, {
-                path: '/',
-                httpOnly: true,
-                maxAge: expires_in,
-                secure: !dev,
-                sameSite: 'lax'
-            }),
-            serialize('refreshToken', encrypt(refresh_token), {
-                path: '/',
-                httpOnly: true,
-                secure: !dev,
-                maxAge: 60 * 60 * 24,
-                sameSite: 'lax'
-            }),
-            serialize('user', encrypt(user), {
-                path: '/',
-                httpOnly: true,
-                secure: !dev,
-                maxAge: 60 * 60 * 24,
-                sameSite: 'lax'
-            })
-        ];
+        // Set cookies directly using the cookies API
+        cookies.set('access_token', access_token, {
+            path: '/portfolio/spotifyPlaylistMix',
+            httpOnly: true,
+            maxAge: expires_in,
+            secure: !dev,
+            sameSite: 'lax'
+        });
 
-        cookieHeaders.forEach(cookie => headers.append('set-cookie', cookie));
+        cookies.set('refresh_token', encrypt(refresh_token), {
+            path: '/portfolio/spotifyPlaylistMix',
+            httpOnly: true,
+            secure: !dev,
+            maxAge: 60 * 60 * 24,
+            sameSite: 'lax'
+        });
+
+        cookies.set('user', encrypt(user), {
+            path: '/portfolio/spotifyPlaylistMix',
+            httpOnly: true,
+            secure: !dev,
+            maxAge: 60 * 60 * 24,
+            sameSite: 'lax'
+        });
+
+        const headers = new Headers();
         headers.set('Location', '/portfolio/spotifyPlaylistMix/login/success');
 
         return new Response(null, {

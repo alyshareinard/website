@@ -5,7 +5,7 @@ import { create_playlist, get_playlists, get_profile } from './spotifyCode.serve
 /** @type {import('./$types').PageServerLoad} */
 
 function cookieExistsAndHasValue(value, url) {
-	let cookieValue = url.cookies.get(value, { path: '/' });
+	let cookieValue = url.cookies.get(value, { path: '/portfolio/spotifyPlaylistMix' });
 	console.log('in cookies exist');
 	console.log(value);
 
