@@ -28,31 +28,81 @@ async function get_songs(url: string, token: string) {
 }
 
 async function get_all_songs(playlist: any[], access_token: string) {
-	console.log('Get all songs');
-	console.log('Playlist:', playlist);
-	if (!playlist || !Array.isArray(playlist)) {
-		console.error('Invalid playlist:', playlist);
-		return [];
+	console.log('Getting songs from playlists...');
+	console.log('Playlist data:', playlist);
+
+	if (!playlist || !Array.isArray(playlist) || playlist.length === 0) {
+		console.error('Invalid or empty playlist data');
+		throw new Error('No playlists selected');
 	}
-	let songs = [];
-	for (let i = 0; i < playlist.length; i++) {
-		const playlist_id = playlist[i].value;
-		let more = true;
-		let url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?limit=50&fields=items(track(uri))`;
-		while (more) {
-			let items = await get_songs(url, access_token);
-			console.log('received these items from get_songs: ', items);
-			for (let i = 0; i < items.length; i++) {
-				songs.push(items[i].track.uri);
+
+	let songs: string[] = [];
+	let failedPlaylists: string[] = [];
+
+	for (const playlistItem of playlist) {
+		if (!playlistItem?.value) {
+			console.error('Invalid playlist item:', playlistItem);
+			continue;
+		}
+
+		try {
+			const playlist_id = playlistItem.value;
+			console.log(`Fetching songs from playlist ${playlist_id}...`);
+
+			let more = true;
+			let url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?limit=50&fields=items(track(uri))%2Cnext%2Ctotal`;
+
+			while (more) {
+				const response = await fetch(url, {
+					headers: {
+						Authorization: `Bearer ${access_token}`
+					}
+				});
+
+				if (!response.ok) {
+					console.error(`Failed to fetch playlist ${playlist_id}:`, response.statusText);
+					failedPlaylists.push(playlist_id);
+					break;
+				}
+
+				const data = await response.json();
+				console.log(`Total tracks in playlist ${playlist_id}:`, data.total);
+
+				if (!data.items || !Array.isArray(data.items)) {
+					console.error(`Invalid response data for playlist ${playlist_id}`);
+					break;
+				}
+
+				for (const item of data.items) {
+					if (item?.track?.uri) {
+						songs.push(item.track.uri);
+					}
+				}
+
+				if (data.next) {
+					url = data.next;
+				} else {
+					more = false;
+				}
 			}
-			if (items.next) {
-				url = items.next;
-			} else {
-				more = false;
-			}
+
+			console.log(`Retrieved ${songs.length} songs from playlist ${playlist_id}`);
+		} catch (error) {
+			console.error(`Error processing playlist ${playlistItem.value}:`, error);
+			failedPlaylists.push(playlistItem.value);
 		}
 	}
-	return songs;
+
+	if (songs.length === 0) {
+		let errorMessage = 'No songs found in the selected playlists';
+		if (failedPlaylists.length > 0) {
+			errorMessage += `. Failed to fetch from ${failedPlaylists.length} playlist(s)`;
+		}
+		throw new Error(errorMessage);
+	}
+
+	console.log(`Total unique songs found: ${songs.length}`);
+	return [...new Set(songs)]; // Remove duplicates
 }
 
 async function get_all_liked(access_token: string) {
@@ -82,39 +132,63 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 	try {
 		const access_token = cookies.get('access_token', { path: '/portfolio/spotifyPlaylistMix' });
 		if (!access_token) {
-			console.error('Access token not found');
-			return null;
+			return 'Access token not found. Please try logging in again.';
 		}
 
-		console.log('liked_songs:', liked_songs);
-		console.log('chosen:', chosen);
-		console.log('avoid:', avoid);
-		console.log('todays_playlist:', todays_playlist);
+		console.log('Creating playlist with options:', {
+			liked_songs,
+			chosen,
+			avoid,
+			todays_playlist
+		});
 
 		const chosenArray = JSON.parse(chosen);
 		const avoidArray = avoid ? JSON.parse(avoid) : [];
 		const todaysPlaylistValue = todays_playlist ? JSON.parse(todays_playlist) : false;
 
+		if (!liked_songs && (!chosenArray || !Array.isArray(chosenArray) || chosenArray.length === 0)) {
+			return 'Please select at least one playlist or your liked songs.';
+		}
+
 		let tracks: string[] = [];
 		let chosen_songs: string[] = [];
 
-		if (liked_songs) {
-			console.log('getting liked songs');
-			chosen_songs = await get_all_liked(access_token);
-			console.log('chosen songs length:', chosen_songs.length);
-		} else if (chosenArray && Array.isArray(chosenArray)) {
-			chosen_songs = await get_all_songs(chosenArray, access_token);
-			console.log('chosen songs from playlists length:', chosen_songs.length);
+		try {
+			if (liked_songs) {
+				console.log('Fetching liked songs...');
+				chosen_songs = await get_all_liked(access_token);
+				console.log(`Found ${chosen_songs.length} liked songs`);
+			} else {
+				console.log('Fetching songs from selected playlists...');
+				chosen_songs = await get_all_songs(chosenArray, access_token);
+				console.log(`Found ${chosen_songs.length} songs in selected playlists`);
+			}
+
+			if (chosen_songs.length === 0) {
+				return 'No songs found in the selected source(s). Please try different playlists or your liked songs.';
+			}
+		} catch (error: any) {
+			console.error('Error fetching songs:', error);
+			return error.message || 'Failed to fetch songs from the selected source(s).';
 		}
 
 		let avoid_songs: string[] = [];
-		if (avoidArray && Array.isArray(avoidArray)) {
-			avoid_songs = await get_all_songs(avoidArray, access_token);
-			console.log('avoid songs length:', avoid_songs.length);
+		if (avoidArray && Array.isArray(avoidArray) && avoidArray.length > 0) {
+			try {
+				avoid_songs = await get_all_songs(avoidArray, access_token);
+				console.log(`Found ${avoid_songs.length} songs to avoid`);
+			} catch (error) {
+				console.error('Error fetching songs to avoid:', error);
+				// Continue without avoid songs if there's an error
+			}
 		}
 
 		tracks = chosen_songs.filter(track => !avoid_songs.includes(track));
-		console.log('tracks after filtering:', tracks.length);
+		console.log(`${tracks.length} songs remaining after filtering`);
+
+		if (tracks.length === 0) {
+			return 'No songs remaining after filtering. Please try different playlists.';
+		}
 
 		if (todaysPlaylistValue) {
 			tracks = shuffle(tracks);
@@ -123,7 +197,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		tracks = tracks.slice(0, 50);
 		tracks = shuffle(tracks);
 
-		console.log('final tracks length:', tracks.length);
+		console.log(`Creating playlist with ${tracks.length} tracks`);
 
 		const response = await fetch('https://api.spotify.com/v1/me/playlists', {
 			method: 'POST',
@@ -132,7 +206,8 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: 'New Playlist'
+				name: 'New Mixed Playlist',
+				description: 'Created by Spotify Playlist Mixer'
 			})
 		});
 
@@ -143,7 +218,6 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		const playlistData = await response.json();
 		const playlistId = playlistData.id;
 
-		// Add tracks to the playlist
 		const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
 			method: 'POST',
 			headers: {
