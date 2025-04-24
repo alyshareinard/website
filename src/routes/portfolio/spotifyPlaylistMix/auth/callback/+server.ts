@@ -1,4 +1,4 @@
-import { encrypt, getAccessToken } from '../../api';
+import { encrypt, getAccessToken } from '$lib/server/spotify';
 import { serialize } from 'cookie';
 import { dev } from '$app/environment';
 import type { RequestHandler } from '@sveltejs/kit';
@@ -32,34 +32,39 @@ export const GET: RequestHandler = async ({ url }) => {
 
         const user = JSON.stringify(await response.json());
 
+        const headers = new Headers();
+        
+        // Set cookies
+        const cookies = [
+            serialize('accessToken', access_token, {
+                path: '/',
+                httpOnly: true,
+                maxAge: expires_in,
+                secure: !dev,
+                sameSite: 'lax'
+            }),
+            serialize('refreshToken', encrypt(refresh_token), {
+                path: '/',
+                httpOnly: true,
+                secure: !dev,
+                maxAge: 60 * 60 * 24,
+                sameSite: 'lax'
+            }),
+            serialize('user', encrypt(user), {
+                path: '/',
+                httpOnly: true,
+                secure: !dev,
+                maxAge: 60 * 60 * 24,
+                sameSite: 'lax'
+            })
+        ];
+
+        cookies.forEach(cookie => headers.append('set-cookie', cookie));
+        headers.set('Location', '/portfolio/spotifyPlaylistMix/login/success');
+
         return new Response(null, {
             status: 302,
-            headers: {
-                'set-cookie': [
-                    serialize('accessToken', access_token, {
-                        path: '/',
-                        httpOnly: true,
-                        maxAge: expires_in,
-                        secure: !dev,
-                        sameSite: 'lax'
-                    }),
-                    serialize('refreshToken', encrypt(refresh_token), {
-                        path: '/',
-                        httpOnly: true,
-                        secure: !dev,
-                        maxAge: 60 * 60 * 24,
-                        sameSite: 'lax'
-                    }),
-                    serialize('user', encrypt(user), {
-                        path: '/',
-                        httpOnly: true,
-                        secure: !dev,
-                        maxAge: 60 * 60 * 24,
-                        sameSite: 'lax'
-                    })
-                ],
-                Location: '/portfolio/spotifyPlaylistMix/login/success'
-            }
+            headers
         });
     } catch (error) {
         console.error('Spotify auth error:', error);
