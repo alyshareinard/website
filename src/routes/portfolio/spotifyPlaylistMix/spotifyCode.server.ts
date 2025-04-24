@@ -207,7 +207,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: "Today's Mix",
+				name: "Today's Mix!",
 				description: 'Created by Spotify Playlist Mixer'
 			})
 		});
@@ -233,9 +233,15 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		console.log('response from add tracks: ', addTracksResponse)
 		if (!addTracksResponse.ok) {
 			throw new Error('Failed to add tracks to playlist');
-		} else {
-			return 'All done!  Go check out your playlist in Spotify.';
 		}
+
+		const playlistUrl = `https://open.spotify.com/playlist/${playlistId}`;
+		return {
+			success: true,
+			message: 'Playlist created successfully!',
+			playlistUrl,
+			trackCount: tracks.length
+		};
 	} catch (error) {
 		console.error('Error in create_playlist:', error);
 		return null;

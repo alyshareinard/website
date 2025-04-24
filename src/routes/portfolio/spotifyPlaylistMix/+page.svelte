@@ -12,11 +12,13 @@
 		value?: string;
 	};
 
+	const props = $props();
+	const { data } = props;
+
 	let playlist_choices = $state<PlaylistChoice[]>([]);
 	let chosen_playlists = $state<PlaylistChoice[]>([]);
 	let avoid_playlists = $state<PlaylistChoice[]>([]);
 	let todays_playlist = $state<PlaylistChoice | undefined>();
-	let { data } = $props<{ user_name: string; playlists?: Playlist[] }>();
 	let todays_playlist_label = $state<string | undefined>();
 	let liked_songs = $state(false);
 
@@ -115,6 +117,18 @@
 			<button type="submit" class="create-mix-btn">Create Mix</button>
 		</form>
 
+		{#if props.message}
+			<div class="notification {props.success ? 'success' : 'error'}">
+				<p>{props.message}</p>
+				{#if props.success && props.playlistUrl}
+					<p>Your new playlist contains {props.trackCount} tracks.</p>
+					<a href={props.playlistUrl} target="_blank" rel="noopener noreferrer" class="playlist-link">
+						Open in Spotify
+					</a>
+				{/if}
+			</div>
+		{/if}
+
 		{#if todays_playlist_label}
 			<div class="current-mix">
 				<h3>Today's Mix:</h3>
@@ -199,5 +213,37 @@
 		padding: 1.5rem;
 		background: var(--surface-2);
 		border-radius: 8px;
+	}
+	.notification {
+		margin: 1rem 0;
+		padding: 1rem;
+		border-radius: 4px;
+		text-align: center;
+	}
+
+	.success {
+		background-color: #4caf50;
+		color: white;
+	}
+
+	.error {
+		background-color: #f44336;
+		color: white;
+	}
+
+	.playlist-link {
+		display: inline-block;
+		margin-top: 0.5rem;
+		padding: 0.5rem 1rem;
+		background-color: #1db954;
+		color: white;
+		text-decoration: none;
+		border-radius: 20px;
+		font-weight: bold;
+		transition: background-color 0.2s;
+	}
+
+	.playlist-link:hover {
+		background-color: #1ed760;
 	}
 </style>
