@@ -7,7 +7,7 @@ declare module '$env/static/private' {
 declare module '$lib/server/spotify' {
     export function encrypt(text: string): string;
     export function decrypt(hash: string): string;
-    export function getAccessToken(code: string): Promise<{
+    export function getAccessToken(code: string, codeVerifier: string): Promise<{
         access_token: string;
         refresh_token: string;
         expires_in: number;

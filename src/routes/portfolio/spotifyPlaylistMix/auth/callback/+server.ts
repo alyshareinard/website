@@ -3,7 +3,9 @@ import { serialize } from 'cookie';
 import { dev } from '$app/environment';
 import type { RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ url }) => {
+import type { Cookies } from '@sveltejs/kit';
+
+export const GET: RequestHandler = async ({ url, cookies }) => {
     const code = url.searchParams.get('code');
     const state = url.searchParams.get('state');
 
@@ -17,7 +19,17 @@ export const GET: RequestHandler = async ({ url }) => {
     }
 
     try {
-        const result = await getAccessToken(code);
+        const codeVerifier = cookies.get('code_verifier');
+        if (!codeVerifier) {
+            return new Response(null, {
+                status: 302,
+                headers: {
+                    Location: '/#error=missing_code_verifier'
+                }
+            });
+        }
+
+        const result = await getAccessToken(code, codeVerifier);
         const { access_token, refresh_token, expires_in } = result;
         
         const response = await fetch('https://api.spotify.com/v1/me', {
@@ -35,7 +47,7 @@ export const GET: RequestHandler = async ({ url }) => {
         const headers = new Headers();
         
         // Set cookies
-        const cookies = [
+        const cookieHeaders = [
             serialize('accessToken', access_token, {
                 path: '/',
                 httpOnly: true,
@@ -59,7 +71,7 @@ export const GET: RequestHandler = async ({ url }) => {
             })
         ];
 
-        cookies.forEach(cookie => headers.append('set-cookie', cookie));
+        cookieHeaders.forEach(cookie => headers.append('set-cookie', cookie));
         headers.set('Location', '/portfolio/spotifyPlaylistMix/login/success');
 
         return new Response(null, {
@@ -71,8 +83,8 @@ export const GET: RequestHandler = async ({ url }) => {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: '/portfolio/spotifyPlaylistMix/login?error=auth_failed'
+                Location: '/portfolio/spotifyPlaylistMix/error'
             }
         });
     }
-}
+};

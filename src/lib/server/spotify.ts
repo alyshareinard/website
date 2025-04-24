@@ -24,7 +24,7 @@ export function decrypt(hash: string): string {
     return text;
 }
 
-export async function getAccessToken(code: string): Promise<{
+export async function getAccessToken(code: string, codeVerifier: string): Promise<{
     access_token: string;
     refresh_token: string;
     expires_in: number;
@@ -33,6 +33,7 @@ export async function getAccessToken(code: string): Promise<{
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
     params.append('redirect_uri', spotifyRedirectURL);
+    params.append('code_verifier', codeVerifier);
 
     console.log('Request params:', Object.fromEntries(params));
     console.log('Authorization:', `Basic ${Buffer.from(
