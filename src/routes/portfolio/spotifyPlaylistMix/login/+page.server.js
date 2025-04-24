@@ -1,4 +1,4 @@
-import { spotifyClientId, spotifyRedirectURL } from '$env/static/private';
+import { SPOTIFY_CLIENT_ID,  spotifyRedirectURL } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 
 function generateRandomString(length) {
@@ -50,7 +50,7 @@ async function get_code(event) {
 	const encodedRedirectUri = encodeURIComponent(spotifyRedirectURL);
 	let args = new URLSearchParams({
 		response_type: 'code',
-		client_id: spotifyClientId,
+		client_id: SPOTIFY_CLIENT_ID,
 		scope: scope,
 		state: state,
 		code_challenge_method: 'S256',
