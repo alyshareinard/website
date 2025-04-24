@@ -1,34 +1,39 @@
-const shuffle = (array) => {
+const shuffle = (array: any[]) => {
 	return array.sort(() => Math.random() - 0.5);
 };
 
-async function get_songs(url, token) {
+async function get_songs(url: string, token: string) {
 	console.log('fetching songs from ', url);
-	let items;
-	const response = await fetch(url, {
-		method: 'GET',
-		headers: {
-			Authorization: 'Bearer ' + token
-		}
-	});
-	console.log('************************response: ', response);
+	try {
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		console.log('response:', response);
 
-	if (response.statusText != 'OK') {
-		console.log('Status text: ', response.statusText);
-		items = [];
-		return items;
-	} else {
-		const data = await response.json();
-		console.log('************************response.json(): ', data);
-		items = data.items;
-		console.log('ADDING ITEMS: ', items);
-		return items;
+		if (!response.ok) {
+			console.error('Error:', response.statusText);
+			return [];
+		}
+
+		const playlistResponse = await response.json();
+		console.log('Response data:', playlistResponse);
+		return playlistResponse.items || [];
+	} catch (error) {
+		console.error('Error fetching songs:', error);
+		return [];
 	}
 }
 
-async function get_all_songs(playlist, access_token) {
+async function get_all_songs(playlist: any[], access_token: string) {
 	console.log('Get all songs');
-	console.log(playlist);
+	console.log('Playlist:', playlist);
+	if (!playlist || !Array.isArray(playlist)) {
+		console.error('Invalid playlist:', playlist);
+		return [];
+	}
 	let songs = [];
 	for (let i = 0; i < playlist.length; i++) {
 		const playlist_id = playlist[i].value;
@@ -50,7 +55,7 @@ async function get_all_songs(playlist, access_token) {
 	return songs;
 }
 
-async function get_all_liked(access_token) {
+async function get_all_liked(access_token: string) {
 	console.log('Get all liked');
 
 	let songs = [];
@@ -73,50 +78,92 @@ async function get_all_liked(access_token) {
 	return songs;
 }
 
-export async function create_playlist(liked_songs, chosen, avoid, todays_playlist, cookies) {
-	let tracks = [];
-	chosen = eval(chosen);
-	avoid = eval(avoid);
-
-	todays_playlist = eval(todays_playlist);
-
-	console.log('xxxxxxxxxxxxxx -------------------- liked_songs: ', liked_songs);
-
-
-	const access_token = cookies.get('access_token', { path: '/' });
-    let chosen_songs = [];
-	if (liked_songs) {
-		console.log('getting liked songs');
-		chosen_songs = await get_all_liked(access_token);
-		console.log('chosen songs: ', chosen_songs.length);
-	} else {
-		chosen_songs = await get_all_songs(chosen, access_token);
-	}
-
-	
-
-	let avoid_songs = await get_all_songs(avoid, access_token);
-
-
-
-	tracks = chosen_songs.filter((item) => !avoid_songs.includes(item));
-
-	//    console.log("These are the track URIS: ", tracks)
-
-	const todays_id = todays_playlist[0].value;
-
-	tracks = [...new Set(tracks)];
-
-	tracks = shuffle(tracks);
-	tracks = tracks.slice(0, 100);
-	//Now replace/add items in the new playlist
-	const url = `https://api.spotify.com/v1/playlists/${todays_id}/tracks?uris=${tracks.toString()}`;
-	const response = await fetch(url, {
-		method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-		headers: {
-			Authorization: 'Bearer ' + access_token,
-			'Content-Type': 'application/json'
+export async function create_playlist(liked_songs: boolean, chosen: string, avoid: string, todays_playlist: string, cookies: any) {
+	try {
+		const access_token = cookies.get('access_token', { path: '/portfolio/spotifyPlaylistMix' });
+		if (!access_token) {
+			console.error('Access token not found');
+			return null;
 		}
+
+		console.log('liked_songs:', liked_songs);
+		console.log('chosen:', chosen);
+		console.log('avoid:', avoid);
+		console.log('todays_playlist:', todays_playlist);
+
+		const chosenArray = JSON.parse(chosen);
+		const avoidArray = avoid ? JSON.parse(avoid) : [];
+		const todaysPlaylistValue = todays_playlist ? JSON.parse(todays_playlist) : false;
+
+		let tracks: string[] = [];
+		let chosen_songs: string[] = [];
+
+		if (liked_songs) {
+			console.log('getting liked songs');
+			chosen_songs = await get_all_liked(access_token);
+			console.log('chosen songs length:', chosen_songs.length);
+		} else if (chosenArray && Array.isArray(chosenArray)) {
+			chosen_songs = await get_all_songs(chosenArray, access_token);
+			console.log('chosen songs from playlists length:', chosen_songs.length);
+		}
+
+		let avoid_songs: string[] = [];
+		if (avoidArray && Array.isArray(avoidArray)) {
+			avoid_songs = await get_all_songs(avoidArray, access_token);
+			console.log('avoid songs length:', avoid_songs.length);
+		}
+
+		tracks = chosen_songs.filter(track => !avoid_songs.includes(track));
+		console.log('tracks after filtering:', tracks.length);
+
+		if (todaysPlaylistValue) {
+			tracks = shuffle(tracks);
+		}
+
+		tracks = tracks.slice(0, 50);
+		tracks = shuffle(tracks);
+
+		console.log('final tracks length:', tracks.length);
+
+		const response = await fetch('https://api.spotify.com/v1/me/playlists', {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${access_token}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				name: 'New Playlist'
+			})
+		});
+
+		if (!response.ok) {
+			throw new Error('Failed to create playlist');
+		}
+
+		const playlistData = await response.json();
+		const playlistId = playlistData.id;
+
+		// Add tracks to the playlist
+		const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${access_token}`,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				uris: tracks
+			})
+		});
+
+		if (!addTracksResponse.ok) {
+			throw new Error('Failed to add tracks to playlist');
+		}
+
+		return tracks;
+	} catch (error) {
+		console.error('Error in create_playlist:', error);
+		return null;
+	}
 	});
 
 	if (response.statusText != 'OK') {
@@ -128,7 +175,7 @@ export async function create_playlist(liked_songs, chosen, avoid, todays_playlis
 	}
 }
 
-export async function get_playlists(cookies, playlists) {
+export async function get_playlists(cookies: any, playlists: any) {
 	if (playlists) {
 		return playlists;
 	}
@@ -166,7 +213,7 @@ export async function get_playlists(cookies, playlists) {
 	}
 }
 
-export async function get_profile(cookies, profile) {
+export async function get_profile(cookies: any, profile: any) {
 	if (profile) {
 		return profile;
 	}

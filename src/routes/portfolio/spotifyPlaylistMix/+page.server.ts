@@ -67,11 +67,11 @@ export const actions = {
 	default: async ({ cookies, request }) => {
 		
 		const data = await request.formData();
-		const liked_songs = data.get('liked_songs');
+		const liked_songs = data.get('liked_songs') === 'true';
 		console.log('liked songs is in actions: ', liked_songs);
-		const chosen_playlists = data.get('chosen_playlists');
-		const avoid_playlists = data.get('avoid_playlists');
-		const todays_playlist = data.get('todays_playlist');
+		const chosen_playlists = data.get('chosen_playlists')?.toString() || '[]';
+		const avoid_playlists = data.get('avoid_playlists')?.toString() || '[]';
+		const todays_playlist = data.get('todays_playlist')?.toString() || 'false';
 		console.log("Today's list in actions is: ", todays_playlist);
 		console.log('action triggered');
 		let complete = await create_playlist(
