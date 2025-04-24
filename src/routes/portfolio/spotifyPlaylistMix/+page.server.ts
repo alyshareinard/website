@@ -67,6 +67,7 @@ export const actions = {
 	default: async ({ cookies, request }) => {
 		
 		const data = await request.formData();
+		console.log('in page.server, data is: ', data);
 		const liked_songs = data.get('liked_songs') === 'true';
 		console.log('liked songs is in actions: ', liked_songs);
 		const chosen_playlists = data.get('chosen_playlists')?.toString() || '[]';
