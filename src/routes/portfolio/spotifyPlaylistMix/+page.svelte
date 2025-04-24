@@ -55,12 +55,12 @@
 	<section class="playlist-selection">
 		<h2>Create Your Mix</h2>
 		<p>Select playlists to include in your mix:</p>
-
-		<div class="playlist-lists">
-			<div class="playlist-group">
-				<h3>Include These Playlists:</h3>
-				<div class="playlist-choices">
-					{#each playlist_choices as choice}
+		<form method="POST" use:enhance>
+			<div class="playlist-lists">
+				<div class="playlist-group">
+					<h3>Include These Playlists:</h3>
+					<div class="playlist-choices">
+						{#each playlist_choices as choice}
 						<button 
 							class="playlist-choice" 
 							class:selected={chosen_playlists.includes(choice)}
@@ -95,8 +95,7 @@
 			</label>
 		</div>
 
-		<form method="POST" use:enhance>
-			<button type="submit" class="create-mix-btn">Create Mix</button>
+		<button type="submit" class="create-mix-btn">Create Mix</button>
 		</form>
 
 		{#if todays_playlist_label}
