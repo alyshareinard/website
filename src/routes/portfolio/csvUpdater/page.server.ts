@@ -1,17 +1,18 @@
+import type { RequestEvent } from '@sveltejs/kit';
 import Papa from 'papaparse';
 let  message="";
 
 const maxFileSize = 1000000;
 
-const parse_birthday = (date) => {
+const parse_birthday = (date:String) => {
 	if (date.length > 0) {
-		date = date.split('/');
-		date = date[0] + '-' + date[1];
+		let datelist = date.split('/');
+		date = datelist[0] + '-' + datelist[1];
 	}
 	return date;
 };
 
-const clean_status = (status) => {
+const clean_status = (status:String) => {
 	if (status === 'Lead' || status === 'Inactive' || status === 'Active') {
 		return status;
 	} else if (status === 'Trial' || status === 'Waiting') {
@@ -21,7 +22,7 @@ const clean_status = (status) => {
 	}
 };
 
-const clean_phone = (number) => {
+const clean_phone = (number:String) => {
 	console.log(number);
 	let new_number = number.replace(/[^0-9 ]/g, '');
 	new_number = new_number.replace(/\s/g, '');
@@ -51,7 +52,7 @@ const clean_phone = (number) => {
 	return new_number;
 };
 
-function create_output(data) {
+function create_output(data: string[][]) {
 	console.log('in create output');
     for (let i = 0; i < data.length; i++) {
         console.log(data[i]);
@@ -59,18 +60,18 @@ function create_output(data) {
 	const csvOutput = Papa.unparse(data);
 	message = 'Your CSV is ready!';
 	let href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
-	return message, href;
+	return { message, href };
 }
 
 export const actions = {
-	default: async ({ request }) => {
+	default: async ({ request }: RequestEvent) => {
 		//        event.preventDefault();
 
 		const data = await request.formData();
 		console.log(data);
 		const myfile = data.get('myfile');
 		console.log(myfile);
-		const file = myfile;
+		const file = myfile as File;
 		const fileExtensionArray = file.type.split('/');
 		const fileExtension = fileExtensionArray[fileExtensionArray.length - 1];
 
@@ -88,7 +89,7 @@ export const actions = {
 					complete: (results) => {
 						message = 'working...';
 						console.log(results);
-						create_output(results.data)
+						create_output(results.data as string[][]);
 					}
 				}
 			);

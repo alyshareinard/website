@@ -1,15 +1,14 @@
 <script lang="ts">
-	import  Card  from '$component/Card/Card.svelte';
+	
+	import SlideCard from '$component/SlideCard/SlideCard.svelte';
 	import Carousel from 'svelte-carousel';
-	import { onMount } from 'svelte';
 	import PorfolioCards from './portfolioCards.svelte';
 
 	let showTestimonials = $state(false);
 	const mainHeight = 200;
 	const mainWidth = 300;
-	onMount(() => {
-		showTestimonials = true;
-	});
+	showTestimonials = true;
+
 	let main_cards = [
 		{
 			front: 'About me',
@@ -101,7 +100,7 @@
 			<div class="card">
 				{#if mycard['link']}
 					<a href={mycard['link']}>
-						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
+						<SlideCard cardHeight={mainHeight} cardWidth={mainWidth}>
 							{#snippet content()}
 								<div>
 									{mycard['front']}
@@ -112,7 +111,7 @@
 									{mycard['back']}
 								</div>
 							{/snippet}
-						</Card>
+						</SlideCard>
 					</a>
 				{/if}
 			</div>
