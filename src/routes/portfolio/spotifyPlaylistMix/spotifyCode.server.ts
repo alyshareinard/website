@@ -198,6 +198,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		tracks = shuffle(tracks);
 
 		console.log(`Creating playlist with ${tracks.length} tracks`);
+		console.log('here are the first couple tracks: ', tracks.slice(0, 5));
 
 		const response = await fetch('https://api.spotify.com/v1/me/playlists', {
 			method: 'POST',
@@ -206,10 +207,11 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name: 'New Mixed Playlist',
+				name: "Today's Mix",
 				description: 'Created by Spotify Playlist Mixer'
 			})
 		});
+		console.log('response from create playlist: ', response)
 
 		if (!response.ok) {
 			throw new Error('Failed to create playlist');
@@ -228,7 +230,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 				uris: tracks
 			})
 		});
-
+		console.log('response from add tracks: ', addTracksResponse)
 		if (!addTracksResponse.ok) {
 			throw new Error('Failed to add tracks to playlist');
 		} else {
