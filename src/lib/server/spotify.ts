@@ -46,6 +46,7 @@ export async function getAccessToken(code: string): Promise<{
     });
 
     if (!response.ok) {
+        console.log(response)
         throw new Error('Failed to get access token');
     }
 
