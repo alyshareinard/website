@@ -19,4 +19,18 @@ declare global {
 	}
 }
 
+// Add type declarations for third-party modules
+declare module 'svelte-carousel' {
+	import type { SvelteComponentTyped } from 'svelte';
+
+	export default class Carousel extends SvelteComponentTyped<{
+		autoplay?: boolean;
+		autoplayDuration?: number;
+		dots?: boolean;
+		infinite?: boolean;
+		arrows?: boolean;
+		particularItem?: number;
+	}> {}
+}
+
 export {};

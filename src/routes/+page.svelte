@@ -101,16 +101,12 @@
 				{#if mycard['link']}
 					<a href={mycard['link']}>
 						<SlideCard cardHeight={mainHeight} cardWidth={mainWidth}>
-							{#snippet content()}
-								<div>
-									{mycard['front']}
-								</div>
-							{/snippet}
-							{#snippet backContent()}
-								<div>
-									{mycard['back']}
-								</div>
-							{/snippet}
+						<div>
+							{mycard['front']}
+						</div>
+						<div slot="backContent">
+							{mycard['back']}
+						</div>
 						</SlideCard>
 					</a>
 				{/if}
