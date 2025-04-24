@@ -26,7 +26,7 @@ export async function refresh_token(cookies) {
 		cookies.delete('refresh_token', { path: '/' });
 		console.log('Houston, we have a problem ');
 		console.log(response);
-		redirect(303, spotifyRedirectURL + 'login');
+		redirect(303, '../login');
 	}
 
 	return access_token;
