@@ -1,6 +1,7 @@
 declare module '$env/static/private' {
     export const SPOTIFY_CLIENT_ID: string;
     export const SPOTIFY_CLIENT_SECRET: string;
+    export const spotifyRedirectURL: string;
 }
 
 declare module '$lib/server/spotify' {

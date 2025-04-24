@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } from '$env/static/private';
+import { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, spotifyRedirectURL } from '$env/static/private';
 
 // Simple encryption using a hash of the secret
 export function encrypt(text: string): string {
@@ -32,7 +32,12 @@ export async function getAccessToken(code: string): Promise<{
     const params = new URLSearchParams();
     params.append('grant_type', 'authorization_code');
     params.append('code', code);
-    params.append('redirect_uri', 'https://www.tech-aly.com/portfolio/spotifyPlaylistMix/auth/callback');
+    params.append('redirect_uri', spotifyRedirectURL);
+
+    console.log('Request params:', Object.fromEntries(params));
+    console.log('Authorization:', `Basic ${Buffer.from(
+        `${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`
+    ).toString('base64')}`);
 
     const response = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
@@ -46,8 +51,10 @@ export async function getAccessToken(code: string): Promise<{
     });
 
     if (!response.ok) {
-        console.log(response)
-        throw new Error('Failed to get access token');
+        const errorText = await response.text();
+        console.log('Response status:', response.status);
+        console.log('Response text:', errorText);
+        throw new Error(`Failed to get access token: ${errorText}`);
     }
 
     return response.json();
