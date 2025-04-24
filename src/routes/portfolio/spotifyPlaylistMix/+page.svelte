@@ -56,46 +56,63 @@
 		<h2>Create Your Mix</h2>
 		<p>Select playlists to include in your mix:</p>
 		<form method="POST" use:enhance>
+			<!-- Hidden inputs to pass data to server -->
+			<input type="hidden" name="chosen_playlists" value={JSON.stringify(chosen_playlists)} />
+			<input type="hidden" name="avoid_playlists" value={JSON.stringify(avoid_playlists)} />
+			<input type="hidden" name="todays_playlist" value={JSON.stringify(todays_playlist)} />
+			<input type="hidden" name="liked_songs" value={liked_songs} />
 			<div class="playlist-lists">
 				<div class="playlist-group">
 					<h3>Include These Playlists:</h3>
 					<div class="playlist-choices">
 						{#each playlist_choices as choice}
 						<button 
+							type="button"
 							class="playlist-choice" 
 							class:selected={chosen_playlists.includes(choice)}
-							onclick={() => chosen_playlists = [...chosen_playlists, choice]}
-					>
+							onclick={() => {
+							if (chosen_playlists.includes(choice)) {
+								chosen_playlists = chosen_playlists.filter(p => p !== choice);
+							} else {
+								chosen_playlists = [...chosen_playlists, choice];
+							}
+						}}
+						>
 							{choice.label}
 						</button>
-					{/each}
+						{/each}
+					</div>
+				</div>
+
+				<div class="playlist-group">
+					<h3>Exclude These Playlists:</h3>
+					<div class="playlist-choices">
+						{#each playlist_choices as choice}
+							<button 
+								type="button"
+								class="playlist-choice" 
+								class:selected={avoid_playlists.includes(choice)}
+								onclick={() => {
+							if (avoid_playlists.includes(choice)) {
+								avoid_playlists = avoid_playlists.filter(p => p !== choice);
+							} else {
+								avoid_playlists = [...avoid_playlists, choice];
+							}
+						}}
+							>
+								{choice.label}
+							</button>
+						{/each}
+					</div>
 				</div>
 			</div>
-
-			<div class="playlist-group">
-				<h3>Exclude These Playlists:</h3>
-				<div class="playlist-choices">
-					{#each playlist_choices as choice}
-						<button 
-							class="playlist-choice" 
-							class:selected={avoid_playlists.includes(choice)}
-							onclick={() => avoid_playlists = [...avoid_playlists, choice]}
-					>
-							{choice.label}
-						</button>
-					{/each}
-				</div>
+			<div class="options">
+				<label>
+					<input type="checkbox" bind:checked={liked_songs}>
+					Include Liked Songs
+				</label>
 			</div>
-		</div>
-
-		<div class="options">
-			<label>
-				<input type="checkbox" bind:checked={liked_songs}>
-				Include Liked Songs
-			</label>
-		</div>
-
-		<button type="submit" class="create-mix-btn">Create Mix</button>
+			<button type="submit" class="create-mix-btn">Create Mix</button>
 		</form>
 
 		{#if todays_playlist_label}
