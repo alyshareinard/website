@@ -157,23 +157,14 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 
 		if (!addTracksResponse.ok) {
 			throw new Error('Failed to add tracks to playlist');
+		} else {
+			return 'All done!  Go check out your playlist in Spotify.';
 		}
-
-		return tracks;
 	} catch (error) {
 		console.error('Error in create_playlist:', error);
 		return null;
 	}
-	});
-
-	if (response.statusText != 'OK') {
-
-		return 'All done!  Go check out your playlist in Spotify.';
-	} else {
-		console.log('response.statusText: ', response.statusText);
-		return 'There was a problem.  Please try again.' + response.statusText;
-	}
-}
+};
 
 export async function get_playlists(cookies: any, playlists: any) {
 	if (playlists) {
