@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import SlideCard from '$component/SlideCard/SlideCard.svelte';
+	import Card from '$component/Card/Card.svelte';
 	import Carousel from 'svelte-carousel';
 	import PorfolioCards from './portfolioCards.svelte';
 
@@ -107,14 +107,18 @@
 			<div class="card">
 				{#if mycard['link']}
 					<a href={mycard['link']}>
-						<SlideCard cardHeight={mainHeight} cardWidth={mainWidth}>
-						<div>
-							{mycard['front']}
-						</div>
-						<div slot="backContent">
-							{mycard['back']}
-						</div>
-						</SlideCard>
+						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
+							{#snippet content()}
+							<div>
+								{mycard['front']}
+							</div>
+						{/snippet}
+						{#snippet backContent()}
+							<div>
+								{mycard['back']}
+							</div>
+						{/snippet}
+					</Card>
 					</a>
 				{/if}
 			</div>

@@ -1,5 +1,5 @@
 <script>
-	import SlideCard from '$component/SlideCard/SlideCard.svelte';
+	import Card from '$component/Card/Card.svelte';
 	const portHeight = 150;
 	const portWidth = 225;
 
@@ -49,7 +49,7 @@
 	{#each portfolio_cards as card}
 		<div class="card">
 			<a href={card['link']}>
-				<SlideCard cardHeight={portHeight} cardWidth={portWidth}>
+				<Card cardHeight={portHeight} cardWidth={portWidth}>
 					{#snippet content()}
 						<div>
 							{card['front']}
@@ -60,7 +60,7 @@
 							{card['back']}
 						</div>
 					{/snippet}
-				</SlideCard>
+				</Card>
 			</a>
 		</div>
 	{/each}

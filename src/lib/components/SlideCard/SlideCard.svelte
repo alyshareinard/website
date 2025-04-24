@@ -72,16 +72,22 @@
     }
 
     .card {
+
         position: absolute;
-        width: 100%;
-        height: 100%;
-        background: white;
+		height: 100%;
+		width: 100%;
+		background-color: var(--mainTheme);
+		border-color: #fff;
+		border-style: solid;
+		border-width: 5px;
+		overflow: hidden;
+		color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
         transition: transform 0.4s ease-out;
     }
 
