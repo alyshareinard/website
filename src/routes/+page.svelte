@@ -1,5 +1,5 @@
 <script lang="ts">
-	
+	import { browser } from '$app/environment';
 	import SlideCard from '$component/SlideCard/SlideCard.svelte';
 	import Carousel from 'svelte-carousel';
 	import PorfolioCards from './portfolioCards.svelte';
@@ -7,7 +7,14 @@
 	let showTestimonials = $state(false);
 	const mainHeight = 200;
 	const mainWidth = 300;
-	showTestimonials = true;
+	
+
+
+	$effect(() => {
+		if (browser) {
+			showTestimonials = true;
+		}
+	});
 
 	let main_cards = [
 		{
@@ -114,22 +121,29 @@
 		{/each}
 	</div>
 	<div>
-		<div class="testimonials">
-			{#if showTestimonials}
-				<Carousel autoplay pauseOnFocus autoplayDuration={4000}>
+		{#if showTestimonials}
+			<div class="testimonials">
+				<h2>What others say</h2>
+				<Carousel
+					autoplay
+					autoplayDuration={3000}
+					infinite={true}
+					dots={true}
+					arrows={true}
+				>
 					{#each testimonials as testimonial}
-						<div class="verticalCenter">
-							{#each testimonial.text as t}
-								<h3>"{t}"</h3>
+						<div class="testimonial">
+							{#each testimonial.text as line}
+								<p>{line}</p>
 							{/each}
 							{#if testimonial.author}
-								<h4>{testimonial.author}</h4>
+								<p class="author">- {testimonial.author}</p>
 							{/if}
 						</div>
 					{/each}
 				</Carousel>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 	<div class="leftJustified">
 		<h3 class="darkBackground">
@@ -156,6 +170,14 @@
 	.card {
 		padding: 10px 10px;
 	}
+	.testimonial {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		padding: 1em;
+	}
 	.mainNav {
 		display: flex;
 		flex-wrap: wrap;
@@ -172,10 +194,6 @@
 	.centered {
 		text-align: center;
 	}
-	.verticalCenter {
-		align-self: center;
-	}
-
 	.testimonials {
 		display: block;
 		width: 80%;
