@@ -1,11 +1,11 @@
-import { spotifyClientId, spotifyRedirectURL } from '$env/static/private';
+import { SPOTIFY_CLIENT_ID,  spotifyRedirectURL } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 export async function refresh_token(cookies) {
 	console.log('in refresh_token');
 	let refresh_token = cookies.get('refresh_token', { path: '/' });
 
 	const params = new URLSearchParams();
-	params.append('client_id', spotifyClientId);
+	params.append('client_id', SPOTIFY_CLIENT_ID);
 	params.append('grant_type', 'refresh_token');
 	params.append('refresh_token', refresh_token);
 
@@ -36,7 +36,7 @@ export async function get_token(url) {
 	let code = url.cookies.get('code', { path: '/' });
 
 	const params = new URLSearchParams();
-	params.append('client_id', spotifyClientId);
+	params.append('client_id', SPOTIFY_CLIENT_ID);
 	params.append('grant_type', 'authorization_code');
 	params.append('code', code);
 	params.append('redirect_uri', spotifyRedirectURL);
