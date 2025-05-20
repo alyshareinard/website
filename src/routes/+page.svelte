@@ -1,43 +1,15 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import Card from '$component/Card/Card.svelte';
 	import Carousel from 'svelte-carousel';
 	import PorfolioCards from './portfolioCards.svelte';
 
 	let showTestimonials = $state(false);
-	const mainHeight = 200;
-	const mainWidth = 300;
 	
-
-
 	$effect(() => {
 		if (browser) {
 			showTestimonials = true;
 		}
 	});
-
-	let main_cards = [
-		{
-			front: 'About me',
-			back: 'A little bit about me and my work',
-			link: '/about'
-		},
-		{
-			front: 'What I can do for you',
-			back: 'Web pages, apps, integrations, and more',
-			link: '/contact'
-		},
-		/*		{
-			front: 'Contact me',
-			back: 'I usually get back to you within 24 hours',
-			link: '/contact'
-		},*/
-		{
-			front: 'Portfolio',
-			back: 'Descriptions and examples of my work',
-			link: '/portfolio'
-		}
-	];
 
 	const portfolio_cards = [
 		{
@@ -102,27 +74,19 @@
 </script>
 
 <main>
-	<div role="menu" class="mainNav">
-		{#each main_cards as mycard}
-			<div class="card">
-				{#if mycard['link']}
-					<a href={mycard['link']}>
-						<Card cardHeight={mainHeight} cardWidth={mainWidth}>
-							{#snippet content()}
-							<div>
-								{mycard['front']}
-							</div>
-						{/snippet}
-						{#snippet backContent()}
-							<div>
-								{mycard['back']}
-							</div>
-						{/snippet}
-					</Card>
-					</a>
-				{/if}
-			</div>
-		{/each}
+	<div class="services">
+		<div class="service-card">
+			<h3>Custom Apps</h3>
+			<p>Lightweight tools built just for you — nothing extra, nothing missing.</p>
+		</div>
+		<div class="service-card">
+			<h3>Automations</h3>
+			<p>Reclaim your time by automating repetitive tasks like emails and invoices.</p>
+		</div>
+		<div class="service-card">
+			<h3>Integrations</h3>
+			<p>Get your tools talking — CRMs, forms, databases, and more.</p>
+		</div>
 	</div>
 	<div>
 		{#if showTestimonials}
@@ -171,8 +135,38 @@
 	main {
 		justify-content: center;
 	}
-	.card {
-		padding: 10px 10px;
+	.services {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
+		padding: 2%;
+		width: 96%;
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+	.service-card {
+		background-color: var(--surface-1);
+		border: 2px solid var(--accent);
+		border-radius: 8px;
+		padding: 1.5rem;
+		width: 300px;
+		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+	.service-card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+	}
+	.service-card h3 {
+		color: var(--accent);
+		margin-top: 0;
+		margin-bottom: 0.75rem;
+		font-size: 1.5rem;
+	}
+	.service-card p {
+		margin: 0;
+		line-height: 1.5;
+		color: var(--text);
 	}
 	.testimonial {
 		display: flex;
@@ -181,14 +175,6 @@
 		align-items: center;
 		text-align: center;
 		padding: 1em;
-	}
-	.mainNav {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-evenly;
-		padding: 2%;
-		width: 96%;
-		height: 100%;
 	}
 	.leftJustified {
 		text-align: left;
@@ -205,9 +191,21 @@
 		border-style: solid;
 		border-width: 2px;
 		border-color: var(--accent);
+		margin-top: 2rem;
 	}
 	button > a {
 		text-decoration: none;
 		color: white;
+	}
+	
+	@media (max-width: 768px) {
+		.services {
+			flex-direction: column;
+			align-items: center;
+		}
+		.service-card {
+			width: 85%;
+			margin-bottom: 1rem;
+		}
 	}
 </style>

@@ -31,8 +31,8 @@
 			</nav>
 		</div>
 	{:else}
-		<h1 class="hoverRainbow">Custom apps and integrations</h1>
-		<h1 class="shortTitle">Custom apps</h1>
+		<h1 class="hoverRainbow">Small Business Tech Partner</h1>
+		<p>I simplify your tech so you can focus on your business.</p>
 	{/if}
 
 	<div class="rightCorner">
