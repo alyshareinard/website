@@ -92,24 +92,29 @@
 		{#if showTestimonials}
 			<div class="testimonials">
 				<h2>What others say</h2>
-				<Carousel
-					autoplay
-					autoplayDuration={3000}
-					infinite={true}
-					dots={true}
-					arrows={true}
-				>
-					{#each testimonials as testimonial}
-						<div class="testimonial">
-							{#each testimonial.text as line}
-								<p>{line}</p>
-							{/each}
-							{#if testimonial.author}
-								<p class="author">- {testimonial.author}</p>
-							{/if}
-						</div>
-					{/each}
-				</Carousel>
+				<div class="carousel-container">
+					<Carousel
+						autoplay
+						autoplayDuration={5000}
+						infinite={true}
+						dots={true}
+						arrows={true}
+						transitionDuration={800}
+					>
+						{#each testimonials as testimonial}
+							<div class="testimonial-slide">
+								<div class="testimonial">
+									{#each testimonial.text as line}
+										<p>{line}</p>
+									{/each}
+									{#if testimonial.author}
+										<p class="author">- {testimonial.author}</p>
+									{/if}
+								</div>
+							</div>
+						{/each}
+					</Carousel>
+				</div>
 			</div>
 		{/if}
 	</div>
@@ -168,13 +173,42 @@
 		line-height: 1.5;
 		color: var(--text);
 	}
+	.carousel-container {
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.testimonial-slide {
+		width: 100%;
+		min-height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 1rem 0;
+	}
+
 	.testimonial {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-		padding: 1em;
+		padding: 1.5rem;
+		width: 90%;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.testimonial p {
+		margin-bottom: 0.75rem;
+		line-height: 1.6;
+	}
+
+	.testimonial .author {
+		font-style: italic;
+		margin-top: 1rem;
+		color: var(--accent);
 	}
 	.leftJustified {
 		text-align: left;

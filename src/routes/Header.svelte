@@ -165,15 +165,17 @@
 			border: var(--size) solid transparent;
 			border-left: var(--size) solid var(--accent);
 		}
-		.shortTitle {
-			display: block;
-			visibility: visible;
-			font-weight: 800;
-			justify-content: center;
-			text-align: center;
+		.mainTitle {
+			padding: 0 10px;
 		}
 		.hoverRainbow {
-			display: none;
+			font-size: 1.5rem;
+			line-height: 1.2;
+			margin: 0.5rem 0;
+		}
+		.mainTitle p {
+			font-size: 0.9rem;
+			margin-top: 0;
 		}
 		.rightCorner {
 			width: 5em;
