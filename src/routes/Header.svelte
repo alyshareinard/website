@@ -31,8 +31,10 @@
 			</nav>
 		</div>
 	{:else}
+	<div class="mainTitle">
 		<h1 class="hoverRainbow">Small Business Tech Partner</h1>
 		<p>I simplify your tech so you can focus on your business.</p>
+	</div>
 	{/if}
 
 	<div class="rightCorner">
@@ -51,14 +53,17 @@
 		float: left;
 		width: 5em;
 	}
+	.mainTitle {
+		text-align: center;
+		display:flex;
+		flex-direction: column;
+	}
 	.rightCorner {
 		float: right;
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.shortTitle {
-		display: none;
-	}
+
 
 	.corner img {
 		width: 4em;
