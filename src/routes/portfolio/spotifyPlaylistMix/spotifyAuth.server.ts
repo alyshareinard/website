@@ -51,8 +51,6 @@ export async function refresh_token(cookies: Cookies): Promise<string | null> {
 		return access_token;
 	} else {
 		cookies.delete('refresh_token', { path: '/' });
-		console.log('Houston, we have a problem ');
-		console.log(response);
 		redirect(303, '/portfolio/spotifyPlaylistMix/login');
 		return null; // This line won't execute due to redirect, but TypeScript needs it
 	}
@@ -105,9 +103,6 @@ export async function get_token(request: RequestWithCookies): Promise<string | n
 		
 		return access_token;
 	} else {
-		console.log('Houston, we have a problem ');
-		console.log(response);
-		
 		if (request.redirect) {
 			request.redirect(303, '/portfolio/spotifyPlaylistMix/login');
 		} else {
@@ -115,5 +110,5 @@ export async function get_token(request: RequestWithCookies): Promise<string | n
 		}
 		
 		return null; // This line won't execute due to redirect, but TypeScript needs it
-	}
+ 	}
 }
