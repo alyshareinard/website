@@ -10,8 +10,8 @@ export type AppMeta = {
 export const defaultAppMeta: AppMeta = {
   appName: 'Balzac Cocoa Rater',
   companyName: 'Tech Aly',
-  contactEmail: 'alysha@tech-aly.com',
-  supportEmail: 'alysha@tech-aly.com',
+  contactEmail: 'info@tech-aly.com',
+  supportEmail: 'info@tech-aly.com',
   supportUrl: undefined,
   dataCollected: ['Usage data', 'Ratings (not tied to identity)']
 };
