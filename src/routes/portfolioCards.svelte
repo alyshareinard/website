@@ -12,7 +12,7 @@
 		>
 			<h3>{card.front}</h3>
 			<p>{card.back}</p>
-			<span class="link">{card.external ? 'Open app ↗' : 'View project &rarr;'}</span>
+			<span class="link">{card.cta ?? 'View project'} {card.external ? '↗' : '→'}</span>
 		</a>
 	{/each}
 </div>
@@ -27,7 +27,7 @@
 		gap: 1.5rem;
 	}
 	.card {
-		background-color: var(--surface-1);
+		background-color: rgba(0, 0, 0, 0.75);
 		border: 2px solid var(--accent);
 		border-radius: 8px;
 		padding: 1.5rem;

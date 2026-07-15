@@ -131,4 +131,13 @@
 	hr {
 		width: 0;
 	}
+
+	:global(.details) {
+		background-color: rgba(0, 0, 0, 0.75) !important;
+		color: var(--accentLight);
+	}
+
+	:global(.details) h4 {
+		color: var(--accentLight);
+	}
 </style>
