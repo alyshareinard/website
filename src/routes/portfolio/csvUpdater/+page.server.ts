@@ -1,18 +1,18 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import Papa from 'papaparse';
-let  message="";
+let message = '';
 
 const maxFileSize = 1000000;
 
-const parse_birthday = (date:String) => {
+const parse_birthday = (date: string) => {
 	if (date.length > 0) {
-		let datelist = date.split('/');
+		const datelist = date.split('/');
 		date = datelist[0] + '-' + datelist[1];
 	}
 	return date;
 };
 
-const clean_status = (status:String) => {
+const clean_status = (status: string) => {
 	if (status === 'Lead' || status === 'Inactive' || status === 'Active') {
 		return status;
 	} else if (status === 'Trial' || status === 'Waiting') {
@@ -22,7 +22,7 @@ const clean_status = (status:String) => {
 	}
 };
 
-const clean_phone = (number:String) => {
+const clean_phone = (number: string) => {
 	console.log(number);
 	let new_number = number.replace(/[^0-9 ]/g, '');
 	new_number = new_number.replace(/\s/g, '');
@@ -54,12 +54,12 @@ const clean_phone = (number:String) => {
 
 function create_output(data: string[][]) {
 	console.log('in create output');
-    for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
-    }
+	for (let i = 0; i < data.length; i++) {
+		console.log(data[i]);
+	}
 	const csvOutput = Papa.unparse(data);
 	message = 'Your CSV is ready!';
-	let href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
+	const href = encodeURI('data:text/csv;charset=utf-8,' + csvOutput);
 	return { message, href };
 }
 
@@ -82,17 +82,14 @@ export const actions = {
 		if (fileExtension.includes('csv') && file.size < maxFileSize) {
 			console.log('ready to parse!');
 			console.log(file);
-			Papa.parse(
-				file,
-				{
-					//header: true,
-					complete: (results) => {
-						message = 'working...';
-						console.log(results);
-						create_output(results.data as string[][]);
-					}
+			Papa.parse(file, {
+				//header: true,
+				complete: (results) => {
+					message = 'working...';
+					console.log(results);
+					create_output(results.data as string[][]);
 				}
-			);
+			});
 		} else {
 			message = 'Not an allowed file type';
 		}

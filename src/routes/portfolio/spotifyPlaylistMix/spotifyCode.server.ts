@@ -1,4 +1,6 @@
-const shuffle = (array: any[]) => {
+import type { Cookies } from '@sveltejs/kit';
+
+const shuffle = (array: string[]) => {
 	return array.sort(() => Math.random() - 0.5);
 };
 
@@ -27,7 +29,7 @@ async function get_songs(url: string, token: string) {
 	}
 }
 
-async function get_all_songs(playlist: any[], access_token: string) {
+async function get_all_songs(playlist: { value: string }[], access_token: string) {
 	console.log('Getting songs from playlists...');
 	console.log('Playlist data:', playlist);
 
@@ -36,8 +38,8 @@ async function get_all_songs(playlist: any[], access_token: string) {
 		throw new Error('No playlists selected');
 	}
 
-	let songs: string[] = [];
-	let failedPlaylists: string[] = [];
+	const songs: string[] = [];
+	const failedPlaylists: string[] = [];
 
 	for (const playlistItem of playlist) {
 		if (!playlistItem?.value) {
@@ -108,12 +110,12 @@ async function get_all_songs(playlist: any[], access_token: string) {
 async function get_all_liked(access_token: string) {
 	console.log('Get all liked');
 
-	let songs = [];
+	const songs: string[] = [];
 
 	let more = true;
 	let url = `https://api.spotify.com/v1/me/tracks?limit=50&fields=items(track(uri))`;
 	while (more) {
-		let items = await get_songs(url, access_token);
+		const items = await get_songs(url, access_token);
 		console.log('received these items from get_songs: ', items);
 		for (let i = 0; i < items.length; i++) {
 			songs.push(items[i].track.uri);
@@ -128,9 +130,15 @@ async function get_all_liked(access_token: string) {
 	return songs;
 }
 
-export async function create_playlist(liked_songs: boolean, chosen: string, avoid: string, todays_playlist: string, cookies: any) {
+export async function create_playlist(
+	liked_songs: boolean,
+	chosen: string,
+	avoid: string,
+	todays_playlist: string,
+	cookies: Cookies
+) {
 	try {
-		const access_token = cookies.get('access_token', { path: '/portfolio/spotifyPlaylistMix' });
+		const access_token = cookies.get('access_token');
 		if (!access_token) {
 			return 'Access token not found. Please try logging in again.';
 		}
@@ -167,9 +175,9 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 			if (chosen_songs.length === 0) {
 				return 'No songs found in the selected source(s). Please try different playlists or your liked songs.';
 			}
-		} catch (error: any) {
+		} catch (error: unknown) {
 			console.error('Error fetching songs:', error);
-			return error.message || 'Failed to fetch songs from the selected source(s).';
+			return (error as Error).message || 'Failed to fetch songs from the selected source(s).';
 		}
 
 		let avoid_songs: string[] = [];
@@ -183,7 +191,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 			}
 		}
 
-		tracks = chosen_songs.filter(track => !avoid_songs.includes(track));
+		tracks = chosen_songs.filter((track) => !avoid_songs.includes(track));
 		console.log(`${tracks.length} songs remaining after filtering`);
 
 		if (tracks.length === 0) {
@@ -211,7 +219,7 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 				description: 'Created by Spotify Playlist Mixer'
 			})
 		});
-		console.log('response from create playlist: ', response)
+		console.log('response from create playlist: ', response);
 
 		if (!response.ok) {
 			throw new Error('Failed to create playlist');
@@ -220,17 +228,20 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		const playlistData = await response.json();
 		const playlistId = playlistData.id;
 
-		const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${access_token}`,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				uris: tracks
-			})
-		});
-		console.log('response from add tracks: ', addTracksResponse)
+		const addTracksResponse = await fetch(
+			`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+			{
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${access_token}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					uris: tracks
+				})
+			}
+		);
+		console.log('response from add tracks: ', addTracksResponse);
 		if (!addTracksResponse.ok) {
 			throw new Error('Failed to add tracks to playlist');
 		}
@@ -246,15 +257,15 @@ export async function create_playlist(liked_songs: boolean, chosen: string, avoi
 		console.error('Error in create_playlist:', error);
 		return null;
 	}
-};
+}
 
-export async function get_playlists(cookies: any, playlists: any) {
+export async function get_playlists(cookies: Cookies, playlists: unknown) {
 	if (playlists) {
 		return playlists;
 	}
 
-	const user_id = cookies.get('user_id', { path: '/' });
-	const access_token = cookies.get('access_token', { path: '/' });
+	const user_id = cookies.get('user_id');
+	const access_token = cookies.get('access_token');
 	const url = `https://api.spotify.com/v1/users/${user_id}/playlists?limit=50`;
 
 	const response = await fetch(url, {
@@ -267,16 +278,16 @@ export async function get_playlists(cookies: any, playlists: any) {
 		console.log('Status text: ', response.statusText);
 	} else {
 		console.log('Okay so far');
-		let data = await response.json();
+		const data = (await response.json()) as { items: unknown[]; next?: string };
 		let nextURL = data.next;
 		while (nextURL) {
-			const url = data.next;
+			const url = nextURL;
 			const response = await fetch(url, {
 				headers: {
 					Authorization: 'Bearer ' + access_token
 				}
 			});
-			let more_playlists = await response.json();
+			const more_playlists = (await response.json()) as { items: unknown[]; next?: string };
 			data.items = data.items.concat(more_playlists.items);
 			nextURL = more_playlists.next;
 		}
@@ -286,14 +297,14 @@ export async function get_playlists(cookies: any, playlists: any) {
 	}
 }
 
-export async function get_profile(cookies: any, profile: any) {
+export async function get_profile(cookies: Cookies, profile: unknown) {
 	if (profile) {
 		return profile;
 	}
 
 	const response = await fetch('https://api.spotify.com/v1/me', {
 		headers: {
-			Authorization: 'Bearer ' + cookies.get('access_token', { path: '/' })
+			Authorization: 'Bearer ' + cookies.get('access_token')
 		}
 	});
 

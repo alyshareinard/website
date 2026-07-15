@@ -35,6 +35,20 @@
 
 	const featuredProjects = [
 		{
+			title: 'Business Central ↔ VisualFactory',
+			description:
+				'Built a full automation pipeline using custom AL code and secure API connections to sync assembly orders and parts data between Microsoft Business Central (inventory) and VisualFactory (shop-floor assembly instructions), eliminating manual entry and ensuring accurate, real-time inventory updates across systems.',
+			stack: 'Business Central AL, OAuth 2.0, REST APIs',
+			link: '/portfolio'
+		},
+		{
+			title: 'VisualFactory → Windchill (FRACAS / NC intake)',
+			description:
+				'Delivered an automated path from shop-floor issue reporting in VisualFactory into Windchill by standardizing the handoff into Windchill’s FRACAS-compatible import format. Implemented a reliable “generate → deliver → validate → transform → import” pipeline: VisualFactory produces structured defect reports (CSV/XML), routes them through a dedicated Microsoft 365 mailbox, and an internal scheduled automation retrieves and validates attachments via Microsoft Graph, archives processed inputs, transforms them into Windchill-compliant FRACAS XML, and imports them using Windchill’s standard XML import interface—complete with audit logging and secure credential handling.',
+			stack: 'VisualFactory, Windchill, Microsoft Graph, Microsoft 365, XML',
+			link: '/portfolio'
+		},
+		{
 			title: 'Inventory & payroll system',
 			description:
 				'Built a full inventory and payroll system for a door-to-door sales business, tracking supplier shipments, rep checkouts, sales, and automated commission calculations with emailed PDF pay stubs.',
@@ -84,7 +98,9 @@
 	</section>
 
 	<section class="featured-work">
-		<h2>Recent client work</h2>
+		<div class="text-box">
+			<h2>Recent client work</h2>
+		</div>
 		<div class="project-list">
 			{#each featuredProjects as project}
 				<a href={project.link} class="project-card">
@@ -127,8 +143,10 @@
 	{/if}
 
 	<section class="demo-apps">
-		<h2>Explore example apps</h2>
-		<p>These are small, self-contained demos of the kinds of tools I build for clients.</p>
+		<div class="text-box">
+			<h2>Explore example apps</h2>
+			<p>These are small, self-contained demos of the kinds of tools I build for clients.</p>
+		</div>
 		<PorfolioCards />
 	</section>
 
@@ -152,7 +170,9 @@
 		text-align: center;
 		max-width: 800px;
 		margin: 0 auto 3rem auto;
-		padding: 0 1rem;
+		padding: 1.5rem;
+		background-color: rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
 	}
 
 	.intro h2 {
@@ -191,7 +211,7 @@
 		gap: 1.5rem;
 	}
 	.service-card {
-		background-color: var(--surface-1);
+		background-color: rgba(0, 0, 0, 0.6);
 		border: 2px solid var(--accent);
 		border-radius: 8px;
 		padding: 1.5rem;
@@ -279,13 +299,22 @@
 		font-weight: 600;
 	}
 
-	.demo-apps h2,
-	.demo-apps p {
+	.text-box {
+		background-color: rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
+		padding: 1.5rem;
+		max-width: 800px;
+		margin: 0 auto 1.5rem auto;
 		text-align: center;
 	}
 
-	.demo-apps p {
-		margin-bottom: 1.5rem;
+	.text-box h2,
+	.text-box p {
+		margin: 0;
+	}
+
+	.text-box p {
+		margin-top: 0.5rem;
 	}
 
 	.final-cta {
@@ -295,6 +324,7 @@
 		border-radius: 8px;
 		max-width: 800px;
 		margin: 0 auto;
+		background-color: rgba(0, 0, 0, 0.6);
 	}
 
 	.final-cta h2 {
@@ -347,6 +377,8 @@
 		border-width: 2px;
 		border-color: var(--accent);
 		padding: 1rem 0;
+		background-color: rgba(0, 0, 0, 0.6);
+		border-radius: 8px;
 	}
 
 	@media (max-width: 768px) {

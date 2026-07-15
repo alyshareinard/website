@@ -19,14 +19,12 @@
 
 <h2>How we use the data</h2>
 <p>
-	We use the data to operate and improve the app experience. Ratings help surface trends such as which
-	hot cocoas are most enjoyed. Usage data helps ensure reliability and guide improvements.
+	We use the data to operate and improve the app experience. Ratings help surface trends such as
+	which hot cocoas are most enjoyed. Usage data helps ensure reliability and guide improvements.
 </p>
 
 <h2>Data tied to identity</h2>
-<p>
-	We do not collect personal identifiers. Ratings and usage data are not linked to an identity.
-</p>
+<p>We do not collect personal identifiers. Ratings and usage data are not linked to an identity.</p>
 
 <h2>Data sharing</h2>
 <p>
@@ -35,9 +33,7 @@
 </p>
 
 <h2>Retention</h2>
-<p>
-	We retain data only as long as needed for the purposes above.
-</p>
+<p>We retain data only as long as needed for the purposes above.</p>
 
 <h2>Contact</h2>
 <p>

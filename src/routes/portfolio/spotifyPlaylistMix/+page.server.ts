@@ -1,11 +1,9 @@
-import { redirect } from '@sveltejs/kit';
+import { redirect, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
 import { refresh_token, get_token } from './spotifyAuth.server.js';
 import { create_playlist, get_playlists, get_profile } from './spotifyCode.server.js';
 
-/** @type {import('./$types').PageServerLoad} */
-
-function cookieExistsAndHasValue(value, url) {
-	let cookieValue = url.cookies.get(value, { path: '/portfolio/spotifyPlaylistMix' });
+function cookieExistsAndHasValue(value: string, event: RequestEvent) {
+	const cookieValue = event.cookies.get(value);
 	console.log('in cookies exist');
 	console.log(value);
 
@@ -20,40 +18,40 @@ function cookieExistsAndHasValue(value, url) {
 	}
 }
 
-export async function load(url) {
+export async function load(event: ServerLoadEvent) {
 	let user_name = '';
 	let playlists;
 	//first we check if there is a code in the URL
 
-	if (url.url.searchParams.has('code')) {
-		const code = url.url.searchParams.get('code');
-		url.cookies.set('code', code, { path: '/' });
-//		url.url.searchParams.set('code', null);
-		const new_url = url.url.pathname;
+	if (event.url.searchParams.has('code')) {
+		const code = event.url.searchParams.get('code') ?? '';
+		event.cookies.set('code', code, { path: '/' });
+		//		event.url.searchParams.set('code', null);
+		const new_url = event.url.pathname;
 
 		redirect(303, new_url);
 	} else if (
-		cookieExistsAndHasValue('refresh_token', url) &&
-		!cookieExistsAndHasValue('access_token', url)
+		cookieExistsAndHasValue('refresh_token', event) &&
+		!cookieExistsAndHasValue('access_token', event)
 	) {
-		await refresh_token(url.cookies);
-		user_name = await get_profile(url.cookies, user_name);
-		playlists = await get_playlists(url.cookies, playlists);
-	} else if (cookieExistsAndHasValue('access_token', url)) {
-		user_name = await get_profile(url.cookies, user_name);
-		playlists = await get_playlists(url.cookies, playlists);
-	} else if (cookieExistsAndHasValue('code', url)) {
+		await refresh_token(event.cookies);
+		user_name = await get_profile(event.cookies, user_name);
+		playlists = await get_playlists(event.cookies, playlists);
+	} else if (cookieExistsAndHasValue('access_token', event)) {
+		user_name = await get_profile(event.cookies, user_name);
+		playlists = await get_playlists(event.cookies, playlists);
+	} else if (cookieExistsAndHasValue('code', event)) {
 		try {
-			await get_token(url);
-			user_name = await get_profile(url.cookies, user_name);
-			playlists = await get_playlists(url.cookies, playlists);
+			await get_token(event);
+			user_name = await get_profile(event.cookies, user_name);
+			playlists = await get_playlists(event.cookies, playlists);
 		} catch (error) {
 			console.log('Error causing redirect: ', error);
-			redirect(303, url.url.href + '/login');
+			redirect(303, event.url.href + '/login');
 		}
 	} else {
-		console.log('no code, sending to login page' + url.url.href);
-		redirect(303, url.url.href + '/login');
+		console.log('no code, sending to login page' + event.url.href);
+		redirect(303, event.url.href + '/login');
 	}
 
 	return {
@@ -64,8 +62,7 @@ export async function load(url) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	default: async ({ cookies, request }) => {
-		
+	default: async ({ cookies, request }: RequestEvent) => {
 		const data = await request.formData();
 		console.log('in page.server, data is: ', data);
 		const liked_songs = data.get('liked_songs') === 'true';
@@ -75,7 +72,7 @@ export const actions = {
 		const todays_playlist = data.get('todays_playlist')?.toString() || 'false';
 		console.log("Today's list in actions is: ", todays_playlist);
 		console.log('action triggered');
-		let complete = await create_playlist(
+		const complete = await create_playlist(
 			liked_songs,
 			chosen_playlists,
 			avoid_playlists,

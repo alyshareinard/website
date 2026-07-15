@@ -6,7 +6,6 @@
 	let submission_status = '';
 
 	const { form, message, errors, constraints, enhance } = superForm(data.form, {
-
 		resetForm: false,
 		taintedMessage: null,
 

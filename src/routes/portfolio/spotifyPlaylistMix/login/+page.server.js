@@ -1,4 +1,4 @@
-import { SPOTIFY_CLIENT_ID,  spotifyRedirectURL } from '$env/static/private';
+import { SPOTIFY_CLIENT_ID, spotifyRedirectURL } from '$env/static/private';
 import { redirect } from '@sveltejs/kit';
 
 function generateRandomString(length) {
@@ -21,33 +21,27 @@ async function generateCodeChallenge(codeVerifier) {
 	const encoder = new TextEncoder();
 	const data = encoder.encode(codeVerifier);
 
-
-	const digest = await  crypto.subtle.digest('SHA-256', data);
+	const digest = await crypto.subtle.digest('SHA-256', data);
 
 	return base64encode(digest);
-
 }
 async function get_code(event) {
-
- 
 	//if cookie exists delete it
-	if (event.cookies.get('access_token', { path: '/' })) {
-		event.cookies.delete('access_token', { path: '/' })
+	if (event.cookies.get('access_token')) {
+		event.cookies.delete('access_token', { path: '/' });
 	}
-	if (event.cookies.get('refresh_token', { path: '/' })) {
-		event.cookies.delete('refresh_token', { path: '/' })
+	if (event.cookies.get('refresh_token')) {
+		event.cookies.delete('refresh_token', { path: '/' });
 	}
 
-	
 	let codeVerifier = await generateRandomString(128);
 
 	const challenge = await generateCodeChallenge(codeVerifier);
-	event.cookies.set('code_verifier', codeVerifier, { path: '/' })
+	event.cookies.set('code_verifier', codeVerifier, { path: '/' });
 	let state = generateRandomString(16);
-	let scope = 'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played'
+	let scope =
+		'user-library-read user-read-private user-read-email playlist-read-private playlist-read-collaborative user-library-modify playlist-modify-private playlist-modify-public user-read-recently-played';
 
-	// Ensure the redirect_uri maintains HTTPS by manually encoding it
-	const encodedRedirectUri = encodeURIComponent(spotifyRedirectURL);
 	let args = new URLSearchParams({
 		response_type: 'code',
 		client_id: SPOTIFY_CLIENT_ID,
@@ -58,17 +52,16 @@ async function get_code(event) {
 	});
 	args.append('redirect_uri', spotifyRedirectURL); // Add redirect_uri separately to maintain HTTPS
 	let url = 'https://accounts.spotify.com/authorize?' + args;
-    return(url)
+	return url;
 }
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-    default: async (event) => {
-		console.log(' IN LOGIN ACTIONS', event)
-        let url = await get_code(event);
-		console.log('url: ', url)
+	default: async (event) => {
+		console.log(' IN LOGIN ACTIONS', event);
+		let url = await get_code(event);
+		console.log('url: ', url);
 
-        throw(redirect(303, url))
-
-    }
-}
+		throw redirect(303, url);
+	}
+};

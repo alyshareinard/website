@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { SuperValidated} from 'sveltekit-superforms';
-//	import { Turnstile } from 'svelte-turnstile';
-//	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
+	import type { SuperValidated } from 'sveltekit-superforms';
+	//	import { Turnstile } from 'svelte-turnstile';
+	//	import { PUBLIC_TURNSTILE_SITE_KEY } from '$env/static/public';
 	//import type { Infer } from 'sveltekit-superforms/';
 
 	import { superForm } from 'sveltekit-superforms/client';
@@ -9,20 +9,19 @@
 	const serviceOptions = ['Webpage', 'App', 'Integration'] as const;
 	//export let data: SuperValidated<ContactFormSchema>;
 
-    let formError = '';
+	let formError = '';
 	let { data } = $props();
 	let wasSubmitted = $state(false);
 	let submission_status = $state('');
-	
-	const { form, message, errors, constraints, enhance } = superForm(data.form , {
-//		        validators: ContactFormSchema,
+
+	const { form, message, errors, constraints, enhance } = superForm(data.form, {
+		//		        validators: ContactFormSchema,
 		resetForm: false,
 		taintedMessage: null,
 
 		onSubmit: (event: any) => {
 			wasSubmitted = true;
 			submission_status = 'submitting';
-
 		},
 		onUpdated: ({ form }) => {
 			if (form.valid) {
@@ -32,17 +31,16 @@
 				console.log(form);
 			}
 		},
-        onError(event) {
-            console.log(event);
-            formError = (event.result.error).toString();
-        },
+		onError(event) {
+			console.log(event);
+			formError = event.result.error.toString();
+		},
 		delayMs: 500
 	});
-    //<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
+	//<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} theme="dark" />
 </script>
 
 <form method="POST" action="/contact/contactForm" use:enhance>
-	
 	<div class="myform">
 		<label for="fname" class="label-short">
 			<span class="label-text">First name</span>
@@ -74,8 +72,6 @@
 			{...$constraints.lname}
 		/>
 		{#if wasSubmitted && $errors.lname}<span class="invalid">{$errors.lname}</span>{/if}
-
-
 
 		<label for="email" class="label-short">
 			<span class="label-text">Email</span>

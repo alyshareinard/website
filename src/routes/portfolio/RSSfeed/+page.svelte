@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run, preventDefault } from 'svelte/legacy';
-
 	import addToLocalStorage, {
 		removeFromLocalStorage,
 		updateLocalStorage
@@ -10,10 +8,11 @@
 	import { Accordion } from '$lib/components/Accordion';
 	import { tick } from 'svelte';
 
-		interface Feed {
+	interface Feed {
 		title: string;
 		url: string;
 		active?: boolean;
+		format?: string;
 	}
 
 	interface FeedItem {
@@ -31,7 +30,9 @@
 	let feeds = $state<Feed[]>(JSON.parse(window.localStorage.getItem('feeds') || '[]'));
 	let poswords = $state<string[]>(JSON.parse(window.localStorage.getItem('poswords') || '[]'));
 	let negwords = $state<string[]>(JSON.parse(window.localStorage.getItem('negwords') || '[]'));
-	let importantPhrases = $state<string[]>(JSON.parse(window.localStorage.getItem('importantPhrases') || '[]'));
+	let importantPhrases = $state<string[]>(
+		JSON.parse(window.localStorage.getItem('importantPhrases') || '[]')
+	);
 
 	let url = $state<string>('');
 	let ready = $state<boolean>(false);
@@ -54,7 +55,9 @@
 
 	async function test_feed() {
 		if (!url) return;
-		response = await testFeed(url) as FeedResponse;
+		const result = await testFeed(url);
+		if (!result) return;
+		response = result as FeedResponse;
 		await tick();
 
 		if (response?.format === 'invalid') {
@@ -63,46 +66,46 @@
 		} else if (response?.format === 'unknown') {
 			feedmessage = 'Format unknown -- this app can only parse atom or rss feeds';
 			showFeedButton = false;
-		} else if (response.format == 'rss' || response.format == 'atom') {
+		} else if (response?.format == 'rss' || response?.format == 'atom') {
 			feedmessage = 'Feed is valid -- click to add';
 			showFeedButton = true;
 		}
 	}
 
-	function toggleActive(feed) {
+	function toggleActive(feed: Feed) {
 		let myfeed = { ...feed };
 		myfeed.active = !myfeed.active;
 		updateLocalStorage('feeds', feed, myfeed);
 	}
-	function addItem(name, value) {
+	function addItem(name: string, value: string | Feed) {
 		addToLocalStorage(name, value);
 		if (name == 'feeds') {
-			feeds.push(value);
+			feeds.push(value as Feed);
 			feeds = [...feeds];
 		} else if (name == 'poswords') {
-			poswords.push(value);
+			poswords.push(value as string);
 			poswords = [...poswords];
 		} else if (name == 'negwords') {
-			negwords.push(value);
+			negwords.push(value as string);
 			negwords = [...negwords];
 		} else if (name == 'importantPhrases') {
-			importantPhrases.push(value);
+			importantPhrases.push(value as string);
 			importantPhrases = [...importantPhrases];
 		}
 	}
-	function removeItem(name, value) {
+	function removeItem(name: string, value: string | Feed) {
 		removeFromLocalStorage(name, value);
 		if (name == 'feeds') {
-			feeds.splice(feeds.indexOf(value), 1);
+			feeds.splice(feeds.indexOf(value as Feed), 1);
 			feeds = [...feeds];
 		} else if (name == 'poswords') {
-			poswords.splice(poswords.indexOf(value), 1);
+			poswords.splice(poswords.indexOf(value as string), 1);
 			poswords = [...poswords];
 		} else if (name == 'negwords') {
-			negwords.splice(negwords.indexOf(value), 1);
+			negwords.splice(negwords.indexOf(value as string), 1);
 			negwords = [...negwords];
 		} else if (name == 'importantPhrases') {
-			importantPhrases.splice(importantPhrases.indexOf(value), 1);
+			importantPhrases.splice(importantPhrases.indexOf(value as string), 1);
 			importantPhrases = [...importantPhrases];
 		}
 	}
@@ -129,11 +132,7 @@
 			<h3>My feeds</h3>
 			{#each feeds as feed}
 				<div>
-					<input
-						type="checkbox"
-						checked={feed.active}
-						onclick={() => toggleActive(feed)}
-					/>
+					<input type="checkbox" checked={feed.active} onclick={() => toggleActive(feed)} />
 					<button
 						class="deletebutton"
 						onclick={() => {
@@ -168,12 +167,13 @@
 			{/if}
 			{#if showFeedButton}
 				<div>
-					<input type="text" bind:value={title} placeholder={response?.title || "Title"} />
+					<input type="text" bind:value={title} placeholder={response?.title || 'Title'} />
 				</div>
 				<button
 					onclick={() => {
+						if (!response) return;
 						addItem('feeds', {
-							title: title || response?.title,
+							title: title || response.title || '',
 							url: url,
 							active: true,
 							format: response.format
@@ -264,7 +264,7 @@
 {/if}
 {#if jobs}
 	{#each jobs as job}
-		<Accordion lethover="false">
+		<Accordion lethover={false}>
 			{#snippet head()}
 				<span>
 					Score: {job.score} <a href={job.link} target="_blank"> {job.title}</a>

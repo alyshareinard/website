@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { analyticsStore } from '$lib/stores/analyticsStore';
+	import { analyticsStore, type AnalyticsEvent } from '$lib/stores/analyticsStore';
 	import { enhance } from '$app/forms';
 
 	type Playlist = {
@@ -22,7 +22,7 @@
 	let todays_playlist_label = $state<string | undefined>();
 	let liked_songs = $state(false);
 
-	const new_event = {
+	const new_event: AnalyticsEvent = {
 		id: crypto.randomUUID(),
 		data: {
 			page: 'spotify-playlist-mix',
@@ -32,7 +32,7 @@
 		type: 'event'
 	};
 
-	analyticsStore.update((existing_events: any[]) => [...existing_events, new_event]);
+	analyticsStore.update((existing_events) => [...existing_events, new_event]);
 
 	$effect(() => {
 		if (data.playlists) {
@@ -49,7 +49,8 @@
 		if (todays_playlist) {
 			todays_playlist_label = todays_playlist.label;
 		}
-	});</script>
+	});
+</script>
 
 <main>
 	<h1>Welcome, {data.user_name}!</h1>
@@ -68,20 +69,20 @@
 					<h3>Include These Playlists:</h3>
 					<div class="playlist-choices">
 						{#each playlist_choices as choice}
-						<button 
-							type="button"
-							class="playlist-choice" 
-							class:selected={chosen_playlists.includes(choice)}
-							onclick={() => {
-							if (chosen_playlists.includes(choice)) {
-								chosen_playlists = chosen_playlists.filter(p => p !== choice);
-							} else {
-								chosen_playlists = [...chosen_playlists, choice];
-							}
-						}}
-						>
-							{choice.label}
-						</button>
+							<button
+								type="button"
+								class="playlist-choice"
+								class:selected={chosen_playlists.includes(choice)}
+								onclick={() => {
+									if (chosen_playlists.includes(choice)) {
+										chosen_playlists = chosen_playlists.filter((p) => p !== choice);
+									} else {
+										chosen_playlists = [...chosen_playlists, choice];
+									}
+								}}
+							>
+								{choice.label}
+							</button>
 						{/each}
 					</div>
 				</div>
@@ -90,17 +91,17 @@
 					<h3>Exclude These Playlists:</h3>
 					<div class="playlist-choices">
 						{#each playlist_choices as choice}
-							<button 
+							<button
 								type="button"
-								class="playlist-choice" 
+								class="playlist-choice"
 								class:selected={avoid_playlists.includes(choice)}
 								onclick={() => {
-							if (avoid_playlists.includes(choice)) {
-								avoid_playlists = avoid_playlists.filter(p => p !== choice);
-							} else {
-								avoid_playlists = [...avoid_playlists, choice];
-							}
-						}}
+									if (avoid_playlists.includes(choice)) {
+										avoid_playlists = avoid_playlists.filter((p) => p !== choice);
+									} else {
+										avoid_playlists = [...avoid_playlists, choice];
+									}
+								}}
 							>
 								{choice.label}
 							</button>
@@ -110,7 +111,7 @@
 			</div>
 			<div class="options">
 				<label>
-					<input type="checkbox" bind:checked={liked_songs}>
+					<input type="checkbox" bind:checked={liked_songs} />
 					Include Liked Songs
 				</label>
 			</div>
@@ -122,7 +123,12 @@
 				<p>{props.message}</p>
 				{#if props.success && props.playlistUrl}
 					<p>Your new playlist contains {props.trackCount} tracks.</p>
-					<a href={props.playlistUrl} target="_blank" rel="noopener noreferrer" class="playlist-link">
+					<a
+						href={props.playlistUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="playlist-link"
+					>
 						Open in Spotify
 					</a>
 				{/if}

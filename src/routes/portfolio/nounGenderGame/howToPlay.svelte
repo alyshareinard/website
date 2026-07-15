@@ -19,8 +19,14 @@
 
 		<div
 			onclick={toggleHowtoPlay}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') toggleHowtoPlay();
+			}}
 			transition:scale={{ start: 1.5, duration: 1000 }}
 			class="background"
+			role="button"
+			tabindex="0"
+			aria-label="Close instructions"
 		></div>
 	</div>
 </div>

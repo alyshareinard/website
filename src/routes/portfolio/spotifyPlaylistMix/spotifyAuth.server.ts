@@ -14,7 +14,7 @@ interface RequestWithCookies {
 export async function refresh_token(cookies: Cookies): Promise<string | null> {
 	console.log('in refresh_token');
 	const refresh_token = cookies.get('refresh_token');
-	
+
 	// If no refresh token exists, we can't proceed
 	if (!refresh_token) {
 		console.log('No refresh token found');
@@ -33,21 +33,21 @@ export async function refresh_token(cookies: Cookies): Promise<string | null> {
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 		body: params
 	});
-	
+
 	const response = await result.json();
 	console.log('Here is response: ', response);
-	
+
 	const { access_token, refresh_token: new_refresh_token } = response;
-	
+
 	if (access_token) {
 		console.log('TRYING TO SET COOKIES');
 		cookies.set('access_token', access_token, { maxAge: 3600, path: '/' });
-		
+
 		// Only set the new refresh token if it exists
 		if (new_refresh_token) {
 			cookies.set('refresh_token', new_refresh_token, { path: '/' });
 		}
-		
+
 		return access_token;
 	} else {
 		cookies.delete('refresh_token', { path: '/' });
@@ -87,20 +87,20 @@ export async function get_token(request: RequestWithCookies): Promise<string | n
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 		body: params
 	});
-	
+
 	const response = await result.json();
 	console.log(response);
-	
+
 	const { access_token, refresh_token } = response;
-	
+
 	if (access_token) {
 		request.cookies.set('access_token', access_token, { maxAge: 3600, path: '/' });
-		
+
 		// Only set the refresh token if it exists
 		if (refresh_token) {
 			request.cookies.set('refresh_token', refresh_token, { path: '/' });
 		}
-		
+
 		return access_token;
 	} else {
 		if (request.redirect) {
@@ -108,7 +108,7 @@ export async function get_token(request: RequestWithCookies): Promise<string | n
 		} else {
 			redirect(303, '/portfolio/spotifyPlaylistMix/login');
 		}
-		
+
 		return null; // This line won't execute due to redirect, but TypeScript needs it
- 	}
+	}
 }

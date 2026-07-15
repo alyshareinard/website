@@ -20,10 +20,12 @@
 	function toggleHowtoPlay() {
 		showHowtoPlay = !showHowtoPlay;
 	}
-	if (!isGameOpen) {
-		showHints = false;
-		showHowtoPlay = false;
-	}
+	$effect(() => {
+		if (!isGameOpen) {
+			showHints = false;
+			showHowtoPlay = false;
+		}
+	});
 </script>
 
 <h2>Nouns have gender?!</h2>

@@ -23,8 +23,14 @@
 
 		<div
 			onclick={toggleHints}
+			onkeydown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') toggleHints();
+			}}
 			transition:scale={{ start: 1.5, duration: 1000 }}
 			class="background"
+			role="button"
+			tabindex="0"
+			aria-label="Close hints"
 		></div>
 	</div>
 </div>

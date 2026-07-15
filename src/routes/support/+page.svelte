@@ -31,14 +31,10 @@
 </ul>
 
 <h2>What to include</h2>
-<p>
-	To help us resolve your issue quickly, please include:
-</p>
+<p>To help us resolve your issue quickly, please include:</p>
 <ul>
 	<li>What you were trying to do</li>
 	<li>What happened instead (include any error message)</li>
 	<li>Your device and OS version</li>
 	<li>App version, if available</li>
 </ul>
-
-

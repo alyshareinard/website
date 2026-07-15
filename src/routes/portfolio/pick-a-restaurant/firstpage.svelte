@@ -1,7 +1,6 @@
 <!-- @migration-task Error while migrating Svelte code: Unexpected token
 https://svelte.dev/e/js_parse_error -->
 <script>
-    
 	let base = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
 	let params = {
 		key: 'AIzaSyDDQkZiYCXR4Chb6g5Z4dvI5D3YaVc6MlQ',
@@ -9,20 +8,18 @@ https://svelte.dev/e/js_parse_error -->
 		radius: '1500',
 		type: 'restaurant'
 	};
-    
 
 	const restaurants = async (params) => {
-        const placesService = new google.maps.places.PlacesService(map);
-        const response = await placesService.nearbySearch({
-            location: params.location,
-            radius: params.radius,
-            type: params.type,
-            key: params.key
-        })
+		const placesService = new google.maps.places.PlacesService(map);
+		const response = await placesService.nearbySearch({
+			location: params.location,
+			radius: params.radius,
+			type: params.type,
+			key: params.key
+		});
 
-        console.log("response: ", response);
+		console.log('response: ', response);
 	};
-	
 </script>
 
 <div>
@@ -31,4 +28,3 @@ https://svelte.dev/e/js_parse_error -->
 <div>
 	<input type="text" bind:value={params.radius} placeholder="Distance" />
 </div>
-<button on:click={}>Find</button>

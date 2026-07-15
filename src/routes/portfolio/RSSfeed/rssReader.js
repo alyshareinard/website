@@ -49,7 +49,6 @@ export async function testFeed(rawurl) {
 }
 
 async function readAtom(url) {
-    
 	const pluswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
 	const minuswords = JSON.parse(window.localStorage.getItem('negwords')) || [];
 	const importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
@@ -87,7 +86,6 @@ async function readAtom(url) {
 }
 
 async function readRss(url) {
-
 	const pluswords = JSON.parse(window.localStorage.getItem('poswords')) || [];
 	const minuswords = JSON.parse(window.localStorage.getItem('negwords')) || [];
 	const importantPhrases = JSON.parse(window.localStorage.getItem('importantPhrases')) || [];
@@ -128,31 +126,30 @@ async function readRss(url) {
 
 export default async function rssReader() {
 	let jobs = [];
-    console.log("running rssReader")
-    
-    const feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
+	console.log('running rssReader');
+
+	const feeds = JSON.parse(window.localStorage.getItem('feeds')) || [];
 
 	for (let i = 0; i < feeds.length; i++) {
 		let response;
-        console.log(feeds[i])
-        if ('active' in feeds[i]){
-
-            if (feeds[i].active==false){
-                continue
-            } 
-        } else {
-            const myfeed =[...feeds[i]]
-            removeFromLocalStorage('feeds', feeds[i])
-            myfeed.active=true
-            console.log(myfeed)
-            addToLocalStorage('feeds', myfeed)
-        }
+		console.log(feeds[i]);
+		if ('active' in feeds[i]) {
+			if (feeds[i].active == false) {
+				continue;
+			}
+		} else {
+			const myfeed = [...feeds[i]];
+			removeFromLocalStorage('feeds', feeds[i]);
+			myfeed.active = true;
+			console.log(myfeed);
+			addToLocalStorage('feeds', myfeed);
+		}
 		const url = 'https://corsproxy.io/?' + encodeURIComponent(feeds[i].url);
 		if (feeds[i].format == 'rss') {
-//			console.log('reading rss');
+			//			console.log('reading rss');
 			response = await readRss(url);
 		} else if (feeds[i].format == 'atom') {
-//			console.log('reading atom');
+			//			console.log('reading atom');
 			response = await readAtom(url);
 		}
 		//console.log("response", response)
@@ -171,7 +168,7 @@ function getContent(xmlObj, tagName) {
 
 		return null;
 	}
-//	console.log(xmlObj.getElementsByTagName(tagName));
+	//	console.log(xmlObj.getElementsByTagName(tagName));
 	try {
 		return xmlObj.getElementsByTagName(tagName)[0].textContent;
 	} catch {

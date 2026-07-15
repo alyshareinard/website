@@ -112,7 +112,9 @@ export const actions = {
 			if (!airtableResponse.ok) {
 				const errorData = await airtableResponse.text();
 				console.error('Airtable error response:', errorData);
-				throw new Error(`Failed to submit to Airtable: ${airtableResponse.status} ${airtableResponse.statusText}`);
+				throw new Error(
+					`Failed to submit to Airtable: ${airtableResponse.status} ${airtableResponse.statusText}`
+				);
 			}
 
 			// Parse response to confirm success

@@ -37,7 +37,11 @@
 	let currentWord = $state(null);
 	//load the next two lines after the page loads
 	onMount(() => {
-		const images = import.meta.glob('/src/lib/nounImages/*.webp', { eager: true, query: '?url', import: 'default' });
+		const images = import.meta.glob('/src/lib/nounImages/*.webp', {
+			eager: true,
+			query: '?url',
+			import: 'default'
+		});
 
 		//	console.log(images)
 		if (images) {
@@ -48,8 +52,6 @@
 		currentWord = nextWord;
 		nextCardVis = true;
 	});
-
-
 
 	function refresh() {
 		unique = {};
@@ -394,8 +396,14 @@
 	</div>
 	<div
 		onclick={toggleGame}
+		onkeydown={(e) => {
+			if (e.key === 'Enter' || e.key === ' ') toggleGame();
+		}}
 		transition:scale={{ start: 1.5, duration: 1000 }}
 		class="background"
+		role="button"
+		tabindex="0"
+		aria-label="Close game"
 	></div>
 </div>
 

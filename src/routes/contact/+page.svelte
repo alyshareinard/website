@@ -30,8 +30,14 @@
 		event.preventDefault();
 		submission_status = 'submitting';
 
+		const form = event.target as HTMLFormElement;
+		if (!form) {
+			submission_status = 'failed';
+			return;
+		}
+
 		try {
-			const formData = new FormData(event.target as HTMLFormElement);
+			const formData = new FormData(form);
 			formData.append('cf-turnstile-response', turnstileResponse);
 
 			const response = await fetch('?/submit', {
@@ -44,7 +50,7 @@
 
 			if (response.ok && (result.success || result.type === 'success')) {
 				submission_status = 'success';
-				event.target.reset();
+				form.reset();
 				// Reset Turnstile
 				turnstileResponse = '';
 			} else {
@@ -56,7 +62,6 @@
 			submission_status = 'failed';
 		}
 	}
-
 </script>
 
 <h1>What can I do for you?</h1>
@@ -102,7 +107,7 @@
 			<h3>Thanks for your message. I'll get back to you soon!</h3>
 		{:else}
 			<h2 style="margin-left:10%; margin-top:5%">Contact me</h2>
-			<form method="POST" action="?/submit" on:submit={handleSubmit}>
+			<form method="POST" action="?/submit" onsubmit={handleSubmit}>
 				<div class="myform">
 					<label for="fname" class="label-short">
 						<span class="label-text">First name</span>
@@ -169,28 +174,20 @@
 						minlength="10"
 						rows="3"
 						autocomplete="off"
-					/>
+					></textarea>
 
 					<div class="turnstile-container">
 						<Turnstile siteKey="0x4AAAAAAA0eaGKPwZsEx6Q2" />
 					</div>
-					<button 
-						type="submit" 
-						class="submit-button" 
-						
-					>
-						Submit
-					</button>
+					<button type="submit" class="submit-button"> Submit </button>
 				</div>
 			</form>
 		{/if}
 	</div>
 </div>
 
-
 <style>
-
-.turnstile-container {
+	.turnstile-container {
 		margin: 1rem 0;
 		display: flex;
 		justify-content: center;
@@ -213,10 +210,6 @@
 		color: var(--mainThemeLight);
 		font: var(--sk-font);
 	}
-	.label-text-default {
-		font-size: 0.8rem;
-		font: var(--sk-font-mono);
-	}
 	.container {
 		display: flex;
 		justify-content: center;
@@ -226,14 +219,7 @@
 		width: fit-content;
 		height: fit-content;
 	}
-	.invalid {
-		color: red;
-		font-size: 0.6rem;
-	}
 	input {
 		width: 100%;
-	}
-	input.btn {
-		width: auto;
 	}
 </style>
