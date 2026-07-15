@@ -66,7 +66,7 @@
 
 <h1>What can I do for you?</h1>
 
-<h2>Simple to complex web and desktop apps</h2>
+<h2>Simple to complex web and Apple desktop/mobile apps</h2>
 <p class="darkBackground">
 	From simple apps to keep track of your spending to complex inventory systems, let's talk about
 	what you need. For something customer facing I'll need a figma (or similar) design from you. I can

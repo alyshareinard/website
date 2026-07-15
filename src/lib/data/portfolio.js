@@ -8,7 +8,7 @@ export const portfolio_cards = [
 	},
 	{
 		front: 'WBB Points Check',
-		back: "A fast, game-time iPhone app for wheelchair basketball coaches and players to build lineups and substitutions while staying within classification points limits.",
+		back: "A fast, game-time iPhone app for wheelchair basketball coaches and players to build lineups and substitutions.",
 		link: 'https://apps.apple.com/us/app/wbb-points-check/id6757154460',
 		external: true,
 		cta: 'Get the app'
