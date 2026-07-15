@@ -22,7 +22,7 @@
 						<a href="/about">About</a>
 					</li>
 					<li aria-current={$page.url.pathname.startsWith('/contact') ? 'page' : undefined}>
-						<a href="/contact">Offerings</a>
+						<a href="/contact">Services</a>
 					</li>
 					<li aria-current={$page.url.pathname.startsWith('/portfolio') ? 'page' : undefined}>
 						<a href="/portfolio">Portfolio</a>
@@ -31,15 +31,11 @@
 			</nav>
 		</div>
 	{:else}
-	<div class="mainTitle">
-		<h1 class="hoverRainbow">Small Business Tech Partner</h1>
-		<p>I simplify your tech so you can focus on your business.</p>
-	</div>
+		<div class="mainTitle">
+			<h1 class="hoverRainbow">Small Business Tech Partner</h1>
+			<p>Apps, automations, and integrations built for your workflow.</p>
+		</div>
 	{/if}
-
-	<div class="rightCorner">
-		<button><a href="/login">login</a> </button>
-	</div>
 </header>
 
 <style>
@@ -55,26 +51,14 @@
 	}
 	.mainTitle {
 		text-align: center;
-		display:flex;
+		display: flex;
 		flex-direction: column;
 	}
-	.rightCorner {
-		float: right;
-		display: flex;
-		flex-wrap: wrap;
-	}
-
 
 	.corner img {
 		width: 4em;
 		object-fit: contain;
 	}
-	button {
-		font-size: 12px;
-		padding: 5px;
-		margin: 5px;
-	}
-
 	@keyframes textShine {
 		0% {
 			background-position: 0% 50%;
@@ -132,15 +116,12 @@
 		border-top: var(--size) solid var(--accent);
 	}
 
-	nav a,
-	button a {
+	nav a {
 		display: flex;
 		align-items: center;
 		color: white;
 		text-decoration: none;
 		transition: color 0.2s linear;
-	}
-	nav a {
 		padding: 0 0.5rem;
 		font-weight: 700;
 		font-size: 0.8rem;
@@ -176,11 +157,6 @@
 		.mainTitle p {
 			font-size: 0.9rem;
 			margin-top: 0;
-		}
-		.rightCorner {
-			width: 5em;
-			height: 5em;
-			top: 0;
 		}
 		.navdiv {
 			border-top: none;

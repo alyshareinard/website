@@ -1,68 +1,14 @@
 <script>
-	import Card from '$component/Card/Card.svelte';
-	const portHeight = 150;
-	const portWidth = 225;
-
-	const portfolio_cards = [
-		{
-			front: 'Noun Gender Game',
-			back: 'A game to help language learners learn noun gender',
-			link: '/portfolio/nounGenderGame'
-		},
-		{
-			front: 'Spotify Playlist Generator',
-			back: 'Mix and match your spotify playlists',
-			link: '/portfolio/spotifyPlaylistMix'
-		},
-		{
-			front: 'CSV formatter',
-			back: 'Upload a CSV file, and then download it in a different format',
-			link: '/portfolio/csvUpdater'
-		},
-
-		{
-			front: 'Better RSS feed',
-			back: 'Prioritize certain words or phrases, see the most relevant stories first.',
-			link: '/portfolio/RSSfeed'
-		}
-
-		/*,
-		{
-			front: 'Allowance tracker',
-			back: 'An app that lets you and your child keep track of allowance, current balance and chores',
-			link: '/portfolio/allowanceTracker'
-		},
-		{
-			front: 'Hubspot contacts',
-			back: 'Pull Hubspot contacts associated with a given keyword',
-			link: '/portfolio/hubspotContacts'
-		},
-		{
-			front: 'Inventory tracker',
-			back: 'Keep track of your inventory',
-			link: '/portfolio/inventoryTracker'
-		}*/
-	];
+	import { portfolio_cards } from '$lib/data/portfolio.js';
 </script>
 
-<div role="menu" class="portfolioNav">
+<div class="portfolioNav">
 	{#each portfolio_cards as card}
-		<div class="card">
-			<a href={card['link']}>
-				<Card cardHeight={portHeight} cardWidth={portWidth}>
-					{#snippet content()}
-						<div>
-							{card['front']}
-						</div>
-					{/snippet}
-					{#snippet backContent()}
-						<div>
-							{card['back']}
-						</div>
-					{/snippet}
-				</Card>
-			</a>
-		</div>
+		<a href={card.link} class="card">
+			<h3>{card.front}</h3>
+			<p>{card.back}</p>
+			<span class="link">View project &rarr;</span>
+		</a>
 	{/each}
 </div>
 
@@ -73,8 +19,40 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
+		gap: 1.5rem;
 	}
 	.card {
-		padding: 10px 10px;
+		background-color: var(--surface-1);
+		border: 2px solid var(--accent);
+		border-radius: 8px;
+		padding: 1.5rem;
+		width: 260px;
+		min-height: 160px;
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		color: var(--accentLight);
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+	.card:hover {
+		transform: translateY(-5px);
+		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+	}
+	.card h3 {
+		color: var(--accent);
+		margin: 0 0 0.75rem 0;
+		font-size: 1.3rem;
+	}
+	.card p {
+		margin: 0 0 1rem 0;
+		line-height: 1.5;
+		flex-grow: 1;
+	}
+	.link {
+		color: var(--accent);
+		font-weight: 600;
 	}
 </style>

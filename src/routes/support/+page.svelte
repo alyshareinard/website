@@ -41,8 +41,4 @@
 	<li>App version, if available</li>
 </ul>
 
-<h2>Known behavior</h2>
-<p>
-	{meta.appName} lets you rank hot cocoas from local restaurants. It collects usage data and ratings
-	to improve the experience. Ratings are not tied to your identity.
-</p>
+

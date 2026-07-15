@@ -4,51 +4,12 @@
 	import PorfolioCards from './portfolioCards.svelte';
 
 	let showTestimonials = $state(false);
-	
+
 	$effect(() => {
 		if (browser) {
 			showTestimonials = true;
 		}
 	});
-
-	const portfolio_cards = [
-		{
-			front: 'Noun Gender Game',
-			back: 'A game to help language learners learn noun gender',
-			link: '/portfolio/nounGenderGame'
-		},
-		{
-			front: 'Spotify Playlist Generator',
-			back: 'Mix and match your spotify playlists',
-			link: '/portfolio/spotifyPlaylistMix'
-		},
-		{
-			front: 'CSV formatter',
-			back: 'Upload a CSV file, and then download it in a different format',
-			link: '/portfolio/csvUpdater'
-		},
-		{
-			front: 'Better RSS feed',
-			back: 'Select feeds, prioritize certain words or phrases, see the most relevant stories first.',
-			link: '/portfolio/rssFeed'
-		}
-		/*,
-		{
-			front: 'Allowance tracker',
-			back: 'An app that lets you and your child keep track of allowance, current balance and chores',
-			link: '/portfolio/allowanceTracker'
-		},
-		{
-			front: 'Hubspot contacts',
-			back: 'Pull Hubspot contacts associated with a given keyword',
-			link: '/portfolio/hubspotContacts'
-		},
-		{
-			front: 'Inventory tracker',
-			back: 'Keep track of your inventory',
-			link: '/portfolio/inventoryTracker'
-		}*/
-	];
 
 	const testimonials = [
 		{
@@ -71,75 +32,156 @@
 			]
 		}
 	];
+
+	const featuredProjects = [
+		{
+			title: 'Inventory & payroll system',
+			description:
+				'Built a full inventory and payroll system for a door-to-door sales business, tracking supplier shipments, rep checkouts, sales, and automated commission calculations with emailed PDF pay stubs.',
+			stack: 'Backendless, React, JavaScript',
+			link: '/portfolio'
+		},
+		{
+			title: 'Shipping tracker integration',
+			description:
+				'Created middleware that pulled delivery dates from AfterShip into SKU.io purchase orders, replacing daily manual tracking-number lookups.',
+			stack: 'Retool, JavaScript',
+			link: '/portfolio'
+		},
+		{
+			title: 'Product reviewer management',
+			description:
+				'Replaced a manual spreadsheet process with an Airtable-backed system and Streamlit front end so reviewers could log in, see past reviews, and request new products.',
+			stack: 'Airtable, Python, Streamlit',
+			link: '/portfolio'
+		}
+	];
 </script>
 
 <main>
-	<div class="services">
+	<section class="intro">
+		<h2>Apps, automations, and integrations for small businesses</h2>
+		<p>
+			I'm Alysha, an American developer based in Switzerland. I help small teams replace repetitive
+			manual work with lightweight, reliable tools that fit their actual workflow.
+		</p>
+		<a class="cta-button" href="/contact#contactForm">Discuss your project</a>
+	</section>
+
+	<section class="services">
 		<div class="service-card">
 			<h3>Custom Apps</h3>
-			<p>Lightweight tools built just for you — nothing extra, nothing missing.</p>
+			<p>Web and desktop tools built for your exact workflow — nothing extra, nothing missing.</p>
 		</div>
 		<div class="service-card">
 			<h3>Automations</h3>
-			<p>Reclaim your time by automating repetitive tasks like emails and invoices.</p>
+			<p>Reclaim your time by automating repetitive tasks like emails, invoices, and data entry.</p>
 		</div>
 		<div class="service-card">
 			<h3>Integrations</h3>
-			<p>Get your tools talking — CRMs, forms, databases, and more.</p>
+			<p>Get your tools talking — CRMs, forms, databases, accounting software, and more.</p>
 		</div>
-	</div>
-	<div>
-		{#if showTestimonials}
-			<div class="testimonials">
-				<h2>What others say</h2>
-				<div class="carousel-container">
-					<Carousel
-						autoplay
-						autoplayDuration={5000}
-						infinite={true}
-						dots={true}
-						arrows={true}
-						transitionDuration={800}
-					>
-						{#each testimonials as testimonial}
-							<div class="testimonial-slide">
-								<div class="testimonial">
-									{#each testimonial.text as line}
-										<p>{line}</p>
-									{/each}
-									{#if testimonial.author}
-										<p class="author">- {testimonial.author}</p>
-									{/if}
-								</div>
+	</section>
+
+	<section class="featured-work">
+		<h2>Recent client work</h2>
+		<div class="project-list">
+			{#each featuredProjects as project}
+				<a href={project.link} class="project-card">
+					<h3>{project.title}</h3>
+					<p>{project.description}</p>
+					<span class="stack">{project.stack}</span>
+				</a>
+			{/each}
+		</div>
+		<a href="/portfolio" class="secondary-link">See the full portfolio &rarr;</a>
+	</section>
+
+	{#if showTestimonials}
+		<section class="testimonials">
+			<h2>What clients say</h2>
+			<div class="carousel-container">
+				<Carousel
+					autoplay
+					autoplayDuration={5000}
+					infinite={true}
+					dots={true}
+					arrows={true}
+					transitionDuration={800}
+				>
+					{#each testimonials as testimonial}
+						<div class="testimonial-slide">
+							<div class="testimonial">
+								{#each testimonial.text as line}
+									<p>{line}</p>
+								{/each}
+								{#if testimonial.author}
+									<p class="author">- {testimonial.author}</p>
+								{/if}
 							</div>
-						{/each}
-					</Carousel>
-				</div>
+						</div>
+					{/each}
+				</Carousel>
 			</div>
-		{/if}
-	</div>
-	<div class="leftJustified">
-		<h3 class="darkBackground">
-			Do you have tasks you have to repeat over and over? You've looked for a simple app or tool,
-			but none exist? Here are some simple examples of apps I've created. See <a href="/portfolio"
-				>Portfolio</a
-			> for descriptions of more complex apps I've developed for customers.
-		</h3>
-	</div>
-	<PorfolioCards />
-	<div class="centered">
-		<h2 class="darkBackground">
-			Tell me about your app idea and lets turn it into reality! <button
-				><a href="/contact#contactForm">Contact me</a></button
-			>
-		</h2>
-	</div>
+		</section>
+	{/if}
+
+	<section class="demo-apps">
+		<h2>Explore example apps</h2>
+		<p>These are small, self-contained demos of the kinds of tools I build for clients.</p>
+		<PorfolioCards />
+	</section>
+
+	<section class="final-cta">
+		<h2>Have a process that needs automating?</h2>
+		<p>Tell me about it and let's turn it into a tool that saves you time.</p>
+		<a class="cta-button" href="/contact#contactForm">Contact me</a>
+	</section>
 </main>
 
 <style>
 	main {
 		justify-content: center;
 	}
+
+	section {
+		margin-bottom: 2.5rem;
+	}
+
+	.intro {
+		text-align: center;
+		max-width: 800px;
+		margin: 0 auto 3rem auto;
+		padding: 0 1rem;
+	}
+
+	.intro h2 {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.intro p {
+		font-size: 1.2rem;
+		line-height: 1.6;
+		margin-bottom: 1.5rem;
+	}
+
+	.cta-button {
+		display: inline-block;
+		background: var(--mainTheme);
+		color: white;
+		padding: 0.75rem 1.5rem;
+		border-radius: 5px;
+		text-decoration: none;
+		font-weight: 600;
+		transition: background 0.2s ease;
+	}
+
+	.cta-button:hover {
+		background: var(--mainThemeDark);
+		color: var(--accent);
+	}
+
 	.services {
 		display: flex;
 		flex-wrap: wrap;
@@ -147,7 +189,6 @@
 		padding: 2%;
 		width: 96%;
 		gap: 1.5rem;
-		margin-bottom: 2rem;
 	}
 	.service-card {
 		background-color: var(--surface-1);
@@ -155,7 +196,9 @@
 		border-radius: 8px;
 		padding: 1.5rem;
 		width: 300px;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
+		transition:
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	}
 	.service-card:hover {
@@ -173,6 +216,91 @@
 		line-height: 1.5;
 		color: var(--text);
 	}
+
+	.featured-work {
+		width: 90%;
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+
+	.featured-work h2 {
+		text-align: center;
+	}
+
+	.project-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		justify-content: center;
+		margin: 1.5rem 0;
+	}
+
+	.project-card {
+		background-color: var(--accentLight);
+		color: var(--mainThemeDark);
+		border-radius: 8px;
+		padding: 1.5rem;
+		width: 320px;
+		text-decoration: none;
+		transition: transform 0.3s ease;
+	}
+
+	.project-card:hover {
+		transform: translateY(-5px);
+	}
+
+	.project-card h3 {
+		color: var(--mainTheme);
+		margin-top: 0;
+		margin-bottom: 0.5rem;
+	}
+
+	.project-card p {
+		color: var(--mainThemeDark);
+		font-size: 1rem;
+		line-height: 1.5;
+		margin: 0 0 0.75rem 0;
+	}
+
+	.stack {
+		display: inline-block;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--mainThemeDark);
+		background: rgba(0, 87, 87, 0.15);
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+	}
+
+	.secondary-link {
+		display: block;
+		text-align: center;
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
+	.demo-apps h2,
+	.demo-apps p {
+		text-align: center;
+	}
+
+	.demo-apps p {
+		margin-bottom: 1.5rem;
+	}
+
+	.final-cta {
+		text-align: center;
+		padding: 2rem 1rem;
+		border: 2px solid var(--accent);
+		border-radius: 8px;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.final-cta h2 {
+		margin-top: 0;
+	}
+
 	.carousel-container {
 		width: 100%;
 		position: relative;
@@ -210,14 +338,7 @@
 		margin-top: 1rem;
 		color: var(--accent);
 	}
-	.leftJustified {
-		text-align: left;
-		margin-left: 10%;
-		margin-right: 10%;
-	}
-	.centered {
-		text-align: center;
-	}
+
 	.testimonials {
 		display: block;
 		width: 80%;
@@ -225,19 +346,17 @@
 		border-style: solid;
 		border-width: 2px;
 		border-color: var(--accent);
-		margin-top: 2rem;
+		padding: 1rem 0;
 	}
-	button > a {
-		text-decoration: none;
-		color: white;
-	}
-	
+
 	@media (max-width: 768px) {
-		.services {
+		.services,
+		.project-list {
 			flex-direction: column;
 			align-items: center;
 		}
-		.service-card {
+		.service-card,
+		.project-card {
 			width: 85%;
 			margin-bottom: 1rem;
 		}
