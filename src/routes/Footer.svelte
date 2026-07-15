@@ -27,8 +27,10 @@
 		background: var(--mainThemeOpacity);
 		margin: -10px;
 		display: flex;
-		flex-flow: row;
+		flex-flow: row wrap;
 		justify-content: space-between;
+		align-items: center;
+		gap: 0.5rem;
 	}
 	p {
 		font-size: smaller;
@@ -46,5 +48,17 @@
 		width: var(--height);
 		height: var(--height);
 		object-fit: contain;
+	}
+
+	@media (max-width: 480px) {
+		footer {
+			flex-direction: column;
+			justify-content: center;
+			text-align: center;
+			padding: 1rem;
+		}
+		.social {
+			margin-top: 0;
+		}
 	}
 </style>

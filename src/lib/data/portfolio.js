@@ -1,8 +1,9 @@
 export const portfolio_cards = [
 	{
-		front: 'Noun Gender Game',
-		back: 'A game to help language learners learn noun gender',
-		link: '/portfolio/nounGenderGame'
+		front: 'What the Gender',
+		back: 'An iPhone app for French, German, and Spanish learners to practise and memorize noun genders.',
+		link: 'https://www.what-the-gender.com/',
+		external: true
 	},
 	{
 		front: 'Spotify Playlist Generator',

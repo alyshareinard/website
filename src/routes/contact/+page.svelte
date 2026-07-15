@@ -222,4 +222,15 @@
 	input {
 		width: 100%;
 	}
+
+	@media (max-width: 480px) {
+		.myform {
+			grid-template-columns: 1fr;
+			margin: 4% 5% 10% 5%;
+		}
+		.contactbox {
+			margin: 2%;
+			width: 100%;
+		}
+	}
 </style>

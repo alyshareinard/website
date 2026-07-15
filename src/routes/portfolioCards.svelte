@@ -4,10 +4,15 @@
 
 <div class="portfolioNav">
 	{#each portfolio_cards as card}
-		<a href={card.link} class="card">
+		<a
+			href={card.link}
+			class="card"
+			target={card.external ? '_blank' : undefined}
+			rel={card.external ? 'noopener noreferrer' : undefined}
+		>
 			<h3>{card.front}</h3>
 			<p>{card.back}</p>
-			<span class="link">View project &rarr;</span>
+			<span class="link">{card.external ? 'Open app ↗' : 'View project &rarr;'}</span>
 		</a>
 	{/each}
 </div>
@@ -54,5 +59,16 @@
 	.link {
 		color: var(--accent);
 		font-weight: 600;
+	}
+
+	@media (max-width: 480px) {
+		.portfolioNav {
+			width: 100%;
+			padding: 0;
+		}
+		.card {
+			width: 100%;
+			min-height: auto;
+		}
 	}
 </style>

@@ -386,11 +386,46 @@
 		.project-list {
 			flex-direction: column;
 			align-items: center;
+			width: 100%;
+			padding: 0;
 		}
 		.service-card,
 		.project-card {
-			width: 85%;
+			width: 90%;
 			margin-bottom: 1rem;
+		}
+
+		.intro {
+			padding: 1rem;
+			margin-bottom: 2rem;
+		}
+
+		.intro h2 {
+			font-size: 1.5rem;
+		}
+
+		.intro p {
+			font-size: 1rem;
+		}
+
+		.featured-work {
+			width: 100%;
+		}
+
+		.testimonials {
+			width: 100%;
+			margin-left: 0;
+		}
+
+		.text-box {
+			padding: 1rem;
+			margin: 0 auto 1rem auto;
+			width: 90%;
+		}
+
+		.final-cta {
+			padding: 1.5rem 1rem;
+			width: 90%;
 		}
 	}
 </style>
