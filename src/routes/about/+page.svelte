@@ -99,7 +99,11 @@
 	{#snippet details()}
 		<span class="inline">
 			<div style="display:relative">
-				<img class="sciencepic" src={scientist} alt="me at paradox museum" />
+				<img
+					class="sciencepic"
+					src={scientist}
+					alt="Me at a press conference explaining the importance of the STEREO spacecraft to Space Weather Predictions"
+				/>
 				<h4>
 					I worked for several years as a solar physicist at the University of Colorado in Boulder.
 					My scientific career was focused on improving our understanding of solar storms (flares
@@ -138,7 +142,11 @@
 	{/snippet}
 	{#snippet details()}
 		<span class="inline">
-			<img class="sillypic" src={silly} alt="me at paradox museum" />
+			<img
+				class="sillypic"
+				src={silly}
+				alt="Me at the Paradox Museum in Norway, using a mirror illusion to appear to float."
+			/>
 			<div>
 				<h4>
 					I grew up in Wyoming and the Pacific Northwest and spent a good part of my adult life in

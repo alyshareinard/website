@@ -102,12 +102,12 @@
 		{#if $errors.serviceTypes}<p>{$errors.serviceTypes}</p>{/if}
 
 		<label for="memo" class="label">
-			<span class="label-text">How can I help?</span>
+			<span class="label-text">Tell me about your project.</span>
 		</label>
 		<textarea
 			bind:value={$form.memo}
 			name="memo"
-			aria-label="How can I help?"
+			aria-label="Tell me about your project."
 			placeholder=""
 			required
 			rows="3"

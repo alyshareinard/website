@@ -83,7 +83,7 @@
 <h2>Integrations between platforms</h2>
 <p class="darkBackground">
 	Do you have customer information in more than one platform (e.g. Mailchimp and Hubspot?) and you
-	need a way to keep the information in sync when changes are made? I can set up a integration for
+	need a way to keep the information in sync when changes are made? I can set up an integration for
 	you. Simple integrations can be done through Zapier (and I can show you some tricks) -- and if
 	your needs are more complex I can create a custom integration (assuming the platform has a public
 	API).
@@ -162,13 +162,13 @@
 					</select>
 
 					<label for="memo" class="label">
-						<span class="label-text">How can I help?</span>
+						<span class="label-text">Tell me about your project.</span>
 					</label>
 					<textarea
 						id="memo"
 						name="memo"
 						bind:value={memo}
-						aria-label="How can I help?"
+						aria-label="Tell me about your project."
 						placeholder=""
 						required
 						minlength="10"

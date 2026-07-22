@@ -79,7 +79,10 @@
 			I'm Alysha, an American developer based in Switzerland. I help small teams replace repetitive
 			manual work with lightweight, reliable tools that fit their actual workflow.
 		</p>
-		<a class="cta-button" href="/contact#contactForm">Discuss your project</a>
+		<p class="story-link">
+			<a href="/about">Former solar physicist turned developer - read my story</a>
+		</p>
+		<a class="cta-button" href="/contact#contactForm">Free 30-min discover call</a>
 	</section>
 
 	<section class="services">
