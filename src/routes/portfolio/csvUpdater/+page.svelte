@@ -187,6 +187,15 @@
 		specs = [...specs, make(0), make(1)];
 	}
 
+	/** True when a cell in the cleaned preview differs from what was uploaded. */
+	function isChanged(rowIndex: number, colIndex: number): boolean {
+		const spec = keptSpecs[colIndex];
+		if (!built || !spec) return false;
+		if (spec.kind !== 'source') return true;
+		const original = rows[built.sourceIndex[rowIndex]]?.[spec.key] ?? '';
+		return built.rows[rowIndex][colIndex] !== original;
+	}
+
 	function derivedLabel(spec: ColSpec): string {
 		if (spec.kind === 'combine') return `Combined: ${spec.a} + ${spec.b}`;
 		if (spec.kind === 'split') return `Split from ${spec.source} (part ${spec.part + 1})`;
@@ -216,6 +225,28 @@
 	}
 </script>
 
+{#snippet table(headers: string[], body: string[][], highlight: boolean)}
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+	<div class="preview" tabindex="0" role="region" aria-label="Preview of the data">
+		<table>
+			<thead>
+				<tr>
+					{#each headers as header}<th>{header}</th>{/each}
+				</tr>
+			</thead>
+			<tbody>
+				{#each body.slice(0, PREVIEW_ROWS) as row, r}
+					<tr>
+						{#each row as cell, c}
+							<td class:changed={highlight && isChanged(r, c)}>{cell}</td>
+						{/each}
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
+{/snippet}
+
 <div class="csv">
 	<header class="page-head">
 		<span class="eyebrow">Free tool</span>
@@ -224,9 +255,14 @@
 			Fix up a spreadsheet export in a few clicks: tidy phone numbers and dates, split or combine
 			columns, drop what you don't need, and remove duplicates.
 		</p>
+		<p class="no-ai">
+			Every cleanup here is plain, rule-based code, not AI, so the same file always gives you the
+			same result.
+		</p>
 		<ul class="chips trust">
 			<li class="chip">Runs in your browser</li>
 			<li class="chip">Your file is never uploaded</li>
+			<li class="chip">Code, not AI</li>
 			<li class="chip">Free</li>
 		</ul>
 	</header>
@@ -279,6 +315,13 @@
 				</p>
 			{/if}
 
+			<h3 class="preview-title">Before: your file</h3>
+			{@render table(sourceKeys, rows.slice(0, PREVIEW_ROWS).map((row) => sourceKeys.map((key) => row[key] ?? '')), false)}
+			<p class="meta">
+				Showing {Math.min(PREVIEW_ROWS, rows.length)} of {rows.length.toLocaleString()} rows
+			</p>
+
+			<h3 class="preview-title">Choose what to change</h3>
 			<ul class="cols">
 				{#each specs as spec, i (spec.id)}
 					<li class="colrow" class:dropped={!spec.keep}>
@@ -434,23 +477,11 @@
 				{/if}
 			</div>
 
-			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<div class="preview" tabindex="0" role="region" aria-label="Preview of the cleaned file">
-				<table>
-					<thead>
-						<tr>
-							{#each built.headers as header}<th>{header}</th>{/each}
-						</tr>
-					</thead>
-					<tbody>
-						{#each built.rows.slice(0, PREVIEW_ROWS) as row}
-							<tr>
-								{#each row as cell}<td>{cell}</td>{/each}
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			</div>
+			<h3 class="preview-title">
+				After: your cleaned file
+				<span class="legend"><span class="swatch"></span> changed</span>
+			</h3>
+			{@render table(built.headers, built.rows, true)}
 			<p class="meta">
 				Showing {Math.min(PREVIEW_ROWS, built.rows.length)} of {built.rows.length.toLocaleString()} rows
 			</p>
@@ -521,6 +552,12 @@
 		color: var(--text-muted);
 		font-size: 1.15rem;
 		margin: 0 0 1rem;
+	}
+
+	.no-ai {
+		font-size: 1rem;
+		margin: 0 0 1rem;
+		color: var(--text-muted);
 	}
 
 	.trust {
@@ -852,6 +889,38 @@
 
 	tbody tr:last-child td {
 		border-bottom: none;
+	}
+
+	.preview-title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		margin: 1.25rem 0 0.5rem;
+		font-size: 1rem;
+		color: var(--text-muted);
+	}
+
+	.legend {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-family: var(--font-body);
+		font-size: 0.85rem;
+		font-weight: 400;
+	}
+
+	.swatch {
+		width: 0.9rem;
+		height: 0.9rem;
+		border-radius: 3px;
+		background: rgba(255, 165, 90, 0.25);
+		border: 1px solid rgba(255, 165, 90, 0.6);
+	}
+
+	td.changed {
+		background: rgba(255, 165, 90, 0.18);
+		color: var(--accentLight);
 	}
 
 	.download {

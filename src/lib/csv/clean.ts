@@ -69,6 +69,8 @@ export interface Warnings {
 export interface Built {
 	headers: string[];
 	rows: string[][];
+	/** For each output row, the index of the uploaded row it came from */
+	sourceIndex: number[];
 	warnings: Warnings;
 	removedDuplicates: number;
 }
@@ -210,24 +212,28 @@ export function buildOutput(rows: Row[], specs: ColSpec[], options: Options): Bu
 		});
 	});
 
+	let sourceIndex = out.map((_, index) => index);
 	let removedDuplicates = 0;
 	if (options.dedupe) {
 		const column = kept.findIndex((spec) => spec.id === options.dedupeBy);
 		const seen = new Set<string>();
 		const unique: string[][] = [];
-		for (const row of out) {
+		const uniqueIndex: number[] = [];
+		for (const [index, row] of out.entries()) {
 			const key = column >= 0 ? row[column] : row.join('');
 			if (seen.has(key)) {
 				removedDuplicates++;
 			} else {
 				seen.add(key);
 				unique.push(row);
+				uniqueIndex.push(index);
 			}
 		}
 		out = unique;
+		sourceIndex = uniqueIndex;
 	}
 
-	return { headers, rows: out, warnings, removedDuplicates };
+	return { headers, rows: out, sourceIndex, warnings, removedDuplicates };
 }
 
 function fallbackName(spec: ColSpec): string {
