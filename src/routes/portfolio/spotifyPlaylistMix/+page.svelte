@@ -1,255 +1,394 @@
 <script lang="ts">
-	import { analyticsStore, type AnalyticsEvent } from '$lib/stores/analyticsStore';
 	import { enhance } from '$app/forms';
+	import { DEFAULT_MIX_SIZE, MAX_MIX_SIZE } from '$lib/spotify/mix';
 
-	type Playlist = {
-		name: string;
-		id: string;
-	};
+	type Playlist = { id: string; name: string };
 
-	type PlaylistChoice = {
-		label: string;
-		value?: string;
-	};
+	let { data, form } = $props();
 
-	const props = $props();
-	const { data } = props;
+	const DEFAULT_NAME = "Today's Mix!";
 
-	let playlist_choices = $state<PlaylistChoice[]>([]);
-	let chosen_playlists = $state<PlaylistChoice[]>([]);
-	let avoid_playlists = $state<PlaylistChoice[]>([]);
-	let todays_playlist = $state<PlaylistChoice | undefined>();
-	let todays_playlist_label = $state<string | undefined>();
-	let liked_songs = $state(false);
+	const playlists = $derived<Playlist[]>(data.playlists ?? []);
 
-	const new_event: AnalyticsEvent = {
-		id: crypto.randomUUID(),
-		data: {
-			page: 'spotify-playlist-mix',
-			action: 'page-view'
-		},
-		event: 'spotify-playlist-view',
-		type: 'event'
-	};
+	let chosen = $state<string[]>([]);
+	let avoid = $state<string[]>([]);
+	let includeLiked = $state(false);
+	let limit = $state(DEFAULT_MIX_SIZE);
+	let filter = $state('');
+	let newName = $state(DEFAULT_NAME);
+	let submitting = $state(false);
+	// The playlist that receives the mix. Starts on one named "Today's Mix!" if there is one.
+	let target = $state(
+		(data.playlists as Playlist[] | undefined)?.find((p) => p.name === DEFAULT_NAME)?.id ?? 'new'
+	);
 
-	analyticsStore.update((existing_events) => [...existing_events, new_event]);
+	const visible = $derived(
+		playlists.filter((p) => p.name.toLowerCase().includes(filter.trim().toLowerCase()))
+	);
 
+	// When two playlists share a name, number them so they can be told apart in the dropdown.
+	const targetOptions = $derived.by(() => {
+		const totals = new Map<string, number>();
+		for (const p of playlists) totals.set(p.name, (totals.get(p.name) ?? 0) + 1);
+		const seen = new Map<string, number>();
+		return playlists.map((p) => {
+			const n = (seen.get(p.name) ?? 0) + 1;
+			seen.set(p.name, n);
+			return { id: p.id, label: (totals.get(p.name) ?? 0) > 1 ? `${p.name} (#${n})` : p.name };
+		});
+	});
+
+	const targetLabel = $derived(
+		target === 'new'
+			? newName.trim() || 'the new playlist'
+			: (targetOptions.find((o) => o.id === target)?.label ?? 'that playlist')
+	);
+	const duplicatesOfDefault = $derived(playlists.filter((p) => p.name === DEFAULT_NAME).length);
+	const canSubmit = $derived(
+		!submitting && (chosen.length > 0 || includeLiked) && (target !== 'new' || newName.trim() !== '')
+	);
+
+	// After a mix is written to a brand-new playlist, keep using that playlist next time
+	// instead of creating another one with the same name.
 	$effect(() => {
-		if (data.playlists) {
-			playlist_choices = data.playlists.map((playlist: Playlist) => ({
-				label: playlist.name,
-				value: playlist.id
-			}));
+		if (form?.success && form.created && form.playlistId) target = form.playlistId;
+	});
+
+	function toggle(list: 'chosen' | 'avoid', id: string) {
+		if (list === 'chosen') {
+			chosen = chosen.includes(id) ? chosen.filter((x) => x !== id) : [...chosen, id];
+			avoid = avoid.filter((x) => x !== id);
 		} else {
-			playlist_choices = [{ label: 'No playlists found' }];
+			avoid = avoid.includes(id) ? avoid.filter((x) => x !== id) : [...avoid, id];
+			chosen = chosen.filter((x) => x !== id);
 		}
-	});
-
-	$effect(() => {
-		if (todays_playlist) {
-			todays_playlist_label = todays_playlist.label;
-		}
-	});
+	}
 </script>
 
-<main>
-	<h1>Welcome, {data.user_name}!</h1>
+{#if data.loadError}
+	<p class="notice error" role="alert">{data.loadError}</p>
+{/if}
 
-	<section class="playlist-selection">
-		<h2>Create Your Mix</h2>
-		<p>Select playlists to include in your mix:</p>
-		<form method="POST" use:enhance>
-			<!-- Hidden inputs to pass data to server -->
-			<input type="hidden" name="chosen_playlists" value={JSON.stringify(chosen_playlists)} />
-			<input type="hidden" name="avoid_playlists" value={JSON.stringify(avoid_playlists)} />
-			<input type="hidden" name="todays_playlist" value={JSON.stringify(todays_playlist)} />
-			<input type="hidden" name="liked_songs" value={liked_songs} />
-			<div class="playlist-lists">
-				<div class="playlist-group">
-					<h3>Include These Playlists:</h3>
-					<div class="playlist-choices">
-						{#each playlist_choices as choice}
-							<button
-								type="button"
-								class="playlist-choice"
-								class:selected={chosen_playlists.includes(choice)}
-								onclick={() => {
-									if (chosen_playlists.includes(choice)) {
-										chosen_playlists = chosen_playlists.filter((p) => p !== choice);
-									} else {
-										chosen_playlists = [...chosen_playlists, choice];
-									}
-								}}
-							>
-								{choice.label}
-							</button>
-						{/each}
-					</div>
-				</div>
+{#if data.user_name}
+	<p class="welcome">Signed in as <strong>{data.user_name}</strong></p>
+{/if}
 
-				<div class="playlist-group">
-					<h3>Exclude These Playlists:</h3>
-					<div class="playlist-choices">
-						{#each playlist_choices as choice}
-							<button
-								type="button"
-								class="playlist-choice"
-								class:selected={avoid_playlists.includes(choice)}
-								onclick={() => {
-									if (avoid_playlists.includes(choice)) {
-										avoid_playlists = avoid_playlists.filter((p) => p !== choice);
-									} else {
-										avoid_playlists = [...avoid_playlists, choice];
-									}
-								}}
-							>
-								{choice.label}
-							</button>
-						{/each}
-					</div>
+<form
+	method="POST"
+	use:enhance={() => {
+		submitting = true;
+		return async ({ update }) => {
+			// Keep the picks on screen after a run, so a tweak and re-run is quick
+			await update({ reset: false });
+			submitting = false;
+		};
+	}}
+>
+	<input type="hidden" name="chosen" value={JSON.stringify(chosen)} />
+	<input type="hidden" name="avoid" value={JSON.stringify(avoid)} />
+	<input type="hidden" name="liked" value={includeLiked} />
+
+	<section class="card step">
+		<h2>1. Pick your playlists</h2>
+		<label class="search">
+			<span class="sr-only">Search playlists</span>
+			<input type="search" placeholder="Search your playlists" bind:value={filter} />
+		</label>
+
+		<div class="lists">
+			<div class="list">
+				<h3>Include</h3>
+				<div class="choices">
+					{#each visible as playlist (playlist.id)}
+						<button
+							type="button"
+							class="choice"
+							class:selected={chosen.includes(playlist.id)}
+							aria-pressed={chosen.includes(playlist.id)}
+							onclick={() => toggle('chosen', playlist.id)}>{playlist.name}</button
+						>
+					{:else}
+						<p class="empty">{playlists.length ? 'No matches.' : 'No playlists found.'}</p>
+					{/each}
 				</div>
-			</div>
-			<div class="options">
-				<label>
-					<input type="checkbox" bind:checked={liked_songs} />
-					Include Liked Songs
+				<label class="check">
+					<input type="checkbox" bind:checked={includeLiked} />
+					Also include my liked songs
 				</label>
 			</div>
-			<button type="submit" class="create-mix-btn">Create Mix</button>
-		</form>
 
-		{#if props.message}
-			<div class="notification {props.success ? 'success' : 'error'}">
-				<p>{props.message}</p>
-				{#if props.success && props.playlistUrl}
-					<p>Your new playlist contains {props.trackCount} tracks.</p>
-					<a
-						href={props.playlistUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="playlist-link"
-					>
-						Open in Spotify
-					</a>
-				{/if}
+			<div class="list">
+				<h3>Exclude</h3>
+				<p class="hint">Songs on these playlists are left out of the mix.</p>
+				<div class="choices">
+					{#each visible as playlist (playlist.id)}
+						<button
+							type="button"
+							class="choice avoid"
+							class:selected={avoid.includes(playlist.id)}
+							aria-pressed={avoid.includes(playlist.id)}
+							onclick={() => toggle('avoid', playlist.id)}>{playlist.name}</button
+						>
+					{/each}
+				</div>
 			</div>
-		{/if}
+		</div>
+	</section>
 
-		{#if todays_playlist_label}
-			<div class="current-mix">
-				<h3>Today's Mix:</h3>
-				<p>{todays_playlist_label}</p>
-			</div>
+	<section class="card step">
+		<h2>2. Choose where the mix goes</h2>
+		<div class="row">
+			<label>
+				Put the mix in
+				<select name="target" bind:value={target}>
+					{#each targetOptions as option (option.id)}
+						<option value={option.id}>{option.label}</option>
+					{/each}
+					<option value="new">+ A new playlist…</option>
+				</select>
+			</label>
+
+			{#if target === 'new'}
+				<label>
+					New playlist name
+					<input type="text" name="newName" bind:value={newName} maxlength="100" />
+				</label>
+			{/if}
+
+			<label>
+				Number of tracks
+				<input
+					class="short"
+					type="number"
+					name="limit"
+					min="1"
+					max={MAX_MIX_SIZE}
+					bind:value={limit}
+				/>
+			</label>
+		</div>
+
+		{#if duplicatesOfDefault > 1}
+			<p class="notice warn">
+				You have {duplicatesOfDefault} playlists called "{DEFAULT_NAME}". Pick one above, and delete the
+				extras in Spotify when you get a chance.
+			</p>
 		{/if}
 	</section>
-</main>
+
+	<div class="submit">
+		<p class="summary">
+			{#if target === 'new'}
+				Creates <strong>{targetLabel}</strong> with up to {limit} tracks.
+			{:else}
+				<strong>Everything currently in {targetLabel} will be replaced</strong> with up to {limit} tracks.
+			{/if}
+		</p>
+		<button class="btn-primary" type="submit" disabled={!canSubmit}>
+			{submitting ? 'Working…' : target === 'new' ? 'Create mix' : 'Replace playlist with mix'}
+		</button>
+	</div>
+</form>
+
+<div aria-live="polite">
+	{#if form?.success}
+		<div class="notice success">
+			<p>
+				{form.created ? 'Created a new playlist' : 'Updated your playlist'} with {form.trackCount} tracks.
+			</p>
+			<a class="btn-primary" href={form.playlistUrl} target="_blank" rel="noopener noreferrer"
+				>Open in Spotify</a
+			>
+		</div>
+	{:else if form?.message}
+		<p class="notice error" role="alert">{form.message}</p>
+	{/if}
+</div>
 
 <style>
-	main {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 2rem;
+	.welcome {
+		text-align: center;
+		color: var(--text-muted);
+		margin: 0 0 1.5rem;
 	}
 
-	.playlist-selection {
-		margin-top: 2rem;
+	.step {
+		margin-bottom: 1.25rem;
 	}
 
-	.playlist-lists {
+	.step h2 {
+		text-align: left;
+		font-size: 1.25rem;
+		margin: 0 0 1rem;
+	}
+
+	.step h3 {
+		margin: 0 0 0.5rem;
+		font-size: 1rem;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0 0 0 0);
+	}
+
+	.search input {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+
+	.lists {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 2rem;
-		margin: 2rem 0;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.25rem;
 	}
 
-	.playlist-group {
+	.list {
 		background: var(--surface-2);
-		padding: 1.5rem;
-		border-radius: 8px;
+		border-radius: var(--radius-sm);
+		padding: 1rem;
 	}
 
-	.playlist-choices {
+	.hint,
+	.empty {
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		margin: 0 0 0.5rem;
+	}
+
+	.choices {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.5rem;
-		margin-top: 1rem;
+		gap: 0.4rem;
+		max-height: 16rem;
+		overflow-y: auto;
+		margin-bottom: 0.75rem;
 	}
 
-	.playlist-choice {
-		padding: 0.5rem 1rem;
-		border: 2px solid var(--accent);
-		border-radius: 20px;
+	.choice {
+		margin: 0;
+		padding: 0.35rem 0.8rem;
+		font-size: 0.9rem;
+		font-weight: 500;
 		background: transparent;
 		color: var(--text);
+		border: 1px solid var(--border-strong);
+		border-radius: 999px;
+	}
+
+	.choice:hover {
+		background: rgba(80, 230, 230, 0.12);
+		color: var(--text);
+	}
+
+	.choice.selected {
+		background: var(--mainThemeLighter);
+		border-color: var(--mainThemeLighter);
+		color: var(--on-accent);
+	}
+
+	.choice.avoid {
+		border-color: rgba(255, 165, 90, 0.5);
+	}
+
+	.choice.avoid:hover {
+		background: rgba(255, 165, 90, 0.15);
+	}
+
+	.choice.avoid.selected {
+		background: var(--accent);
+		border-color: var(--accent);
+		color: var(--on-accent);
+	}
+
+	.check {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.95rem;
+	}
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.row label {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		font-size: 0.88rem;
+		color: var(--text-muted);
+		min-width: 0;
+	}
+
+	.row select,
+	.row input[type='text'] {
+		min-width: 14rem;
+		max-width: 100%;
+	}
+
+	.short {
+		width: 6rem;
+	}
+
+	.submit {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin: 1.5rem 0;
+	}
+
+	.summary {
+		margin: 0;
+		font-size: 1rem;
+	}
+
+	.submit .btn-primary {
 		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.playlist-choice:hover {
-		background: var(--accent);
-		color: var(--surface);
-	}
-
-	.playlist-choice.selected {
-		background: var(--accent);
-		color: var(--surface);
-	}
-
-	.options {
-		margin: 2rem 0;
-	}
-
-	.create-mix-btn {
-		padding: 0.75rem 1.5rem;
-		background: var(--accent);
-		color: var(--surface);
 		border: none;
-		border-radius: 4px;
-		font-weight: bold;
-		cursor: pointer;
-		transition: opacity 0.2s ease;
 	}
 
-	.create-mix-btn:hover {
-		opacity: 0.9;
+	.submit .btn-primary:disabled {
+		opacity: 0.5;
+		cursor: default;
 	}
 
-	.current-mix {
-		margin-top: 2rem;
-		padding: 1.5rem;
-		background: var(--surface-2);
-		border-radius: 8px;
-	}
-	.notification {
+	.notice {
+		border-radius: var(--radius-sm);
+		padding: 0.75rem 1rem;
 		margin: 1rem 0;
-		padding: 1rem;
-		border-radius: 4px;
+		font-size: 0.95rem;
+	}
+
+	.notice p {
+		margin: 0 0 0.75rem;
+	}
+
+	.notice.error {
+		background: rgba(255, 99, 99, 0.12);
+		color: #ffb3b3;
+	}
+
+	.notice.warn {
+		background: rgba(255, 165, 90, 0.12);
+		color: var(--accentLight);
+	}
+
+	.notice.success {
+		background: rgba(80, 230, 130, 0.12);
 		text-align: center;
 	}
 
-	.success {
-		background-color: #4caf50;
-		color: white;
-	}
-
-	.error {
-		background-color: #f44336;
-		color: white;
-	}
-
-	.playlist-link {
-		display: inline-block;
-		margin-top: 0.5rem;
-		padding: 0.5rem 1rem;
-		background-color: #1db954;
-		color: white;
-		text-decoration: none;
-		border-radius: 20px;
-		font-weight: bold;
-		transition: background-color 0.2s;
-	}
-
-	.playlist-link:hover {
-		background-color: #1ed760;
+	@media (min-width: 800px) {
+		.lists {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 </style>

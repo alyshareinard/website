@@ -449,17 +449,14 @@
 			<div aria-live="polite">
 				{#if built.warnings.phone}
 					<p class="warn">
-						{built.warnings.phone} phone number{built.warnings.phone === 1 ? '' : 's'} didn't look
-						like US numbers, so I left {built.warnings.phone === 1 ? 'it' : 'them'} as {built.warnings
-							.phone === 1
-							? 'it was'
-							: 'they were'}.
+						{built.warnings.phone} phone number{built.warnings.phone === 1 ? '' : 's'} didn't match the
+						US pattern, so {built.warnings.phone === 1 ? 'was' : 'were'} skipped.
 					</p>
 				{/if}
 				{#if built.warnings.date}
 					<p class="warn">
-						{built.warnings.date} date{built.warnings.date === 1 ? '' : 's'} couldn't be read in the
-						format you chose, so I left {built.warnings.date === 1 ? 'it' : 'them'} unchanged.
+						{built.warnings.date} date{built.warnings.date === 1 ? '' : 's'} didn't match the format you
+						chose, so {built.warnings.date === 1 ? 'was' : 'were'} skipped.
 					</p>
 				{/if}
 				{#if options.dedupe}

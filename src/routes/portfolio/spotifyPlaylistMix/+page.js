@@ -1,10 +1,8 @@
 export function load({ data }) {
 	return {
-		user_name: data.user_name,
-		playlists: data.playlists,
-		title: 'Mix and match your Spotify playlists',
+		...data,
+		title: 'Spotify playlist mixer',
 		description:
-			'A tool that works with the Spotify API. You can select one or more playlists from your account and combine ' +
-			'them into a single playlist, random order, no duplicates.  Requires a Spotify premium account.'
+			'A personal tool that combines Spotify playlists into one shuffled mix, with duplicates and excluded playlists removed.'
 	};
 }

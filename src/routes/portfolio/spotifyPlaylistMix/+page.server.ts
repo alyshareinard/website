@@ -1,86 +1,99 @@
-import { redirect, type RequestEvent, type ServerLoadEvent } from '@sveltejs/kit';
-import { refresh_token, get_token } from './spotifyAuth.server.js';
-import { create_playlist, get_playlists, get_profile } from './spotifyCode.server.js';
+import { fail, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+import {
+	MixInputError,
+	SpotifyError,
+	clampLimit,
+	createSpotify,
+	isSpotifyId,
+	runMix,
+	type Target
+} from '$lib/spotify/mix';
+import {
+	APP_PATH,
+	LOGIN_PATH,
+	consumeState,
+	currentToken,
+	exchangeCode,
+	signInAgain
+} from './spotifyAuth.server';
 
-function cookieExistsAndHasValue(value: string, event: RequestEvent) {
-	const cookieValue = event.cookies.get(value);
-	console.log('in cookies exist');
-	console.log(value);
+const MAX_PLAYLISTS_PER_LIST = 50;
 
-	if (!cookieValue) {
-		console.log('cookie does not exist');
-		return false;
-	} else if (cookieValue == 'undefined') {
-		console.log('cookie exists but is undefined');
-	} else {
-		console.log('cookie exists and has value');
-		return true;
+/** Reads a JSON array of Spotify IDs from a form field, ignoring anything that isn't one. */
+function parseIds(value: FormDataEntryValue | null): string[] {
+	try {
+		const parsed = JSON.parse(String(value ?? '[]'));
+		if (!Array.isArray(parsed)) return [];
+		return parsed.filter(isSpotifyId).slice(0, MAX_PLAYLISTS_PER_LIST);
+	} catch {
+		return [];
 	}
 }
 
-export async function load(event: ServerLoadEvent) {
-	let user_name = '';
-	let playlists;
-	//first we check if there is a code in the URL
+export const load: PageServerLoad = async ({ url, cookies }) => {
+	// Spotify sends the visitor back here with ?code=...&state=... (or ?error=... if they said no).
+	if (url.searchParams.has('error')) redirect(303, LOGIN_PATH);
 
-	if (event.url.searchParams.has('code')) {
-		const code = event.url.searchParams.get('code') ?? '';
-		event.cookies.set('code', code, { path: '/' });
-		//		event.url.searchParams.set('code', null);
-		const new_url = event.url.pathname;
+	const code = url.searchParams.get('code');
+	if (code) {
+		if (!consumeState(cookies, url.searchParams.get('state'))) redirect(303, LOGIN_PATH);
+		const signedIn = await exchangeCode(cookies, code);
+		redirect(303, signedIn ? APP_PATH : LOGIN_PATH);
+	}
 
-		redirect(303, new_url);
-	} else if (
-		cookieExistsAndHasValue('refresh_token', event) &&
-		!cookieExistsAndHasValue('access_token', event)
-	) {
-		await refresh_token(event.cookies);
-		user_name = await get_profile(event.cookies, user_name);
-		playlists = await get_playlists(event.cookies, playlists);
-	} else if (cookieExistsAndHasValue('access_token', event)) {
-		user_name = await get_profile(event.cookies, user_name);
-		playlists = await get_playlists(event.cookies, playlists);
-	} else if (cookieExistsAndHasValue('code', event)) {
-		try {
-			await get_token(event);
-			user_name = await get_profile(event.cookies, user_name);
-			playlists = await get_playlists(event.cookies, playlists);
-		} catch (error) {
-			console.log('Error causing redirect: ', error);
-			redirect(303, event.url.href + '/login');
+	const token = await currentToken(cookies);
+	if (!token) redirect(303, LOGIN_PATH);
+
+	try {
+		const spotify = createSpotify(token);
+		const profile = await spotify.profile();
+		const playlists = await spotify.ownedPlaylists(profile.id);
+		return { user_name: profile.name, playlists, loadError: '' };
+	} catch (error) {
+		if (error instanceof SpotifyError) {
+			if (error.status === 401) signInAgain(cookies);
+			return { user_name: '', playlists: [], loadError: error.message };
 		}
-	} else {
-		console.log('no code, sending to login page' + event.url.href);
-		redirect(303, event.url.href + '/login');
+		throw error;
 	}
+};
 
-	return {
-		user_name,
-		playlists
-	};
-}
+export const actions: Actions = {
+	default: async ({ request, cookies }) => {
+		const form = await request.formData();
 
-/** @type {import('./$types').Actions} */
-export const actions = {
-	default: async ({ cookies, request }: RequestEvent) => {
-		const data = await request.formData();
-		console.log('in page.server, data is: ', data);
-		const liked_songs = data.get('liked_songs') === 'true';
-		console.log('liked songs is in actions: ', liked_songs);
-		const chosen_playlists = data.get('chosen_playlists')?.toString() || '[]';
-		const avoid_playlists = data.get('avoid_playlists')?.toString() || '[]';
-		const todays_playlist = data.get('todays_playlist')?.toString() || 'false';
-		console.log("Today's list in actions is: ", todays_playlist);
-		console.log('action triggered');
-		const complete = await create_playlist(
-			liked_songs,
-			chosen_playlists,
-			avoid_playlists,
-			todays_playlist,
-			cookies
-		);
-		return {
-			message: complete
-		};
+		const targetId = String(form.get('target') ?? '');
+		let target: Target;
+		if (targetId === 'new') {
+			target = { kind: 'new', name: String(form.get('newName') ?? '') };
+		} else if (isSpotifyId(targetId)) {
+			target = { kind: 'existing', id: targetId };
+		} else {
+			return fail(400, { success: false, message: 'Choose which playlist should receive the mix.' });
+		}
+
+		const token = await currentToken(cookies);
+		if (!token) signInAgain(cookies);
+
+		try {
+			const result = await runMix(createSpotify(token), {
+				chosenIds: parseIds(form.get('chosen')),
+				avoidIds: parseIds(form.get('avoid')),
+				includeLiked: form.get('liked') === 'true',
+				target,
+				limit: clampLimit(Number(form.get('limit')))
+			});
+			return { success: true, ...result, message: '' };
+		} catch (error) {
+			if (error instanceof MixInputError) {
+				return fail(400, { success: false, message: error.message });
+			}
+			if (error instanceof SpotifyError) {
+				if (error.status === 401) signInAgain(cookies);
+				return fail(502, { success: false, message: error.message });
+			}
+			throw error;
+		}
 	}
 };

@@ -1,13 +1,29 @@
-<div class="flex justify-center items-center w-full h-screen">
-	<div class="space-y-8">
-		<div class="space-y-4">
-			<h1 class="text-white font-bold text-3xl">Sign in</h1>
-			<p class="text-white">with your Spotify account.</p>
-		</div>
-		<form method="POST">
-			<button class="bg-green-500 font-bold text-white rounded-full px-4 py-2"
-				>Sign in with Spotify</button
-			>
-		</form>
-	</div>
-</div>
+<section class="card signin">
+	<h2>Sign in</h2>
+	<p>Connect your Spotify account to get started.</p>
+	<form method="POST">
+		<button class="btn-primary" type="submit">Sign in with Spotify</button>
+	</form>
+</section>
+
+<style>
+	.signin {
+		max-width: 26rem;
+		margin: 2rem auto;
+		text-align: center;
+	}
+
+	.signin h2 {
+		margin-top: 0;
+	}
+
+	.signin p {
+		color: var(--text-muted);
+	}
+
+	.signin .btn-primary {
+		cursor: pointer;
+		border: none;
+		margin: 0.5rem 0 0;
+	}
+</style>

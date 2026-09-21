@@ -428,7 +428,6 @@
 
 	@media (min-width: 700px) {
 		.services,
-		.demo-grid,
 		.short-reviews {
 			grid-template-columns: repeat(3, 1fr);
 		}
@@ -439,7 +438,8 @@
 
 		.quote-grid,
 		.game-grid,
-		.app-grid {
+		.app-grid,
+		.demo-grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
 	}

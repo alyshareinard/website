@@ -57,6 +57,14 @@ const clientProjects = [
 		description:
 			"I've worked with several companies to transfer their data between different CRMs (Customer Relationship Managers). Tools exist that allow contacts and companies to be transferred easily, but this doesn't include meetings, notes, and other data. I have several Python scripts that allow me to pull all this data and import it into Hubspot.",
 		stack: ['Python', 'HubSpot API']
+	},
+	{
+		title: 'Spotify playlist mixer (personal project)',
+		summary:
+			'Combines any set of playlists into one fresh, shuffled mix, minus duplicates and anything from playlists I exclude.',
+		description:
+			'A tool I built for myself and still use. I pick the playlists I want to hear and any playlists whose songs I want to avoid, and it writes a shuffled, de-duplicated mix to a playlist of my choice. For example, I can mix my "love songs" playlist but skip any song that\'s also on my "sad songs" playlist. It signs in through Spotify (OAuth 2.0) and shows how I handle authenticated third-party APIs: token refresh, paging through large result sets, rate limits, and safely writing changes back to a user\'s account.',
+		stack: ['SvelteKit', 'OAuth 2.0 (PKCE)', 'Spotify Web API']
 	}
 ];
 
@@ -123,11 +131,6 @@ export const apps = [
 
 // Small working demos of the kind of tool I build for clients
 export const demos = [
-	{
-		title: 'Spotify Playlist Generator',
-		description: 'Mix and match your Spotify playlists.',
-		link: '/portfolio/spotifyPlaylistMix'
-	},
 	{
 		title: 'CSV cleaner',
 		description:

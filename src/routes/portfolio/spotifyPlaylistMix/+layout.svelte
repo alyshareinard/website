@@ -8,24 +8,49 @@
 	let { children } = $props();
 </script>
 
-<div>
-	<h1>Today's playlist</h1>
-	<h3>
-		This app lets you combine your Spotify playlists into a single playlist. Maybe you have multiple
-		dance mixes you want to combine. Maybe you want a mix of country and rap. Whatever works for
-		you.
-	</h3>
-	<h3>
-		All exact duplicates are removed. You can also (optionally) add any playlists you don't want to
-		play. Maybe your dance mix from last December has some songs from your Christmas playlist and
-		it's February.
-	</h3>
-	<h3>
-		Lastly you choose the name of the new playlist -- you'll want to create this empty playlist in
-		advance or select one you don't use. (Mine is called "Today's Mix!"). <span style="color:red"
-			>NOTE: anything currently in this playlist will be DELETED.</span
-		>
-	</h3>
-	<h3>This app will only work if you have a Spotify premium account.</h3>
+<svelte:head>
+	<!-- A personal tool, not a page for search engines -->
+	<meta name="robots" content="noindex" />
+</svelte:head>
+
+<div class="mixer">
+	<header class="intro">
+		<span class="eyebrow">Personal tool</span>
+		<h1>Today's playlist</h1>
+		<p class="lead">
+			Combine your Spotify playlists into one fresh, shuffled mix. Exact duplicates are removed, and
+			you can exclude playlists whose songs you don't want to hear. If your December dance mix still
+			has your Christmas songs in it, and it's February, exclude the Christmas playlist.
+		</p>
+		<p class="note">
+			This is a personal project rather than a public demo, so it may not work with your Spotify
+			account.
+		</p>
+	</header>
+
 	{@render children?.()}
 </div>
+
+<style>
+	.intro {
+		text-align: center;
+		max-width: 42rem;
+		margin: 2rem auto 2rem;
+	}
+
+	.intro h1 {
+		margin: 0.3rem 0 0.75rem;
+	}
+
+	.lead {
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		margin: 0 0 0.75rem;
+	}
+
+	.note {
+		font-size: 0.95rem;
+		color: var(--text-muted);
+		margin: 0;
+	}
+</style>
