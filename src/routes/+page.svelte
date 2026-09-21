@@ -66,6 +66,20 @@
 		</div>
 	</section>
 
+	<section class="purpose" aria-labelledby="purpose-heading">
+		<span class="eyebrow">Work with purpose</span>
+		<h2 id="purpose-heading">Glad to support organizations doing good</h2>
+		<p>
+			I work with all kinds of small businesses, and I'm especially glad to help organizations
+			working for the environment and LGBTQ+ rights, as well as women-owned businesses.
+		</p>
+		<ul class="chips">
+			<li class="chip">Environment</li>
+			<li class="chip">LGBTQ+ rights</li>
+			<li class="chip">Women-owned</li>
+		</ul>
+	</section>
+
 	<section id="work">
 		<div class="section-head">
 			<span class="eyebrow">Selected work</span>
@@ -250,6 +264,32 @@
 		margin: 0;
 		color: var(--text-muted);
 		font-size: 1rem;
+	}
+
+	/* Purpose band */
+	.purpose {
+		text-align: center;
+		padding: 2.5rem 1.5rem;
+		border-radius: var(--radius);
+		border: 1px solid var(--border);
+		background:
+			radial-gradient(28rem 12rem at 50% 0%, rgba(255, 165, 90, 0.12), transparent 70%),
+			var(--surface);
+	}
+
+	.purpose h2 {
+		margin: 0.3rem 0 0.75rem;
+	}
+
+	.purpose p {
+		max-width: 38rem;
+		margin: 0 auto 1.25rem;
+		color: var(--text-muted);
+	}
+
+	.purpose .chips {
+		justify-content: center;
+		margin-bottom: 0;
 	}
 
 	/* Project cards */
