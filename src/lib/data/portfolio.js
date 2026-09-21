@@ -79,8 +79,7 @@ export const games = [
 		players: 'Multiplayer, in any browser',
 		stack: ['SvelteKit', 'Socket.IO', 'Tailwind'],
 		link: 'https://keesh-production.up.railway.app/',
-		cta: 'Play Keesh',
-		support: { label: 'Buy me a coffee', href: 'https://buymeacoffee.com/tech.aly' }
+		cta: 'Play Keesh'
 	},
 	{
 		id: 'mahjong',
