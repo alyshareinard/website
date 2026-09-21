@@ -1,15 +1,21 @@
 <script lang="ts">
 	// @ts-ignore
 	import { Turnstile } from 'svelte-turnstile';
+	import { page } from '$app/stores';
+
+	const serviceOptions = ['Webpage', 'App', 'Integration'];
+
+	// Links from the demo tools can pre-fill the form (?service=...&message=...). The visitor
+	// can edit everything before sending.
+	const params = $page.url.searchParams;
+	const requestedService = params.get('service') ?? '';
 
 	let fname = $state('');
 	let lname = $state('');
 	let email = $state('');
-	let serviceType = $state('Webpage');
-	let memo = $state('');
+	let serviceType = $state(serviceOptions.includes(requestedService) ? requestedService : 'Webpage');
+	let memo = $state((params.get('message') ?? '').slice(0, 2000));
 	let submission_status = $state('');
-
-	const serviceOptions = ['Webpage', 'App', 'Integration'];
 
 	// Add Turnstile script to head
 	let turnstileScript: HTMLScriptElement;
@@ -172,7 +178,7 @@
 						placeholder=""
 						required
 						minlength="10"
-						rows="3"
+						rows="8"
 						autocomplete="off"
 					></textarea>
 

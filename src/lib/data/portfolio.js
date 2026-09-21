@@ -129,8 +129,9 @@ export const demos = [
 		link: '/portfolio/spotifyPlaylistMix'
 	},
 	{
-		title: 'CSV formatter',
-		description: 'Upload a CSV file, then download it in a different format.',
+		title: 'CSV cleaner',
+		description:
+			'Tidy phone numbers and dates, split or combine columns, and remove duplicates, all in your browser.',
 		link: '/portfolio/csvUpdater'
 	},
 	{
