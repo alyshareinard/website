@@ -135,9 +135,9 @@ export const demos = [
 		link: '/portfolio/csvUpdater'
 	},
 	{
-		title: 'Better RSS feed',
+		title: 'Feed ranker',
 		description:
-			'Select feeds, prioritize certain words or phrases, and see the most relevant stories first.',
+			'Pick the words you want and the words you don\'t, and watch a list of posts re-sort so the best ones come first.',
 		link: '/portfolio/RSSfeed'
 	}
 ];

@@ -1,19 +1,8 @@
-/** @type {import('./feed/best/$types').PageLoad} */
-import { browser } from '$app/environment';
-import rssReader from './rssReader.js';
-
-export async function load() {
-	let jobs;
-	if (browser) {
-		jobs = rssReader();
-	}
-
+export function load() {
 	return {
-		jobs: jobs,
-		title: 'Better RSS feed',
+		title: 'Feed Ranker',
 		description:
-			"Add 1 or more RSS feeds, define 'positive' and 'negative' words, items will be sorted based on the score (#positive - #negative)" +
-			"Click to expand title to see description.  Define 'important phrases' which will be pulled out into a subtitle." +
-			'See the most relevant stories first.'
+			'A free demo that ranks a list of posts by the words you care about. Add words you want to see and words you ' +
+			'want to avoid, and watch the best matches rise to the top. Rule-based scoring, not AI.'
 	};
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Papa from 'papaparse';
+	import { track } from '$lib/analytics';
 	import {
 		OPS,
 		buildOutput,
@@ -62,15 +63,6 @@
 	});
 
 	const delimiterNames: Record<string, string> = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
-
-	function track(name: string) {
-		// Simple Analytics event. Only the event name is sent, never any file contents.
-		try {
-			(window as unknown as { sa_event?: (n: string) => void }).sa_event?.(name);
-		} catch {
-			/* analytics is optional */
-		}
-	}
 
 	async function readText(file: File): Promise<string> {
 		const buffer = await file.arrayBuffer();
