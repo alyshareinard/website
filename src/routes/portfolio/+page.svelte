@@ -1,143 +1,146 @@
-<script>
-	import { Accordion } from '$lib/components/Accordion';
-	import PortfolioCards from '../portfolioCards.svelte';
+<script lang="ts">
+	import { projects, games, apps, demos } from '$lib/data/portfolio.js';
 </script>
 
-<h1>Portfolio</h1>
-<hr />
-<h2>Selected client projects:</h2>
-<Accordion>
-	{#snippet head()}
-		<span>
-			<h3>Inventory and payroll system</h3>
-		</span>
-	{/snippet}
-	{#snippet details()}
-		<div>
-			<h4>
-				Created a full inventory and payroll system for a door-to-door sales business that worked
-				with their existing sales app. The new app allowed the company to easily record shipments
-				from the supplier, products checked out to sales representatives, and items sold to
-				customers. Items sold would then be added to the payroll system where base salary,
-				commission and monthly bonuses would be calculated. Once approved the system would email the
-				employee a PDF summarizing their payroll record.
-			</h4>
-			<h4>Techstack: Backendless, React, Javascript</h4>
-		</div>
-	{/snippet}
-</Accordion>
-<hr />
-<Accordion>
-	{#snippet head()}
-		<span>
-			<h3>Shipping info from tracking API to Purchase Order record</h3>
-		</span>
-	{/snippet}
-	{#snippet details()}
-		<div>
-			<h4>
-				Created middleware to update SKU.io (an inventory/purchase order tracker) with expected
-				delivery date from the AfterShip API (a shipping tracker). Using Retool, I created a webhook
-				from SKU.io to receive new purchase orders, add the associated tracking numbers to the
-				AfterShip tracker. Retool was also used to catch the webhooks from AfterShip indicating a
-				change in order status and update the SKU.io record. Previously this client had been looking
-				up each tracking number daily and updating the SKU.io record manually, so the new system
-				saved a significant amount of time.
-			</h4>
-			<h4>Techstack: Retool, Javascript</h4>
-		</div>
-	{/snippet}
-</Accordion>
-<hr />
+<div class="portfolio">
+	<header class="page-head">
+		<span class="eyebrow">Work</span>
+		<h1>Portfolio</h1>
+		<p class="lead">
+			Client projects where I replaced manual work with something reliable, plus a few apps and
+			demos you can try yourself.
+		</p>
+	</header>
 
-<Accordion>
-	{#snippet head()}
-		<span>
-			<h3>
-				Simple app to pull the email addresses of all Hubspot contacts who work for companies
-				associated with a given keyword.
-			</h3>
-		</span>
-	{/snippet}
-	{#snippet details()}
-		<div>
-			<h4>
-				A client was providing direct marketing incentives to certain subgroups of clients. They
-				used Hubspot to track target companies and their associated interests using keywords
-				associated with the companies. However, to send out their marketing email they had to find
-				all companies associated with a given keyword, and then, by hand go through each of the
-				company employees and pull their email addresses. I built a simple app that worked with the
-				Hubspot API to complete this process automatically. Using my app the client now just types
-				in a keyword and is provided a list of all relevant contacts.
-			</h4>
-			<h4>Techstack: Python, Streamlit</h4>
+	<section aria-labelledby="client-work">
+		<h2 id="client-work">Selected client projects</h2>
+		<div class="project-list">
+			{#each projects as project}
+				<article class="card project" id={project.slug}>
+					<h3>{project.title}</h3>
+					<p class="summary">{project.summary}</p>
+					<p class="description">{project.description}</p>
+					<ul class="chips">
+						{#each project.stack as tech}
+							<li class="chip">{tech}</li>
+						{/each}
+					</ul>
+				</article>
+			{/each}
 		</div>
-	{/snippet}
-</Accordion>
+	</section>
 
-<hr />
-<Accordion>
-	{#snippet head()}
-		<span>
-			<h3>Automated system to manage product reviewers</h3>
-		</span>
-	{/snippet}
-	{#snippet details()}
-		<div>
-			<h4>
-				I worked with a company that relied on external reviewers to evaluate products and provide
-				feedback and ratings. The process involved manually tracking the list of products and number
-				of reviews requested for each, as well as tracking the list of reviewers and which products
-				they had already evaluated. This manual process became unworkable as the company grew. I
-				created an app using Airtable to track products, reviewers, and reviews. I build a front-end
-				using Streamlit that allowed the reviewers to log in, see reviews they had done and request
-				additional products to review.
-			</h4>
-			<h4>Techstack: Airtable, Python, Streamlit</h4>
+	<section aria-labelledby="apps-to-explore">
+		<h2 id="apps-to-explore">Apps to explore</h2>
+		<div class="tile-grid">
+			{#each games as game}
+				<a class="card tile" href="/games#{game.id}">
+					<h3>{game.title}</h3>
+					<p>{game.tagline}</p>
+					<span class="link">About the game →</span>
+				</a>
+			{/each}
+			{#each apps as app}
+				<a class="card tile" href={app.link} target="_blank" rel="noopener noreferrer">
+					<h3>{app.title}</h3>
+					<p>{app.description}</p>
+					<span class="link">{app.cta} ↗</span>
+				</a>
+			{/each}
+			{#each demos as demo}
+				<a class="card tile" href={demo.link}>
+					<h3>{demo.title}</h3>
+					<p>{demo.description}</p>
+					<span class="link">Open demo →</span>
+				</a>
+			{/each}
 		</div>
-	{/snippet}
-</Accordion>
-
-<hr />
-
-<Accordion>
-	{#snippet head()}
-		<span>
-			<h3>Transition all data, including meetings and notes from various CRMs to Hubspot</h3>
-		</span>
-	{/snippet}
-	{#snippet details()}
-		<div>
-			<h4>
-				I've worked with several companies to transfer their data between different CRMs (Customer
-				relations managers). Tools exist that allow contacts and companies to be transfered easily,
-				but this doesn't include meetings, notes, and other data. I have several Python scripts that
-				allow me to pull all this data and import it into Hubspot.
-			</h4>
-			<h4>Techstack: Python, Hubspot API</h4>
-		</div>
-	{/snippet}
-</Accordion>
-<hr />
-<h2>Apps to explore:</h2>
-
-<PortfolioCards />
+	</section>
+</div>
 
 <style>
-	h4 {
-		color: var(--mainThemeDark);
-		font-weight: 400;
-	}
-	hr {
-		width: 0;
+	.page-head {
+		text-align: center;
+		margin: 2rem auto 3rem;
+		max-width: 40rem;
 	}
 
-	:global(.details) {
-		background-color: rgba(0, 0, 0, 0.75) !important;
-		color: var(--accentLight);
+	.page-head h1 {
+		margin: 0.3rem 0 0.75rem;
 	}
 
-	:global(.details) h4 {
-		color: var(--accentLight);
+	.lead {
+		color: var(--text-muted);
+		font-size: 1.15rem;
+		margin: 0;
+	}
+
+	section {
+		margin-bottom: 4rem;
+	}
+
+	.project-list {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.project {
+		scroll-margin-top: 5.5rem;
+	}
+
+	.project h3 {
+		margin: 0 0 0.4rem;
+		font-size: 1.3rem;
+	}
+
+	.summary {
+		color: var(--accent);
+		font-weight: 500;
+		margin: 0 0 0.75rem;
+	}
+
+	.description {
+		color: var(--text-muted);
+		font-size: 1rem;
+		margin: 0 0 1rem;
+	}
+
+	.tile-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.tile {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.tile h3 {
+		margin: 0 0 0.5rem;
+	}
+
+	.tile p {
+		color: var(--text-muted);
+		font-size: 0.98rem;
+		margin: 0 0 1rem;
+		flex-grow: 1;
+	}
+
+	.link {
+		color: var(--accent);
+		font-weight: 600;
+	}
+
+	@media (min-width: 700px) {
+		.tile-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 960px) {
+		.tile-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 </style>

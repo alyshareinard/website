@@ -171,15 +171,17 @@
 </Accordion>
 
 <style>
-	a {
-		color: var(--mainTheme);
-	}
 	h4 {
-		color: var(--mainThemeDark);
+		color: var(--text);
 		font-weight: 400;
 	}
+	h2 {
+		text-align: left;
+		font-size: 1.25rem;
+		margin: 0;
+	}
 	hr {
-		width: 80%;
+		width: 100%;
 	}
 	.mountainpic {
 		display: flex;

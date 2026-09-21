@@ -85,11 +85,12 @@
 	}
 
 	div.details {
-		background-color: var(--accentLight);
+		background-color: var(--surface);
+		border: 1px solid var(--border);
 		padding: 1px 20px;
 		margin: 0 20px;
-		border-radius: 10px;
-		color: var(--mainThemeDark);
+		border-radius: var(--radius);
+		color: var(--text);
 	}
 	div.subtitle {
 		margin-top: -20px;

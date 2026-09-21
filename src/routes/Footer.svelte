@@ -2,63 +2,100 @@
 	import github from '$lib/images/github-mark-white.svg';
 	import linkedin from '$lib/images/In-White-96.png';
 	import upwork from '$lib/images/upwork-round-white.png';
+
+	const year = new Date().getFullYear();
 </script>
 
 <footer>
-	<div class="social">
-		<a href="https://github.com/alyshareinard">
-			<img src={github} alt="GitHub" />
-		</a>
-		<a href="https://www.linkedin.com/in/alysha-reinard/">
-			<img src={linkedin} alt="LinkedIn" />
-		</a>
-		<a href="https://www.upwork.com/freelancers/~0195af2deb010d271c">
-			<img src={upwork} alt="Upwork" />
-		</a>
+	<div class="inner">
+		<div class="social">
+			<a href="https://github.com/alyshareinard" aria-label="GitHub">
+				<img src={github} alt="" />
+			</a>
+			<a href="https://www.linkedin.com/in/alysha-reinard/" aria-label="LinkedIn">
+				<img src={linkedin} alt="" />
+			</a>
+			<a href="https://www.upwork.com/freelancers/~0195af2deb010d271c" aria-label="Upwork">
+				<img src={upwork} alt="" />
+			</a>
+		</div>
+
+		<nav aria-label="Footer">
+			<a href="/portfolio">Work</a>
+			<a href="/games">Games</a>
+			<a href="/about">About</a>
+			<a href="/contact#contactForm">Contact</a>
+		</nav>
+
+		<p class="copyright">© {year} Tech-Aly</p>
 	</div>
-	<a href="/contact#contactForm">Contact me</a>
-	<p class="darkBackground">© 2026 Tech-Aly</p>
 </footer>
 
 <style>
 	footer {
-		padding: 10px 20px 1px 20px;
-		bottom: 0;
-		background: var(--mainThemeOpacity);
-		margin: -10px;
+		border-top: 1px solid var(--border);
+		background: rgba(10, 18, 20, 0.6);
+	}
+
+	.inner {
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: space-between;
 		align-items: center;
-		gap: 0.5rem;
-	}
-	p {
-		font-size: smaller;
-	}
-	a {
-		align-self: center;
-	}
-	.social {
-		margin-top: 10px;
-		width: 7em;
-		height: 3em;
-	}
-	.social img {
-		--height: 25px;
-		width: var(--height);
-		height: var(--height);
-		object-fit: contain;
+		gap: 1rem;
+		max-width: var(--content-width);
+		margin: 0 auto;
+		padding: 1.25rem;
 	}
 
-	@media (max-width: 480px) {
-		footer {
+	.social {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.social img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+		opacity: 0.8;
+		transition: opacity 0.2s ease;
+	}
+
+	.social a:hover img {
+		opacity: 1;
+	}
+
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+	}
+
+	nav a {
+		color: var(--text-muted);
+		text-decoration: none;
+		font-size: 0.95rem;
+	}
+
+	nav a:hover {
+		color: var(--accent);
+	}
+
+	.copyright {
+		margin: 0;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 600px) {
+		.inner {
 			flex-direction: column;
-			justify-content: center;
 			text-align: center;
-			padding: 1rem;
 		}
-		.social {
-			margin-top: 0;
+
+		nav {
+			justify-content: center;
 		}
 	}
 </style>
