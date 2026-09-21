@@ -12,9 +12,10 @@
 
 	/* surfaces and text */
 	--bg: #0a1214;
-	--surface: #111d20;
-	--surface-2: #172a2e;
-	--border: rgba(255, 255, 255, 0.1);
+	--surface: #1c3237;
+	/* Inset areas inside a card (inputs, rows, table headers): a step darker than the card */
+	--surface-2: #132428;
+	--border: rgba(255, 255, 255, 0.16);
 	--border-strong: rgba(80, 230, 230, 0.35);
 	--text: #e9f0f0;
 	--text-muted: #9fb5b7;
@@ -23,6 +24,7 @@
 	--radius: 14px;
 	--radius-sm: 8px;
 	--shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+	--card-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 6px 18px rgba(0, 0, 0, 0.3);
 	--content-width: 1100px;
 
 	--font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
@@ -148,6 +150,7 @@ hr {
 .divbox {
 	background-color: var(--surface);
 	border: 1px solid var(--border);
+	box-shadow: var(--card-shadow);
 	padding: 1.25rem;
 	border-radius: var(--radius);
 	color: var(--text);
@@ -157,6 +160,7 @@ hr {
 	color: var(--text);
 	background-color: var(--surface);
 	border: 1px solid var(--border);
+	box-shadow: var(--card-shadow);
 	border-radius: var(--radius);
 	padding: 1rem 1.25rem;
 }
@@ -254,6 +258,7 @@ textarea::placeholder {
 .card {
 	background: var(--surface);
 	border: 1px solid var(--border);
+	box-shadow: var(--card-shadow);
 	border-radius: var(--radius);
 	padding: 1.5rem;
 	transition:

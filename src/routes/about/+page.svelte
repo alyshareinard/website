@@ -6,7 +6,7 @@
 </script>
 
 <h1>About Me</h1>
-<div style="display:flex">
+<div class="intro">
 	<p class="darkBackground">
 		From solar physics to tech guru to app developer, my career has spanned many areas, but I've
 		always gravitated towards solving puzzles and finding or creating better ways to do things.
@@ -183,27 +183,66 @@
 	hr {
 		width: 100%;
 	}
-	.mountainpic {
+	/* Photos keep their own proportions: flex rows would otherwise stretch them to the height of
+	   the text beside them. */
+	.intro {
 		display: flex;
-		float: right;
-		margin-right: 15px;
-		width: 20%;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+	.intro .darkBackground {
+		flex: 1;
+		margin: 0;
+	}
+	.mountainpic {
+		flex: none;
+		align-self: flex-start;
+		width: clamp(180px, 26%, 300px);
+		height: auto;
+		border-radius: var(--radius);
 	}
 	.sillypic {
-		display: inline;
-		width: 10%;
+		flex: none;
+		align-self: flex-start;
+		width: clamp(90px, 14%, 150px);
+		height: auto;
 		margin-right: 15px;
+		border-radius: var(--radius-sm);
 	}
 	.sciencepic {
-		display: flex;
+		display: block;
 		float: right;
-		width: 20%;
+		width: clamp(150px, 24%, 280px);
 		height: auto;
 		margin-left: 15px;
 		margin-top: 15px;
+		border-radius: var(--radius-sm);
 	}
 	.inline {
 		display: flex;
 		flex-direction: row;
+	}
+
+	@media (max-width: 600px) {
+		.intro {
+			flex-direction: column;
+		}
+		.mountainpic {
+			align-self: center;
+			width: min(70%, 280px);
+		}
+		.sciencepic {
+			float: none;
+			margin: 0 auto 1rem;
+			width: min(80%, 320px);
+		}
+		.inline {
+			flex-direction: column;
+			align-items: center;
+		}
+		.sillypic {
+			margin: 0 0 1rem;
+			width: min(50%, 180px);
+		}
 	}
 </style>
