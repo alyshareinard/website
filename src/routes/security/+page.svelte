@@ -85,6 +85,17 @@
 		</p>
 	</section>
 
+	<section class="card" aria-labelledby="support-heading">
+		<h2 id="support-heading">Support period</h2>
+		<p>
+			Just Three Things, What the Gender and WBB Points Check receive security updates until at
+			least <strong>November 2031</strong>. This date is extended as new versions are released. If
+			an app is removed from the App Store, it continues to receive security fixes until the stated
+			date, so people who already have it stay protected. I will announce the end of support in
+			advance on this page and, where possible, in the app.
+		</p>
+	</section>
+
 	<section class="card" aria-labelledby="notify-heading">
 		<h2 id="notify-heading">If something serious happens</h2>
 		<p>
