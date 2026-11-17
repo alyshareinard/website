@@ -126,6 +126,21 @@
 		</p>
 	</section>
 
+	<section class="card" aria-labelledby="manufacturer-heading">
+		<h2 id="manufacturer-heading">Who is responsible</h2>
+		<p>The software above is published by:</p>
+		<address>
+			Alysha Reinard (Tech-Aly)<br />
+			Route de Saint-Cergue 24bis #1245<br />
+			1260 Nyon<br />
+			Switzerland
+		</address>
+		<p>
+			Security contact: <a href={`mailto:${securityEmail}`}>{securityEmail}</a>. General contact:
+			<a href="/contact#contactForm">contact form</a>.
+		</p>
+	</section>
+
 	<p class="note">
 		Looking for CRA-ready software for your own business?
 		<a href="/cra">See how I can help</a>.
@@ -163,6 +178,11 @@
 
 	.card > :last-child {
 		margin-bottom: 0;
+	}
+
+	address {
+		font-style: normal;
+		margin: 0 0 1rem;
 	}
 
 	.note {
