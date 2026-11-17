@@ -1,6 +1,7 @@
 <script>
 	let { data } = $props();
 	const meta = data.meta;
+	const securityEmail = 'security@tech-aly.com';
 </script>
 
 <h1>{meta.appName} Support</h1>
@@ -38,3 +39,11 @@
 	<li>Your device and OS version</li>
 	<li>App version, if available</li>
 </ul>
+
+<h2>Security issues</h2>
+<p>
+	If you think you've found a security problem, please email
+	<a href={`mailto:${securityEmail}?subject=Security%20report`}>{securityEmail}</a>
+	instead of the support address above. See the <a href="/security">security policy</a> for what to include
+	and what to expect.
+</p>

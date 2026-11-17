@@ -24,6 +24,8 @@
 			<a href="/portfolio">Work</a>
 			<a href="/games">Games</a>
 			<a href="/about">About</a>
+			<a href="/cra">CRA</a>
+			<a href="/security">Security</a>
 			<a href="/contact#contactForm">Contact</a>
 		</nav>
 

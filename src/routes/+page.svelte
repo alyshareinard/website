@@ -66,6 +66,18 @@
 		</div>
 	</section>
 
+	<section class="cra card" aria-labelledby="cra-heading">
+		<div>
+			<span class="eyebrow">EU Cyber Resilience Act</span>
+			<h2 id="cra-heading">Selling software in the EU?</h2>
+			<p>
+				New EU security rules apply to software and connected products. I help small teams build and
+				maintain software that's ready for them.
+			</p>
+		</div>
+		<a class="btn-secondary" href="/cra">CRA readiness</a>
+	</section>
+
 	<section class="purpose" aria-labelledby="purpose-heading">
 		<span class="eyebrow">Work with purpose</span>
 		<h2 id="purpose-heading">Glad to support organizations doing good</h2>
@@ -266,14 +278,45 @@
 		font-size: 1rem;
 	}
 
+	/* CRA teaser */
+	.cra {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1.25rem;
+	}
+
+	.cra h2 {
+		margin: 0.3rem 0 0.5rem;
+		text-align: left;
+	}
+
+	.cra p {
+		margin: 0;
+		color: var(--text-muted);
+		max-width: 42rem;
+	}
+
+	@media (min-width: 700px) {
+		.cra {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+			gap: 2rem;
+		}
+
+		.cra .btn-secondary {
+			flex-shrink: 0;
+		}
+	}
+
 	/* Purpose band */
 	.purpose {
 		text-align: center;
 		padding: 2.5rem 1.5rem;
 		border-radius: var(--radius);
 		border: 1px solid var(--border);
-		background:
-			radial-gradient(28rem 12rem at 50% 0%, rgba(255, 165, 90, 0.12), transparent 70%),
+		background: radial-gradient(28rem 12rem at 50% 0%, rgba(255, 165, 90, 0.12), transparent 70%),
 			var(--surface);
 	}
 
@@ -412,8 +455,7 @@
 		padding: 3rem 1.5rem;
 		border-radius: var(--radius);
 		border: 1px solid var(--border-strong);
-		background:
-			radial-gradient(30rem 15rem at 50% 0%, rgba(0, 130, 130, 0.35), transparent 70%),
+		background: radial-gradient(30rem 15rem at 50% 0%, rgba(0, 130, 130, 0.35), transparent 70%),
 			var(--surface);
 	}
 
